@@ -34,7 +34,7 @@ const Login = () => {
         <Input secure={false} placeholder={"Usuario"} password={false} />
         <Input secure={true} placeholder={"Contraseña"} password={true} />
         <TouchableOpacity
-          onPress={() => navigation.navigate("Insert")}
+          onPress={() => navigation.navigate("Tabs")}
           className="bg-[#a1b9bc] py-4 px-16 border-b-4 border-[#6f9499] rounded"
         >
           <Text className=" text-stone-50 font-bold">Iniciar sesion</Text>
