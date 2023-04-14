@@ -1,4 +1,4 @@
-import { View, Text, Button, TouchableOpacity, Image, TextInput, ScrollView } from "react-native";
+import { View, Text, Button, TouchableOpacity, Image, TextInput, ScrollView, Switch } from "react-native";
 import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -10,17 +10,30 @@ const Insert = () => {
     const [cateogry, setCateogry] = useState("")
     const [subCategory, setSubCategory] = useState("")
 
-    const categories = [
-        { key: 'P', value: 'Primero' },
-        { key: 'S', value: 'Segundo' },
-        { key: 'T', value: 'Tercero' },
-        { key: 'P', value: 'Primero' },
-        { key: 'S', value: 'Segundo' },
-        { key: 'T', value: 'Tercero' },
-        { key: 'P', value: 'Primero' },
-        { key: 'S', value: 'Segundo' },
-        { key: 'T', value: 'Tercero' },
+
+
+    const estructura = [
+        { key: '1', value: 'Comitán' },
+        { key: '2', value: 'Ocosingo' },
     ];
+
+    const municipio = [
+        { key: '1', value: 'Acala' },
+        { key: '2', value: 'Arriaga' },
+    ];
+
+    const localidades = [
+        { key: '1', value: 'Angel Albino Corzo' },
+        { key: '2', value: 'Bellavista' },
+    ];
+
+    const sexoList = [
+        { key: 'H', value: 'Masculino' },
+        { key: 'F', value: 'Femenino' },
+    ];
+
+    const [isEnabled, setIsEnabled] = useState(false);
+    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
 
     const navigation = useNavigation();
 
@@ -48,9 +61,9 @@ const Insert = () => {
 
     return (
         <ScrollView >
-            <View className="min-h-full bg-[#f2f2f2] relative items-center pt-8 pb-96">
-                
-            <View className="bg-emerald-700 rounded-md  w-[95%]" >
+            <View className="min-h-full bg-[#f2f2f2] relative items-center pt-8 pb-[200px]">
+
+                <View className="bg-emerald-700 rounded-md  w-[95%]" >
                     <Text className="p-2 text-white text-[20px]" >Agregar promovidos</Text>
                 </View>
 
@@ -76,28 +89,32 @@ const Insert = () => {
 
                     </View>
 
-                    <View className="justify-between flex-1 ">
+                    <View className=" flex-1 ">
                         <TextInput
-                            style={DefaultStyles.input}
+                            style={[DefaultStyles.input]}
                             className="w-full border-[#686868] border-[1px]"
                             placeholder="Nombre"
                         />
                         <TextInput
-                            style={DefaultStyles.input}
+                            style={[DefaultStyles.input, DefaultStyles.mt_8]}
                             className="w-full border-[#686868] border-[1px]"
                             placeholder="Apellido paterno"
                         />
                         <TextInput
-                            style={DefaultStyles.input}
+                            style={[DefaultStyles.input, DefaultStyles.mt_8]}
                             className="w-full border-[#686868] border-[1px]"
                             placeholder="Apellido materno"
                         />
-                        <TextInput
-                            style={DefaultStyles.input}
-                            className="w-full border-[#686868] border-[1px]"
-                            placeholder="Edad"
-                            keyboardType="numeric"
-                        />
+                        <View style={[ DefaultStyles.mt_8]} >
+                            <SelectList
+                                data={sexoList}
+                                search={false}
+                                setSelected={setCateogry}
+                                boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                                dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                                placeholder="Sexo"
+                            />
+                        </View>
 
                     </View>
 
@@ -127,7 +144,8 @@ const Insert = () => {
                     />
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                            data={categories}
+                            data={estructura}
+                            search={false}
                             setSelected={setCateogry}
                             boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
                             dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
@@ -147,7 +165,8 @@ const Insert = () => {
                     />
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                            data={categories}
+                            data={municipio}
+                            search={false}
                             setSelected={setCateogry}
                             boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
                             dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
@@ -156,7 +175,8 @@ const Insert = () => {
                     </View>
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                            data={categories}
+                            data={localidades}
+                            search={false}
                             setSelected={setCateogry}
                             boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
                             dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
@@ -176,6 +196,51 @@ const Insert = () => {
                         multiline={true}
                         numberOfLines={3}
                     />
+
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px]"
+                        placeholder="Número"
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px]"
+                        placeholder="Código postal"
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px]"
+                        placeholder="Número celular"
+                        keyboardType="numeric"
+                    />
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px]"
+                        placeholder="Correo electrónico"
+                    />
+                    <View
+                        style={DefaultStyles.mt_8}
+                        className="flex-row items-center justify-center">
+                        <Text className="text-[18px]">{isEnabled ? "Activo" : "Inactivo"}</Text>
+                        <Switch
+                            trackColor={{ false: '#bbbbbb', true: '#3cbe73' }}
+                            thumbColor={isEnabled ? '#ffffff' : '#999999'}
+                            ios_backgroundColor="#3e3e3e"
+                            onValueChange={toggleSwitch}
+                            value={isEnabled}
+                        />
+
+                    </View>
+
+                    <TouchableOpacity
+                        style={DefaultStyles.mt_8}
+                        onPress={""} //hacer el POST ahí
+                        className="bg-blue-500 m-auto px-14 py-4 rounded-md"
+                    >
+                        <Text className="font-semibold text-[24px] text-white">Agregar</Text>
+                    </TouchableOpacity>
 
                 </View>
 
