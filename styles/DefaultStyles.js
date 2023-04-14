@@ -6,8 +6,9 @@ const DefaultStyles = StyleSheet.create({
         paddingVertical: 8,
         paddingHorizontal: 2,
         paddingLeft: 20,
-        borderRadius: 8,
-        fontSize: 16
+        borderRadius: 10,
+        fontSize: 16,
+        minHeight: 46
     },
     mt_8:{
         marginTop:30,
