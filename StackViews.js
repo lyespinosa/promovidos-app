@@ -29,9 +29,10 @@ const StackViews = () => {
 
     return (
         <Tab.Navigator
+        
             initialRouteName="View"
             screenOptions={{
-                tabBarActiveTintColor: 'green'
+                tabBarActiveTintColor: 'green',
             }}
         >
             <Tab.Screen

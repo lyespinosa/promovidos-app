@@ -23,8 +23,8 @@ const Login = () => {
   }, []);
 
   return (
-    <ScrollView>
-      <View className="min-h-[100vh] flex-1 bg-[#e9e9e9] relative items-center py-8 justify-center">
+    <ScrollView  className="bg-white">
+      <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
         <View className="h-16 w-30 ">
           <Image className=" object-scale-down" source={Triforce} />
         </View>
@@ -39,7 +39,7 @@ const Login = () => {
         >
           <Text className=" text-stone-50 font-bold">Iniciar sesion</Text>
         </TouchableOpacity>
-        <StatusBar style="auto" />
+        <StatusBar  style="auto" />
       </View>
     </ScrollView>
   );
