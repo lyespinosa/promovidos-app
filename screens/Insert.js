@@ -48,8 +48,9 @@ const Insert = () => {
 
     return (
         <ScrollView >
-            <View className="flex-1 bg-[#f2f2f2] relative items-center py-8">
-                <View className="bg-emerald-700 rounded-md mt-10 w-[95%]" >
+            <View className="min-h-full bg-[#f2f2f2] relative items-center pt-8 pb-96">
+                
+            <View className="bg-emerald-700 rounded-md  w-[95%]" >
                     <Text className="p-2 text-white text-[20px]" >Agregar promovidos</Text>
                 </View>
 
@@ -122,22 +123,22 @@ const Insert = () => {
                         style={[DefaultStyles.input, DefaultStyles.mt_8]}
                         className="w-full border-[#686868] border-[1px]"
                         placeholder="CURP"
+                        maxLength={18}
                     />
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                        boxStyles={{backgroundColor:'rgb(248,250,252)'}}
-                        dropdownStyles={{backgroundColor:'rgb(248,250,252)'}}
-                            setSelected={setCateogry}
                             data={categories}
-                            placeholder={"Estructura"}
-                            defaultOption={{ key: 'S', value: 'Segundo' }}
+                            setSelected={setCateogry}
+                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            placeholder="Estructura"
                         />
                     </View>
                     <TextInput
                         style={[DefaultStyles.input, DefaultStyles.mt_8]}
                         className="w-full border-[#686868] border-[1px]"
                         placeholder="Cargo"
-                        
+
                     />
                     <TextInput
                         style={[DefaultStyles.input, DefaultStyles.mt_8]}
@@ -146,27 +147,37 @@ const Insert = () => {
                     />
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                        boxStyles={{backgroundColor:'rgb(248,250,252)'}}
-                        dropdownStyles={{backgroundColor:'rgb(248,250,252)'}}
-                            setSelected={setCateogry}
                             data={categories}
-                            placeholder={"Municipio"}
-                            defaultOption={{ key: 'S', value: 'Segundo' }}
+                            setSelected={setCateogry}
+                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            placeholder="Municipio"
                         />
                     </View>
                     <View style={[DefaultStyles.mt_8]}>
                         <SelectList
-                        boxStyles={{backgroundColor:'rgb(248,250,252)'}}
-                        dropdownStyles={{backgroundColor:'rgb(248,250,252)'}}
-                            setSelected={setCateogry}
                             data={categories}
-                            placeholder={"Localidad"}
-                            defaultOption={{ key: 'S', value: 'Segundo' }}
+                            setSelected={setCateogry}
+                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            placeholder="Localidades"
                         />
                     </View>
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px]"
+                        placeholder="Colonia"
+                    />
+
+                    <TextInput
+                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
+                        className="w-full border-[#686868] border-[1px] h-20"
+                        placeholder="Dirección"
+                        multiline={true}
+                        numberOfLines={3}
+                    />
 
                 </View>
-
 
 
             </View>
