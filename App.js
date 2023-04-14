@@ -17,7 +17,7 @@ export default function App() {
   return (
     <SafeAreaView style={SafeViewAndroid.AndroidSafeArea} >
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Insert" >
+        <Stack.Navigator initialRouteName="Login" >
           <Stack.Screen name="Insert" component={Insert} />
           <Stack.Screen name="Login" component={Login} />
         </Stack.Navigator>
