@@ -61,9 +61,10 @@ const Insert = () => {
 
     return (
         <ScrollView >
-            <View className="min-h-full bg-[#f2f2f2] relative items-center pt-8 pb-[200px]">
+            <View className="min-h-full bg-white relative items-center pt-8 pb-[200px]">
 
-                <View className="bg-emerald-700 rounded-md  w-[95%]" >
+                <View className=" rounded-md  w-[95%]" >
+
                     <Text className="p-2 text-white text-[20px]" >Agregar promovidos</Text>
                 </View>
 
