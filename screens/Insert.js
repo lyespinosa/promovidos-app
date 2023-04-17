@@ -209,7 +209,7 @@ const Insert = () => {
                         placeholder="Correo electrónico"
                     />
                     <View
-                        className="flex-row items-center justify-center"
+                        className="flex-row items-center justify-center bg-"
                         >
                         <Text className="text-[18px]">{isEnabled ? "Activo" : "Inactivo"}</Text>
                         <Switch
