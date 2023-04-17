@@ -23,7 +23,8 @@ const Login = () => {
   }, []);
 
   return (
-    <ScrollView  className="bg-white">
+    <ScrollView className="bg-white">
+
       <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
         <View className="h-16 w-30 ">
           <Image className=" object-scale-down" source={Triforce} />
@@ -35,12 +36,14 @@ const Login = () => {
         <Input secure={true} placeholder={"Contraseña"} password={true} />
         <TouchableOpacity
           onPress={() => navigation.navigate("Tabs")}
-          className="bg-[#a1b9bc] py-4 px-16 border-b-4 border-[#6f9499] rounded"
+          className="bg-[#435f9a] py-4 px-16 border-b-4 border-[#354b7a] rounded mb-20"
         >
           <Text className=" text-stone-50 font-bold">Iniciar sesion</Text>
         </TouchableOpacity>
-        <StatusBar  style="auto" />
+        <StatusBar style="auto" />
       </View>
+
+
     </ScrollView>
   );
 };
