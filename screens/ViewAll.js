@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 const ViewAll = () => {
   return (
-    <View>
+    <View className="bg-white flex-1">
       <Text>ViewAll</Text>
     </View>
   )

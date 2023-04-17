@@ -3,8 +3,15 @@ import React, { useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
-import DefaultStyles from "../styles/DefaultStyles";
+
+import { NativeWindStyleSheet } from "nativewind";
+import { s } from "react-native-wind";
+
 import axios from 'axios';
+
+//styles
+import DefaultStyles from "../styles/DefaultStyles";
+
 
 const Insert = () => {
     const [image, setImage] = useState(null);
@@ -187,10 +194,11 @@ const Insert = () => {
 
     return (
         <ScrollView >
-            <View className="min-h-full bg-[#f2f2f2] relative items-center pt-8 pb-[200px]">
+            <View className="min-h-full bg-white relative items-center pt-4 pb-[200px] bg-">
 
-                <View className="bg-emerald-700 rounded-md  w-[95%]" >
-                    <Text className="p-2 text-white text-[20px]" >Agregar promovidos</Text>
+                <View className=" rounded-md  w-[95%] bg-green-600" >
+
+                    <Text className="p-2 text-white text-[20px] " >Agregar promovidos</Text>
                 </View>
 
                 <View className=" mt-4 flex-row justify-between w-[90%] ">
@@ -217,33 +225,30 @@ const Insert = () => {
 
                     <View className=" flex-1 ">
                         <TextInput
-                            style={[DefaultStyles.input]}
-                            className="w-full border-[#686868] border-[1px]"
+                            style={DefaultStyles.firstInput}
                             placeholder="Nombre"
                             onChangeText={handleNombreChange}
                             
                         />
                         <TextInput
-                            style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                            className="w-full border-[#686868] border-[1px]"
+                            style={DefaultStyles.input}
                             placeholder="Apellido paterno"
                             onChangeText={handlePaternoChange}
                             
                         />
                         <TextInput
-                            style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                            className="w-full border-[#686868] border-[1px]"
+                            style={DefaultStyles.input}
                             placeholder="Apellido materno"
                             onChangeText={handleMaternoChange}
                             
                         />
-                        <View style={[ DefaultStyles.mt_8]} >
+                        <View  >
                             <SelectList
                                 data={sexoList}
                                 search={false}
                                 setSelected={setCateogry}
-                                boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
-                                dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                                boxStyles={DefaultStyles.select}
+                                dropdownStyles={DefaultStyles.inputColor}
                                 placeholder="Sexo"
                                 
                                 
@@ -256,134 +261,115 @@ const Insert = () => {
 
                 <View className="w-[90%]">
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Folio"
                         
                         onChangeText={handleFolioChange}
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="INE o Clave de elector"
                         onChangeText={handleIneChange}
                         
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Seccion"
                         onChangeText={handleSeccionChange}
                         
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="CURP"
                         maxLength={18}
                         onChangeText={handleCurpChange}
                         
                     />
-                    <View style={[DefaultStyles.mt_8]}>
+                    <View >
                         <SelectList
                             data={estructura}
                             search={false}
                             setSelected={handleEstrucuturaChange}
-                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
-                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            boxStyles={DefaultStyles.select}
+                            dropdownStyles={DefaultStyles.inputColor}
                             placeholder="Estructura"
-                            
                         />
                     </View>
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Cargo"
                         onChangeText={handleCargoChange}
                         
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Ocupacion"
                         onChangeText={handleOcupacionChange}
                     />
-                    <View style={[DefaultStyles.mt_8]}>
+                    <View >
                         <SelectList
                             data={municipio}
                             search={false}
                             setSelected={handleMunicipioChange}
-                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
-                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
+                            boxStyles={DefaultStyles.select}
+                            dropdownStyles={DefaultStyles.inputColor}
                             placeholder="Municipio"
-                            
-                            
                         />
                     </View>
-                    <View style={[DefaultStyles.mt_8]}>
+                    <View >
                         <SelectList
                             data={localidades}
                             search={false}
                             setSelected={handleLocalidadChange}
-                            boxStyles={{ backgroundColor: 'rgb(248,250,252)' }}
-                            dropdownStyles={{ backgroundColor: 'rgb(248,250,252)' }}
-                            placeholder="Localidades"
-                            
-                            
-                        />
+                            boxStyles={DefaultStyles.select}
+                            dropdownStyles={DefaultStyles.inputColor}
+                            placeholder="Localidades"                        />
                     </View>
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Colonia"
                         onChangeText={handleColoniaChange}
                         
                     />
 
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px] h-20"
+                        style={DefaultStyles.input}
                         placeholder="Dirección"
                         multiline={true}
                         numberOfLines={3}
                         onChangeText={handleDireccionChange}
-                        
                     />
 
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Número exterior"
                         keyboardType="numeric"
+                        numberOfLines={4}
                         onChangeText={handleExteriorChange}
-                        
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Código postal"
                         keyboardType="numeric"
                         onChangeText={handleCpChange}
                         
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Número celular"
                         keyboardType="numeric"
                         onChangeText={handleCelularChange}
                         
                     />
                     <TextInput
-                        style={[DefaultStyles.input, DefaultStyles.mt_8]}
-                        className="w-full border-[#686868] border-[1px]"
+                        style={DefaultStyles.input}
                         placeholder="Correo electrónico"
                         onChangeText={handleCorreoChange}
                        
                     />
                     <View
-                        style={DefaultStyles.mt_8}
-                        className="flex-row items-center justify-center">
+                        className="flex-row items-center justify-center bg-"
+                        >
                         <Text className="text-[18px]">{isEnabled ? "Activo" : "Inactivo"}</Text>
                         <Switch
                             trackColor={{ false: '#bbbbbb', true: '#3cbe73' }}
@@ -398,6 +384,7 @@ const Insert = () => {
                     <TouchableOpacity
                         style={DefaultStyles.mt_8}
                         onPress={handleSubmit} //hacer el POST ahí
+                        onPress={""} //hacer el POST ahí
                         className="bg-blue-500 m-auto px-14 py-4 rounded-md"
                     >
                         <Text className="font-semibold text-[24px] text-white">Agregar</Text>
@@ -411,6 +398,8 @@ const Insert = () => {
 
     );
 };
+
+
 
 
 export default Insert;
