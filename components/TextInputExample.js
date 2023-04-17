@@ -13,9 +13,9 @@ const TextInputExample = ({ secure, password, placeholder}) => {
 
   return (
     
-    <View className=" font-bold p-x mb-4 w-80 bg-white rounded flex-row items-center border-[1px] border-gray-500  focus:border-y-lime-700 " >
+    <View className="font-bold p-x mb-4 w-80 bg-white rounded flex-row items-center border-[1px] border-gray-400  focus:shadow-md shadow-[black]" >
     <TextInput
-        className="flex-1 px-3 py-1 text-xl text-white"
+        className="flex-1 px-3 py-1 text-xl text-gray"
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         secureTextEntry={isSecure}
@@ -27,7 +27,7 @@ const TextInputExample = ({ secure, password, placeholder}) => {
             style={{ paddingRight: 15 }}
             name={isSecure ? "eye" : 'eye-slash'}
             size={20}
-            color='gray'
+            color='#bc9c64'
             onPress={() => setIsSecure(!isSecure)}
         />
     }
