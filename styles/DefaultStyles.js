@@ -8,13 +8,14 @@ const input = "px-2 py-2 pl-4 rounded-lg text-[20px] min-h-3 w-full border borde
 const place_holder_color = "bg-black"
 
 const DefaultStyles = {
+    borderColor: s`border-blue-500`,
     input: s`${input} ${input_mt}`,
     firstInput: s`${input} `,
     inputMt: s`${input_mt}`,
     inputColor: s`${input_color}`,
     select: s`${input_color, input_mt}`,
 
-    placeHolderColor: s`bg-black`
+    placeHolderColor: s`text-gray-400`
 }
 
 export default DefaultStyles

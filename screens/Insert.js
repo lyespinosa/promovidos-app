@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  Button,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  ScrollView,
-  Switch,
-} from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Switch, } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -18,9 +9,32 @@ import axios from "axios";
 //styles
 import DefaultStyles from "../styles/DefaultStyles";
 
+//components
+import ComboBox from "../components/form/ComboBox";
+import Input from "../components/form/Input";
+import { getList } from "../api/comboboxs/getList";
+
+
 const Insert = () => {
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
+
+  const [sexosList, setSexosList] = useState([])
+  const [municipiosList, setMunicipiosList] = useState([])
+  const [estructurasList, setEstructurasList] = useState([])
+  const [localidadesList, setLocalidadesList] = useState([])
+
+
   const [image, setImage] = useState(null);
-  const [cateogry, setCateogry] = useState("");
   const [nombre, setNombre] = useState("");
   const [paterno, setPaterno] = useState("");
   const [materno, setMaterno] = useState("");
@@ -30,21 +44,19 @@ const Insert = () => {
   const [ine, setIne] = useState("");
   const [cargo, setCargo] = useState("");
   const [ocupacion, setOcupacion] = useState("");
-  const [estructuras, setEstructuras] = useState("");
   const [estado, setEstado] = useState("");
-  const [municipios, setMunicipios] = useState("");
-  const [localidad, setLocalidad] = useState("");
   const [colonia, setColonia] = useState("");
   const [direccion, setDireccion] = useState("");
   const [exterior, setExterior] = useState("");
   const [celular, setCelular] = useState("");
   const [correo, setCorreo] = useState("");
   const [seccion, setSeccion] = useState("");
+
   const [sexo, setSexo] = useState("");
-  const [SexoData, setSexoData] = useState("");
   const [municipio, setMunicipio] = useState("")
-  const [localidades, setLocalidades] = useState("")
+  const [localidad, setLocalidades] = useState("")
   const [estructura, setEstructura] = useState("")
+
 
   const handleFolioChange = (folio) => {
     console.log(folio);
@@ -69,6 +81,7 @@ const Insert = () => {
   };
   const handleNombreChange = (nombre) => {
     setNombre(nombre);
+    console.log(nombre)
   };
   const handlePaternoChange = (paterno) => {
     setPaterno(paterno);
@@ -79,23 +92,21 @@ const Insert = () => {
 
   const handleSexoChange = (sexo) => {
     setSexo(sexo);
+    console.log(sexo)
   };
   const handleCurpChange = (curp) => {
     setCurp(curp);
   };
   const handleMunicipioChange = (municipio) => {
-    setMunicipios(municipio);
-    console.log(municipio)
-    fetch("http://192.168.1.131:8000/api/localidad/"+municipio,{headers: {
-      'Content-Type': 'application/json',
-   }})
-    .then(response => response.json())
-    .then(data => {
-      setLocalidades(data)
+    setMunicipio(municipio);
+
+    getList("localidad/"+municipio).then(data => {
+      setLocalidadesList(data)
     })
   };
   const handleLocalidadChange = (localidad) => {
     setLocalidad(localidad);
+    console.log(localidad)
   };
   const handleColoniaChange = (colonia) => {
     setColonia(colonia);
@@ -117,35 +128,21 @@ const Insert = () => {
     console.log(correo);
   };
 
-  useEffect(() => {
-      fetch("http://192.168.1.131:8000/api/sexo",{headers: {
-        'Content-Type': 'application/json',
-     }})
-      .then(response => response.json())
-      .then(data => {
-        {console.log(data), setSexoData(data)}
-      })
-  }, [])
-
-  useEffect(() => {
-    fetch("http://192.168.1.131:8000/api/estructura",{headers: {
-      'Content-Type': 'application/json',
-   }})
-    .then(response => response.json())
-    .then(data => {
-      setEstructura(data)
-    })
-}, [])
   
   useEffect(() => {
-    fetch("http://192.168.1.131:8000/api/municipio",{headers: {
-      'Content-Type': 'application/json',
-   }})
-    .then(response => response.json())
-    .then(data => {
-      setMunicipio(data)
+    getList("sexo").then(data => {
+      setSexosList(data)
     })
-}, [])
+
+    getList("estructura").then(data => {
+      setEstructurasList(data)
+    })
+
+    getList("municipio").then(data => {
+      setMunicipiosList(data)
+    })
+
+  }, [])
 
 
   const handleSubmit = async () => {
@@ -184,16 +181,7 @@ const Insert = () => {
     }
   };
 
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const navigation = useNavigation();
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -211,9 +199,29 @@ const Insert = () => {
     }
   };
 
+  const data = [
+    { label: 'Tuxtla', value: '1' },
+    { label: 'Chiapa', value: '2' },
+    { label: 'Sancris', value: '3' },
+    { label: 'Tonalá', value: '4' },
+    { label: 'Arriaga', value: '5' },
+    { label: 'Tapachula', value: '6' },
+    { label: 'Huixtla', value: '7' },
+    { label: 'Motozintl', value: '8' },
+    { label: 'Tuxtla', value: '9' },
+    { label: 'Chiapa', value: '10' },
+    { label: 'Sancris', value: '11' },
+    { label: 'Tonalá', value: '12' },
+    { label: 'Arriaga', value: '13' },
+    { label: 'Tapachula', value: '14' },
+    { label: 'Huixtla', value: '15' },
+    { label: 'Motozintl', value: '16' },
+
+  ];
+
   return (
     <ScrollView>
-      <View className="min-h-full bg-white relative items-center pt-4 pb-[200px] bg-">
+      <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
         <View className=" rounded-md  w-[95%] bg-green-600">
           <Text className="p-2 text-white text-[20px] ">
             Agregar promovidos
@@ -225,7 +233,7 @@ const Insert = () => {
             <View className="w-[160px] h-[200px] bg-slate-500 rounded-md overflow-hidden shadow-sm shadow-black">
               {image ? (
                 <Image
-                  className="w-full h-full object-contain"
+                  className="object-contain w-full h-full"
                   source={{ uri: image }}
                 />
               ) : (
@@ -242,135 +250,111 @@ const Insert = () => {
             </TouchableOpacity>
           </View>
 
-          <View className=" flex-1 ">
-            <TextInput
-              style={DefaultStyles.firstInput}
+          <View className="flex-1 ">
+
+            <Input
+              styles={DefaultStyles.firstInput}
               placeholder="Nombre"
               onChangeText={handleNombreChange}
             />
-            <TextInput
-              style={DefaultStyles.input}
+            <Input
               placeholder="Apellido paterno"
               onChangeText={handlePaternoChange}
             />
-            <TextInput
-              style={DefaultStyles.input}
+
+            <Input
               placeholder="Apellido materno"
               onChangeText={handleMaternoChange}
             />
-            <View>
-              <SelectList
-                data={SexoData}
-                search={false}
-                setSelected={handleSexoChange}
-                boxStyles={DefaultStyles.select}
-                dropdownStyles={DefaultStyles.inputColor}
-                placeholder="Sexo"
-              />
-            </View>
+            <Input
+              placeholder="Número celular"
+              keyboardType="numeric"
+              onChangeText={handleCelularChange}
+            />
+
           </View>
         </View>
 
         <View className="w-[90%]">
-          <TextInput
-            style={DefaultStyles.input}
+
+          <ComboBox
+            showSearch={false}
+            value={sexo}
+            items={sexosList}
+            placeholder={"Sexo"}
+            onChange={item => { handleSexoChange(item.value) }}
+          />
+
+          <Input
             placeholder="Folio"
             onChangeText={handleFolioChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="INE o Clave de elector"
             onChangeText={handleIneChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Seccion"
             onChangeText={handleSeccionChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="CURP"
             maxLength={18}
             onChangeText={handleCurpChange}
           />
-          <View>
-            <SelectList
-              data={estructura}
-              search={false}
-              setSelected={handleEstrucuturaChange}
-              boxStyles={DefaultStyles.select}
-              dropdownStyles={DefaultStyles.inputColor}
-              placeholder="Estructura"
-            />
-          </View>
-          <TextInput
-            style={DefaultStyles.input}
+          <ComboBox
+            value={estructura}
+            items={estructurasList}
+            placeholder={"Estructura"}
+            onChange={item => { handleEstrucuturaChange(item.value) }}
+          />
+          <Input
             placeholder="Cargo"
             onChangeText={handleCargoChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Ocupacion"
             onChangeText={handleOcupacionChange}
           />
-          <View>
-            <SelectList
-              data={municipio}
-              search={false}
-              setSelected={handleMunicipioChange}
-              boxStyles={DefaultStyles.select}
-              dropdownStyles={DefaultStyles.inputColor}
-              placeholder="Municipio"
-            />
-          </View>
-          <View>
-            <SelectList
-              data={localidades}
-              search={false}
-              setSelected={handleLocalidadChange}
-              boxStyles={DefaultStyles.select}
-              dropdownStyles={DefaultStyles.inputColor}
-              placeholder="Localidades"
-            />
-          </View>
-          <TextInput
-            style={DefaultStyles.input}
+          <ComboBox
+            value={municipio}
+            items={municipiosList}
+            placeholder={"Municipio"}
+            onChange={item => { handleMunicipioChange(item.value) }}
+          />
+          <ComboBox
+            value={localidad}
+            items={localidadesList}
+            placeholder={"Localidad"}
+            onChange={item => { handleLocalidadChange(item.value) }}
+          />
+          <Input
             placeholder="Colonia"
             onChangeText={handleColoniaChange}
           />
-
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Dirección"
             multiline={true}
-            numberOfLines={3}
+            numberOfLines={4}
+            textAlignVertical="top"
             onChangeText={handleDireccionChange}
           />
-
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Número exterior"
             keyboardType="numeric"
-            numberOfLines={4}
             onChangeText={handleExteriorChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Código postal"
             keyboardType="numeric"
+            maxLength={5}
             onChangeText={handleCpChange}
           />
-          <TextInput
-            style={DefaultStyles.input}
-            placeholder="Número celular"
-            keyboardType="numeric"
-            onChangeText={handleCelularChange}
-          />
-          <TextInput
-            style={DefaultStyles.input}
+          <Input
             placeholder="Correo electrónico"
             onChangeText={handleCorreoChange}
           />
+
           <View className="flex-row items-center justify-center bg-">
             <Text className="text-[18px]">
               {isEnabled ? "Activo" : "Inactivo"}
@@ -387,7 +371,7 @@ const Insert = () => {
           <TouchableOpacity
             style={DefaultStyles.mt_8}
             onPress={handleSubmit} //hacer el POST ahí
-            className="bg-blue-500 m-auto px-14 py-4 rounded-md"
+            className="py-4 m-auto bg-blue-500 rounded-md px-14"
           >
             <Text className="font-semibold text-[24px] text-white">
               Agregar

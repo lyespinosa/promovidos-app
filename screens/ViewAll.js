@@ -1,10 +1,13 @@
+
 import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import Navbar from "../components/Navbar";
 
 
+
 const ViewAll = () => {
+
 
   const [promotores, setPromotores] = useState([]);
 
