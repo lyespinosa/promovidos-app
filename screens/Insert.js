@@ -4,11 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
 
-import { NativeWindStyleSheet } from "nativewind";
-import { s } from "react-native-wind";
-
-import axios from 'axios';
-
 //styles
 import DefaultStyles from "../styles/DefaultStyles";
 

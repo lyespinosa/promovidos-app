@@ -24,14 +24,11 @@ const Login = () => {
 
   return (
     <ScrollView className="bg-white">
-
       <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
         <View className="h-16 w-30 ">
           <Image className=" object-scale-down" source={Triforce} />
         </View>
-
         <Text className="    font-bold mb-4 text-4xl">Ingrese sus datos</Text>
-
         <Input secure={false} placeholder={"Usuario"} password={false} />
         <Input secure={true} placeholder={"Contraseña"} password={true} />
         <TouchableOpacity
@@ -42,8 +39,6 @@ const Login = () => {
         </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
-
-
     </ScrollView>
   );
 };
