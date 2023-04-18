@@ -4,7 +4,6 @@ import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
 
-
 import axios from "axios";
 
 //styles
