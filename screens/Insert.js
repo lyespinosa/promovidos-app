@@ -186,7 +186,6 @@ const Insert = () => {
             setImage(result.assets[0].uri);
         }
     };
-
     return (
         <ScrollView >
             <View className="min-h-full bg-white relative items-center pt-4 pb-[200px] bg-">
