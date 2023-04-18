@@ -32,7 +32,7 @@ const StackViews = () => {
         
             initialRouteName="View"
             screenOptions={{
-                tabBarActiveTintColor: 'green',
+                tabBarActiveTintColor: '#435f9a',
             }}
         >
             <Tab.Screen

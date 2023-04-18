@@ -12,8 +12,10 @@ import Input from "../components/TextInputExample";
 import { Triforce } from "../assets";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scrollview';
 import axios from "axios";
 import AwesomeAlert from 'react-native-awesome-alerts';
+
 
 const Login = () => {
 
@@ -75,11 +77,16 @@ const Login = () => {
 
   return (
     <ScrollView className="bg-white">
-      <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
-        <View className="h-16 w-30 ">
+
+        <KeyboardAwareScrollView>
+        <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
+       
+                <View className="h-16 w-30 ">
           <Image className=" object-scale-down" source={Triforce} />
         </View>
+        <View className="mb-[20%]">
         <Text className="    font-bold mb-4 text-4xl">Ingrese sus datos</Text>
+
         <Input secure={false} placeholder={"Usuario"} password={false} change={handleEmailChange} />
         <Input secure={true} placeholder={"Contraseña"} password={true} change={handlePasswordChange} />
         <TouchableOpacity
@@ -90,7 +97,7 @@ const Login = () => {
         </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
-
+      </KeyboardAwareScrollView>
     </ScrollView>
   );
 };
