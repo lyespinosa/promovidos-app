@@ -13,8 +13,10 @@ import { Triforce } from "../assets";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
+import AwesomeAlert from 'react-native-awesome-alerts';
 
 const Login = () => {
+
   const navigation = useNavigation();
 
   const [email, setEmail] = useState("")
@@ -29,6 +31,25 @@ const Login = () => {
     setPassword(password);
   };
 
+  const alert = () => {
+    console.log('Entro')
+    return(
+        <AwesomeAlert
+          show={true}
+          showProgress={false}
+          title="AwesomeAlert"
+          message="I have a message for you!"
+          closeOnTouchOutside={true}
+          closeOnHardwareBackPress={false}
+          showConfirmButton={true}
+          confirmText="Yes, delete it"
+          confirmButtonColor="#DD6B55"
+          onConfirmPressed={() => navigation.navigate("Tabs")
+          }
+        />
+    )
+  }
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
@@ -42,6 +63,8 @@ const Login = () => {
     } catch (error) {
       console.error(error);
     }
+
+    alert();
   };
 
   useLayoutEffect(() => {
@@ -60,7 +83,6 @@ const Login = () => {
         <Input secure={false} placeholder={"Usuario"} password={false} change={handleEmailChange} />
         <Input secure={true} placeholder={"Contraseña"} password={true} change={handlePasswordChange} />
         <TouchableOpacity
-          onPress={() => navigation.navigate("Tabs")}
           onPressIn={handleSubmit}
           className="bg-[#435f9a] py-4 px-16 border-b-4 border-[#354b7a] rounded mb-20"
         >
@@ -68,6 +90,7 @@ const Login = () => {
         </TouchableOpacity>
         <StatusBar style="auto" />
       </View>
+
     </ScrollView>
   );
 };
