@@ -54,7 +54,7 @@ const Insert = () => {
 
   const [sexo, setSexo] = useState("");
   const [municipio, setMunicipio] = useState("")
-  const [localidad, setLocalidades] = useState("")
+  const [localidad, setLocalidad] = useState("")
   const [estructura, setEstructura] = useState("")
 
 
@@ -71,7 +71,7 @@ const Insert = () => {
   };
   const handleEstrucuturaChange = (estructura) => {
     console.log(estructura);
-    setEstructuras(estructura);
+    setEstructura(estructura);
   };
   const handleCargoChange = (cargo) => {
     setCargo(cargo);
