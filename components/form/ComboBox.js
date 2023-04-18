@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
-import DefaultStyles from '../styles/DefaultStyles';
+import DefaultStyles from '../../styles/DefaultStyles';
 
-function DropDown({ placeholder, items, onChange, value }) {
+function ComboBox({ placeholder, items, onChange, value, showSearch = true }) {
 
     const [isFocus, setIsFocus] = useState(false)
 
@@ -10,7 +10,7 @@ function DropDown({ placeholder, items, onChange, value }) {
         <Dropdown
             style={[DefaultStyles.input, isFocus && DefaultStyles.borderColor]}
             data={items} //los items que se mostrarán
-            search
+            search={showSearch}
             maxHeight={200}
             labelField="label"
             valueField="value"
@@ -25,4 +25,4 @@ function DropDown({ placeholder, items, onChange, value }) {
     )
 }
 
-export default DropDown
+export default ComboBox
