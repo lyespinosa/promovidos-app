@@ -3,6 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 import axios from "axios";
 
@@ -61,6 +62,8 @@ const Insert = () => {
   const handleFolioChange = (folio) => {
     console.log(folio);
     setFolio(folio);
+    const value = AsyncStorage.getItem('data')
+    console.log('datos locales: ' + value)
   };
   const handleIneChange = (ine) => {
     setIne(ine);
@@ -105,7 +108,7 @@ const Insert = () => {
     })
   };
   const handleLocalidadChange = (localidad) => {
-    setLocalidad(localidad);
+    setLocalidades(localidad);
     console.log(localidad)
   };
   const handleColoniaChange = (colonia) => {
@@ -284,7 +287,6 @@ const Insert = () => {
             placeholder={"Sexo"}
             onChange={item => { handleSexoChange(item.value) }}
           />
-
           <Input
             placeholder="Folio"
             onChangeText={handleFolioChange}

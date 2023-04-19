@@ -24,6 +24,7 @@
       "supportsTablet": true
     },
     "android": {
+      "AsyncStorage_db_size_in_MB": 10,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
