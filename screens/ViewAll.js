@@ -8,21 +8,29 @@ const ViewAll = () => {
   const [promotores, setPromotores] = useState([]);
   const [token, setToken] = useState(null);
 
-  useEffect(() => {
+  const getUser = async (user) => {
+    console.log(user.id)
+    fetch("http://192.168.1.131:8000/api/promotors/listar/"+user.id, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+      .then(response => response.json())
+      .then(data => {
+        setPromotores(data)
+      })
+      .catch(err =>{
+        console.log('error: ' + err)
+      })
+  };
+
+  useEffect( () => {
     const data = async () =>{
-      setToken(JSON.parse(await Storage.getItem({ key: `user-data` }))) ;
-      console.log(token.id)
+
+      getUser(JSON.parse(await Storage.getItem({ key: `user-data` }))) ;
+      console.log(JSON.parse(await Storage.getItem({ key: `user-data` })))
     }
     data()
-    fetch("http://192.168.1.131:8000/api/promotors/listar/"+token.id, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPromotores(data);
-      });
   }, []);
 
   return (
