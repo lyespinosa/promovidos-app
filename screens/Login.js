@@ -9,22 +9,21 @@ import {
 } from "react-native";
 
 import Input from "../components/TextInputExample";
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { Triforce } from "../assets";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import axios from "axios";
-import { Storage } from 'expo-storage'
+import { Storage } from "expo-storage";
 import AwesomeAlert from "react-native-awesome-alerts";
 
 const Login = () => {
   const navigation = useNavigation();
 
-  const tokens = ''
+  const tokens = "";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState("")
+  const [token, setToken] = useState(null);
 
   const handleEmailChange = (email) => {
     setEmail(email);
@@ -52,14 +51,32 @@ const Login = () => {
     );
   };
 
-  const saveData = async (data) =>{
+  const saveData = async (data) => {
     try {
-      await Storage.setItem({key:'user-data',value: JSON.stringify(data)})
-      console.log('Data successfully saved')
-    } catch (e) {
-      console.log('Failed to save the data to the storage')
+        await Storage.setItem({
+        key: `user-data`,
+        value: JSON.stringify(data)
+      })
+      navigation.navigate("Tabs")
+    } catch (error) {
+      console.error('Error al guardar datos en AsyncStorage:', error);
     }
-  }
+  };
+
+  const getUser = async (token) => {
+    try {
+      const response = await axios.get("http://192.168.1.131:8000/api/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log(response.data)
+      saveData(response.data)
+    } catch (e) {
+      console.log("Failed to get data");
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -67,30 +84,17 @@ const Login = () => {
         email: email,
         password: password,
       });
-      console.log(response.data.msg);
-      setToken(response.data.msg)
-      
+      const data = response.data;
+      if (data.status == 1) {
+        console.log("Has iniciado");
+        getUser(data.msg)
+      } else {
+        console.log("Error al inicar");
+      }
     } catch (error) {
       console.error(error);
     }
   };
-
-  const getUser = async () =>{
-    console.log('entro')
-    try{
-      const response = await axios.get('http://192.169.1.131/api/users/'+email, {
-        headers:{
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + token 
-        }
-      })
-      saveData(response.data)
-      console.log('datos guardados manito')
-    }
-    catch{
-      console.log('Error al guardar u obtener el usuario')
-    }
-  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -123,8 +127,6 @@ const Login = () => {
             />
             <TouchableOpacity
               onPressIn={handleSubmit}
-              onPressOut={getUser}
-              onPress={() => navigation.navigate("Tabs")}
               className="bg-[#435f9a] py-4 px-16 border-b-4 border-[#354b7a] rounded mb-20"
             >
               <Text className=" text-stone-50 font-bold">Iniciar sesion</Text>
