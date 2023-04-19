@@ -35,6 +35,7 @@ const Login = () => {
   };
 
   const alert = () => {
+
     return (
       <AwesomeAlert
         show={true}
@@ -46,6 +47,7 @@ const Login = () => {
         showConfirmButton={true}
         confirmText="Yes, delete it"
         confirmButtonColor="#DD6B55"
+
         onConfirmPressed={() => navigation.navigate("Tabs")}
       />
     );
@@ -78,6 +80,7 @@ const Login = () => {
     }
   };
 
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post("http://192.168.1.131:8000/api/login", {
@@ -104,6 +107,7 @@ const Login = () => {
 
   return (
     <ScrollView className="bg-white">
+
       <KeyboardAwareScrollView>
         <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
           <View className="h-16 w-30 ">
@@ -130,6 +134,7 @@ const Login = () => {
               className="bg-[#435f9a] py-4 px-16 border-b-4 border-[#354b7a] rounded mb-20"
             >
               <Text className=" text-stone-50 font-bold">Iniciar sesion</Text>
+
             </TouchableOpacity>
             <StatusBar style="auto" />
           </View>
