@@ -14,7 +14,6 @@ import ViewAll from './screens/ViewAll';
 import SettingsAcount from './screens/SettingsAcount';
 import { useNavigation } from '@react-navigation/native';
 import SafeViewAndroid from './components/SafeViewAndroid';
-import MyModal from './components/MyModal';
 
 
 const StackViews = () => {

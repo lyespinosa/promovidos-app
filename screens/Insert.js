@@ -1,11 +1,15 @@
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Switch, } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '@env'
+
 
 import axios from "axios";
+import { Formik } from "formik";
+import * as Yup from 'yup';
 
 //styles
 import DefaultStyles from "../styles/DefaultStyles";
@@ -14,12 +18,13 @@ import DefaultStyles from "../styles/DefaultStyles";
 import ComboBox from "../components/form/ComboBox";
 import Input from "../components/form/Input";
 import { getList } from "../api/comboboxs/getList";
+import Alert from "../components/Alert";
+import Switch from "../components/form/Switch";
+
+import { Storage } from "expo-storage";
 
 
 const Insert = () => {
-
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
   const navigation = useNavigation();
 
@@ -29,109 +34,16 @@ const Insert = () => {
     });
   }, []);
 
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
+  const [user, setUser] = useState(127)
+  const [image, setImage] = useState()
   const [sexosList, setSexosList] = useState([])
   const [municipiosList, setMunicipiosList] = useState([])
   const [estructurasList, setEstructurasList] = useState([])
   const [localidadesList, setLocalidadesList] = useState([])
 
-
-  const [image, setImage] = useState(null);
-  const [nombre, setNombre] = useState("");
-  const [paterno, setPaterno] = useState("");
-  const [materno, setMaterno] = useState("");
-  const [cp, setCp] = useState("");
-  const [folio, setFolio] = useState("");
-  const [curp, setCurp] = useState("");
-  const [ine, setIne] = useState("");
-  const [cargo, setCargo] = useState("");
-  const [ocupacion, setOcupacion] = useState("");
-  const [estado, setEstado] = useState("");
-  const [colonia, setColonia] = useState("");
-  const [direccion, setDireccion] = useState("");
-  const [exterior, setExterior] = useState("");
-  const [celular, setCelular] = useState("");
-  const [correo, setCorreo] = useState("");
-  const [seccion, setSeccion] = useState("");
-
-  const [sexo, setSexo] = useState("");
-  const [municipio, setMunicipio] = useState("")
-  const [localidad, setLocalidad] = useState("")
-  const [estructura, setEstructura] = useState("")
-
-
-  const handleFolioChange = (folio) => {
-    console.log(folio);
-    setFolio(folio);
-    const value = AsyncStorage.getItem('data')
-    console.log('datos locales: ' + value)
-  };
-  const handleIneChange = (ine) => {
-    setIne(ine);
-  };
-
-  const handleSeccionChange = (seccion) => {
-    setSeccion(seccion);
-  };
-  const handleEstrucuturaChange = (estructura) => {
-    console.log(estructura);
-    setEstructura(estructura);
-  };
-  const handleCargoChange = (cargo) => {
-    setCargo(cargo);
-  };
-  const handleOcupacionChange = (ocupacion) => {
-    setOcupacion(ocupacion);
-  };
-  const handleNombreChange = (nombre) => {
-    setNombre(nombre);
-    console.log(nombre)
-  };
-  const handlePaternoChange = (paterno) => {
-    setPaterno(paterno);
-  };
-  const handleMaternoChange = (materno) => {
-    setMaterno(materno);
-  };
-
-  const handleSexoChange = (sexo) => {
-    setSexo(sexo);
-    console.log(sexo)
-  };
-  const handleCurpChange = (curp) => {
-    setCurp(curp);
-  };
-  const handleMunicipioChange = (municipio) => {
-    setMunicipio(municipio);
-
-    getList("localidad/"+municipio).then(data => {
-      setLocalidadesList(data)
-    })
-  };
-  const handleLocalidadChange = (localidad) => {
-    setLocalidades(localidad);
-    console.log(localidad)
-  };
-  const handleColoniaChange = (colonia) => {
-    setColonia(colonia);
-  };
-  const handleDireccionChange = (direccion) => {
-    setDireccion(direccion);
-  };
-  const handleExteriorChange = (exterior) => {
-    setExterior(exterior);
-  };
-  const handleCpChange = (cp) => {
-    setCp(cp);
-  };
-  const handleCelularChange = (celular) => {
-    setCelular(celular);
-  };
-  const handleCorreoChange = (correo) => {
-    setCorreo(correo);
-    console.log(correo);
-  };
-
-  
   useEffect(() => {
     getList("sexo").then(data => {
       setSexosList(data)
@@ -147,40 +59,39 @@ const Insert = () => {
 
   }, [])
 
+  const getUserId = async () => {
 
-  const handleSubmit = async () => {
+    const id = setUser(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
+    return id;
+  }
+
+  const [sexo, setSexo] = useState("");
+  const [municipio, setMunicipio] = useState("")
+  const [localidad, setLocalidad] = useState("")
+  const [estructura, setEstructura] = useState("")
+
+
+  const getLocalidadByMunicipio = (municipio) => {
+    setMunicipio(municipio);
+
+    getList("localidad/" + municipio).then(data => {
+      setLocalidadesList(data)
+    })
+  };
+
+  const sendPromovido = async (values) => {
     try {
+
       const response = await axios.post(
-        "http://192.168.1.131:8000/api/promotors/create",
-        {
-          // Data to be sent to the server
-          folio: folio,
-          ine: ine,
-          seccion: seccion,
-          estructura: estructuras,
-          cargo: cargo,
-          ocupacion: ocupacion,
-          nombre: nombre,
-          paterno: paterno,
-          materno: materno,
-          sexo: sexo,
-          curp: curp,
-          estado: 1,
-          municipio: municipios,
-          localidad: localidad,
-          colonia: colonia,
-          direccion: direccion,
-          exterior: exterior,
-          cp: cp,
-          celular: celular,
-          correo: correo,
-          activo: 1,
-          usuario: 1,
-        }
+        `${BASE_URL}promotors/create`,
+        values
       );
-      console.log(response.data);
+      console.log(response.data)
+      console.log(user)
+     
+      setShowAlert(true)
     } catch (error) {
-      console.error(error);
+      console.log(error)
     }
   };
 
@@ -195,193 +106,400 @@ const Insert = () => {
       quality: 1,
     });
 
-    console.log(result);
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
 
-  const data = [
-    { label: 'Tuxtla', value: '1' },
-    { label: 'Chiapa', value: '2' },
-    { label: 'Sancris', value: '3' },
-    { label: 'Tonalá', value: '4' },
-    { label: 'Arriaga', value: '5' },
-    { label: 'Tapachula', value: '6' },
-    { label: 'Huixtla', value: '7' },
-    { label: 'Motozintl', value: '8' },
-    { label: 'Tuxtla', value: '9' },
-    { label: 'Chiapa', value: '10' },
-    { label: 'Sancris', value: '11' },
-    { label: 'Tonalá', value: '12' },
-    { label: 'Arriaga', value: '13' },
-    { label: 'Tapachula', value: '14' },
-    { label: 'Huixtla', value: '15' },
-    { label: 'Motozintl', value: '16' },
+  const SignupSchema = Yup.object().shape({
+    nombre: Yup.string().required('Required'),
+    paterno: Yup.string().required('Required'),
+    materno: Yup.string().required('Required'),
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
+    sexo: Yup.number().integer("solo id").required('Required'),
+    folio: Yup.string().required('Required'),
+    ine: Yup.string().required('Required'),
+    seccion: Yup.number().required('Required'),
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
+    estructura: Yup.number().integer("solo id").required('Required'),
+    cargo: Yup.string().required('Required'),
+    ocupacion: Yup.string().required('Required'),
+    municipio: Yup.number().integer("solo id").required('Required'),
+    localidad: Yup.number().integer("solo id").required('Required'),
+    colonia: Yup.string().required('Required'),
+    direccion: Yup.string().required('Required'),
+    exterior: Yup.string().required('Required'),
+    cp: Yup.string().required('Required'),
+    correo: Yup.string().email('Ingresa un correo "@"').required('Required'),
+    activo: Yup.boolean()
+  })
 
-  ];
+  const [showAlert, setShowAlert] = useState(false)
 
   return (
     <ScrollView>
-      <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
-        <View className=" rounded-md  w-[95%] bg-green-600">
-          <Text className="p-2 text-white text-[20px] ">
-            Agregar promovidos
-          </Text>
-        </View>
 
-        <View className=" mt-4 flex-row justify-between w-[90%] ">
-          <View className=" h-[240px] justify-between mr-3 ">
-            <View className="w-[160px] h-[200px] bg-slate-500 rounded-md overflow-hidden shadow-sm shadow-black">
-              {image ? (
-                <Image
-                  className="object-contain w-full h-full"
-                  source={{ uri: image }}
-                />
-              ) : (
-                <></>
-              )}
+      <Formik
+        initialValues={{
+          nombre: '',
+          paterno: '',
+          materno: '',
+          celular: '',
+          sexo: null,
+          folio: '',
+          ine: '',
+          seccion: null,
+          curp: '',
+          estructura: null,
+          cargo: '',
+          ocupacion: '',
+          municipio: null,
+          estado: 1,
+          localidad: null,
+          colonia: '',
+          direccion: '',
+          exterior: '',
+          cp: '',
+          promotor: user,
+          correo: '',
+          activo: 0,
+          usuario: 5,
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={values => sendPromovido(values)}
+      >
+        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+          <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
+            <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={showAlert} onConfirmPressed={() => setShowAlert(false)} />
+            <View className=" rounded-md  w-[95%] bg-green-600">
+              <Text className="p-2 text-white text-[20px] ">
+                Agregar promovidos
+              </Text>
             </View>
 
-            <TouchableOpacity
-              className="bg-blue-500 p-2 rounded-md border-[2px] border-gray-200"
-              value=""
-              onPress={pickImage}
-            >
-              <Text className="text-white">Select a image </Text>
-            </TouchableOpacity>
+            <View className=" mt-4 flex-row justify-between w-[90%] ">
+              <View className=" h-[240px] justify-between mr-3 ">
+                <View className="w-[160px] h-[200px] bg-slate-500 rounded-md overflow-hidden shadow-sm shadow-black">
+                  {image ? (
+                    <Image
+                      className="object-contain w-full h-full"
+                      source={{ uri: image }}
+                    />
+                  ) : (
+                    <></>
+                  )}
+                </View>
+
+                <TouchableOpacity
+                  className="bg-blue-500 p-2 rounded-md border-[2px] border-gray-200"
+                  value=""
+                  onPress={pickImage}
+                >
+                  <Text className="text-white">Select a image </Text>
+                </TouchableOpacity>
+              </View>
+
+              <View className="flex-1 ">
+
+                <View style={DefaultStyles.firstViewInput}>
+                  <Input
+                    placeholder="Nombre"
+                    onChangeText={handleChange('nombre')}
+                    onBlur={() => setFieldTouched('nombre')}
+                    value={values.nombre}
+                  />
+                  {touched.nombre && errors.nombre && (
+                    <Text style={DefaultStyles.inputText} >{errors.nombre}</Text>
+                  )}
+                </View>
+
+                <View style={DefaultStyles.viewInput}>
+                  <Input
+                    placeholder="Apellido paterno"
+                    onChangeText={handleChange('paterno')}
+                    onBlur={() => setFieldTouched('paterno')}
+                    value={values.paterno}
+                  />
+                  {touched.paterno && errors.paterno && (
+                    <Text style={DefaultStyles.inputText} >{errors.paterno}</Text>
+                  )}
+                </View>
+
+                <View style={DefaultStyles.viewInput}>
+                  <Input
+                    placeholder="Apellido materno"
+                    onChangeText={handleChange('materno')}
+                    onBlur={() => setFieldTouched('materno')}
+                    value={values.materno}
+                  />
+                  {touched.materno && errors.materno && (
+                    <Text style={DefaultStyles.inputText} >{errors.materno}</Text>
+                  )}
+                </View>
+
+                <View style={DefaultStyles.viewInput}>
+                  <Input
+                    placeholder="Número celular"
+                    keyboardType="numeric"
+                    onChangeText={handleChange('celular')}
+                    onBlur={() => setFieldTouched('celular')}
+                    value={values.celular}
+                    maxLength={10}
+                  />
+                  {touched.celular && errors.celular && (
+                    <Text style={DefaultStyles.inputText} >{errors.celular}</Text>
+                  )}
+                </View>
+
+              </View>
+            </View>
+
+            <View className="w-[90%] items-center">
+
+              <View style={DefaultStyles.viewInput}>
+                <ComboBox
+                  showSearch={false}
+                  items={sexosList}
+                  placeholder={"Sexo"}
+                  onChange={item => {
+                    const value = item.value.toString();
+                    handleChange("sexo")(value)
+                  }
+                  }
+                  onBlur={() => setFieldTouched('sexo')}
+
+                />
+                {touched.sexo && errors.sexo && (
+                  <Text style={DefaultStyles.inputText} >{errors.sexo}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Folio"
+                  onChangeText={handleChange('folio')}
+                  onBlur={() => setFieldTouched('folio')}
+                  value={values.folio}
+                />
+                {touched.folio && errors.folio && (
+                  <Text style={DefaultStyles.inputText} >{errors.folio}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="INE o Clave de elector"
+                  onChangeText={handleChange('ine')}
+                  onBlur={() => setFieldTouched('ine')}
+                  value={values.ine}
+                />
+                {touched.ine && errors.ine && (
+                  <Text style={DefaultStyles.inputText} >{errors.ine}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Seccion"
+                  onChangeText={handleChange('seccion')}
+                  onBlur={() => setFieldTouched('seccion')}
+                  value={values.seccion}
+                  keyboardType={"numeric"}
+                />
+                {touched.seccion && errors.seccion && (
+                  <Text style={DefaultStyles.inputText} >{errors.seccion}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  autoCapitalize={'characters'}
+                  placeholder="CURP"
+                  maxLength={18}
+                  onChangeText={handleChange('curp')}
+                  onBlur={() => setFieldTouched('curp')}
+                  value={values.curp}
+                />
+                {touched.curp && errors.curp && (
+                  <Text style={DefaultStyles.inputText} >{errors.curp}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <ComboBox
+                  items={estructurasList}
+                  placeholder={"Estructura"}
+                  onChange={item => {
+                    const value = item.value.toString();
+                    handleChange("estructura")(value)
+                  }
+                  }
+                  onBlur={() => setFieldTouched('estructura')}
+                />
+                {touched.estructura && errors.estructura && (
+                  <Text style={DefaultStyles.inputText} >{errors.estructura}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Cargo"
+                  onChangeText={handleChange('cargo')}
+                  onBlur={() => setFieldTouched('cargo')}
+                  value={values.cargo}
+                />
+                {touched.cargo && errors.cargo && (
+                  <Text style={DefaultStyles.inputText} >{errors.cargo}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Ocupacion"
+                  onChangeText={handleChange('ocupacion')}
+                  onBlur={() => setFieldTouched('ocupacion')}
+                  value={values.ocupacion}
+                />
+                {touched.ocupacion && errors.ocupacion && (
+                  <Text style={DefaultStyles.inputText} >{errors.ocupacion}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <ComboBox
+                  items={municipiosList}
+                  placeholder={"Municipio"}
+                  onChange={item => {
+                    getLocalidadByMunicipio(item.value)
+                    const value = item.value.toString();
+                    handleChange("municipio")(value)
+                  }
+                  }
+                  onBlur={() => setFieldTouched('municipio')}
+                />
+                {touched.municipio && errors.municipio && (
+                  <Text style={DefaultStyles.inputText} >{errors.municipio}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <ComboBox
+                  items={localidadesList}
+                  placeholder={"Localidad"}
+                  onChange={item => {
+                    const value = item.value.toString();
+                    handleChange("localidad")(value)
+                  }
+                  }
+                  onBlur={() => setFieldTouched('localidad')}
+                />
+                {touched.localidad && errors.localidad && (
+                  <Text style={DefaultStyles.inputText} >{errors.localidad}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Colonia"
+                  onChangeText={handleChange('colonia')}
+                  onBlur={() => setFieldTouched('colonia')}
+                  value={values.colonia}
+                />
+                {touched.colonia && errors.colonia && (
+                  <Text style={DefaultStyles.inputText} >{errors.colonia}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Dirección"
+                  multiline={true}
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                  onChangeText={handleChange('direccion')}
+                  onBlur={() => setFieldTouched('direccion')}
+                  value={values.direccion}
+                />
+                {touched.direccion && errors.direccion && (
+                  <Text style={DefaultStyles.inputText} >{errors.direccion}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Número exterior"
+                  keyboardType="numeric"
+                  onChangeText={handleChange('exterior')}
+                  onBlur={() => setFieldTouched('exterior')}
+                  value={values.exterior}
+                />
+                {touched.exterior && errors.exterior && (
+                  <Text style={DefaultStyles.inputText} >{errors.exterior}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Código postal"
+                  keyboardType="numeric"
+                  maxLength={5}
+                  onChangeText={handleChange('cp')}
+                  onBlur={() => setFieldTouched('cp')}
+                  value={values.cp}
+                />
+                {touched.cp && errors.cp && (
+                  <Text style={DefaultStyles.inputText} >{errors.cp}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Correo electrónico"
+                  onChangeText={handleChange('correo')}
+                  onBlur={() => setFieldTouched('correo')}
+                  value={values.correo}
+                />
+                {touched.correo && errors.correo && (
+                  <Text style={DefaultStyles.inputText} >{errors.correo}</Text>
+                )}
+              </View>
+
+              { /*<View className="flex-row items-center justify-center bg-">
+                <Text className="text-[18px]">
+                  {isEnabled ? "Activo" : "Inactivo"}
+                </Text>
+                <Switch
+                  trackColor={{ false: "#bbbbbb", true: "#3cbe73" }}
+                  thumbColor={isEnabled ? "#ffffff" : "#999999"}
+                  ios_backgroundColor="#3e3e3e"
+                  onValueChange={toggleSwitch}
+                  value={isEnabled}
+                />
+                </View>*/}
+              <View style={DefaultStyles.viewInput}>
+                <Switch onPress={value => {
+                    const activo = value.toString();
+                    handleChange("activo")(activo)
+                  }} />
+              </View>
+
+
+
+              <TouchableOpacity
+                style={DefaultStyles.submitInput}
+                onPress={handleSubmit} //hacer el POST ahí
+                className="py-4 m-auto bg-blue-500 rounded-md px-14"
+              >
+                <Text className="font-semibold text-[24px] text-white">
+                  Agregar
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-
-          <View className="flex-1 ">
-
-            <Input
-              styles={DefaultStyles.firstInput}
-              placeholder="Nombre"
-              onChangeText={handleNombreChange}
-            />
-            <Input
-              placeholder="Apellido paterno"
-              onChangeText={handlePaternoChange}
-            />
-
-            <Input
-              placeholder="Apellido materno"
-              onChangeText={handleMaternoChange}
-            />
-            <Input
-              placeholder="Número celular"
-              keyboardType="numeric"
-              onChangeText={handleCelularChange}
-            />
-
-          </View>
-        </View>
-
-        <View className="w-[90%]">
-
-          <ComboBox
-            showSearch={false}
-            value={sexo}
-            items={sexosList}
-            placeholder={"Sexo"}
-            onChange={item => { handleSexoChange(item.value) }}
-          />
-          <Input
-            placeholder="Folio"
-            onChangeText={handleFolioChange}
-          />
-          <Input
-            placeholder="INE o Clave de elector"
-            onChangeText={handleIneChange}
-          />
-          <Input
-            placeholder="Seccion"
-            onChangeText={handleSeccionChange}
-          />
-          <Input
-            placeholder="CURP"
-            maxLength={18}
-            onChangeText={handleCurpChange}
-          />
-          <ComboBox
-            value={estructura}
-            items={estructurasList}
-            placeholder={"Estructura"}
-            onChange={item => { handleEstrucuturaChange(item.value) }}
-          />
-          <Input
-            placeholder="Cargo"
-            onChangeText={handleCargoChange}
-          />
-          <Input
-            placeholder="Ocupacion"
-            onChangeText={handleOcupacionChange}
-          />
-          <ComboBox
-            value={municipio}
-            items={municipiosList}
-            placeholder={"Municipio"}
-            onChange={item => { handleMunicipioChange(item.value) }}
-          />
-          <ComboBox
-            value={localidad}
-            items={localidadesList}
-            placeholder={"Localidad"}
-            onChange={item => { handleLocalidadChange(item.value) }}
-          />
-          <Input
-            placeholder="Colonia"
-            onChangeText={handleColoniaChange}
-          />
-          <Input
-            placeholder="Dirección"
-            multiline={true}
-            numberOfLines={4}
-            textAlignVertical="top"
-            onChangeText={handleDireccionChange}
-          />
-          <Input
-            placeholder="Número exterior"
-            keyboardType="numeric"
-            onChangeText={handleExteriorChange}
-          />
-          <Input
-            placeholder="Código postal"
-            keyboardType="numeric"
-            maxLength={5}
-            onChangeText={handleCpChange}
-          />
-          <Input
-            placeholder="Correo electrónico"
-            onChangeText={handleCorreoChange}
-          />
-
-          <View className="flex-row items-center justify-center bg-">
-            <Text className="text-[18px]">
-              {isEnabled ? "Activo" : "Inactivo"}
-            </Text>
-            <Switch
-              trackColor={{ false: "#bbbbbb", true: "#3cbe73" }}
-              thumbColor={isEnabled ? "#ffffff" : "#999999"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
-            />
-          </View>
-
-          <TouchableOpacity
-            style={DefaultStyles.mt_8}
-            onPress={handleSubmit} //hacer el POST ahí
-            className="py-4 m-auto bg-blue-500 rounded-md px-14"
-          >
-            <Text className="font-semibold text-[24px] text-white">
-              Agregar
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </ScrollView>
+        )}
+      </Formik>
+    </ScrollView >
   );
 };
 

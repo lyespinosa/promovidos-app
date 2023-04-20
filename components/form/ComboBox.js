@@ -2,13 +2,14 @@ import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import DefaultStyles from '../../styles/DefaultStyles';
 
-function ComboBox({ placeholder, items, onChange, value, showSearch = true }) {
+function ComboBox({ placeholder, items, onChange, value, showSearch = true, onBlur, onFocus }) {
 
     const [isFocus, setIsFocus] = useState(false)
 
     return (
         <Dropdown
-            style={[DefaultStyles.input, isFocus && DefaultStyles.borderColor]}
+            className="border border-gray-600 focus:border-blue-600"
+            style={[DefaultStyles.input]}
             data={items} //los items que se mostrarán
             search={showSearch}
             maxHeight={200}
@@ -18,8 +19,8 @@ function ComboBox({ placeholder, items, onChange, value, showSearch = true }) {
             placeholder={placeholder}
             placeholderStyle={DefaultStyles.placeHolderColor}
             searchPlaceholder="Search..."
-            onFocus={() => setIsFocus(true)}
-            onBlur={() => setIsFocus(false)}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onChange={onChange}
         />
     )

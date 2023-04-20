@@ -2,6 +2,8 @@ import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import Navbar from "../components/Navbar";
+import { BASE_URL } from '@env'
+
 import { Storage } from "expo-storage";
 
 const ViewAll = () => {
@@ -10,7 +12,7 @@ const ViewAll = () => {
 
   const getUser = async (user) => {
     console.log(user.id)
-    fetch("http://192.168.1.131:8000/api/promotors/listar/"+user.id, {
+    fetch(`${BASE_URL}promotors/listar/` + user.id, {
       headers: {
         'Content-Type': 'application/json',
       }
@@ -19,15 +21,15 @@ const ViewAll = () => {
       .then(data => {
         setPromotores(data)
       })
-      .catch(err =>{
+      .catch(err => {
         console.log('error: ' + err)
       })
   };
 
-  useEffect( () => {
-    const data = async () =>{
+  useEffect(() => {
+    const data = async () => {
 
-      getUser(JSON.parse(await Storage.getItem({ key: `user-data` }))) ;
+      getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
       console.log(JSON.parse(await Storage.getItem({ key: `user-data` })))
     }
     data()
