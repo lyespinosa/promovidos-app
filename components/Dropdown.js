@@ -53,7 +53,9 @@ const Dropdown = ({ data }) => {
                 <Text className="font-bold">Promovidos: </Text>----------
               </Text>
                 </TouchableOpacity>
-                <MyModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} 
+                <MyModal 
+                isModalOpen={isModalOpen} 
+                setIsModalOpen={setIsModalOpen} 
                 />
 
             </View>

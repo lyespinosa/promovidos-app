@@ -31,7 +31,6 @@ const StackViews = () => {
 
     return (
         <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
-            <MyModal></MyModal>
             <Tab.Navigator
 
                 initialRouteName="View"
