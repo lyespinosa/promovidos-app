@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import Navbar from "../components/Navbar";
-
+import {BASE_URL} from '@env'
 
 
 const ViewAll = () => {
@@ -12,7 +12,7 @@ const ViewAll = () => {
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
-    fetch("http://192.168.1.131:8000/api/promotors", {
+    fetch(`${BASE_URL}promotors`, {
       headers: {
         'Content-Type': 'application/json',
       }
