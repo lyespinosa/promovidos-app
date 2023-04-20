@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 
+import { background } from "../assets";
 import Input from "../components/TextInputExample";
 import { Triforce } from "../assets";
 import React, { useEffect, useLayoutEffect, useState } from "react";
@@ -32,7 +33,7 @@ const Login = () => {
   };
 
   const alert = () => {
-    console.log('Entro')
+    console.log("Entro");
     return (
       <AwesomeAlert
         show={true}
@@ -44,11 +45,10 @@ const Login = () => {
         showConfirmButton={true}
         confirmText="Yes, delete it"
         confirmButtonColor="#DD6B55"
-        onConfirmPressed={() => navigation.navigate("Tabs")
-        }
+        onConfirmPressed={() => navigation.navigate("Tabs")}
       />
-    )
-  }
+    );
+  };
 
   const handleSubmit = async () => {
     try {
@@ -71,31 +71,58 @@ const Login = () => {
   }, []);
 
   return (
-    <ScrollView className="bg-white">
+    <>
+      <ScrollView className="bg-white">
+        <Image
+          source={background} // Ruta de la imagen de fondo
+          className="absolute top-0 left-0 right-0 bottom-0 w-full"
+        />
+        <KeyboardAwareScrollView>
+          <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center mt-12">
+            <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
+              <View className="absolute bottom-8 rotate-[28deg]">
+                <Image className=" object-scale-down " source={Triforce} />
+              </View>
+              <View className="items-center w-full h-full">
+                <View className="bg mt-6 rounded-3xl px-10  bg-[#dbc25f] justify-center py-2 border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
+                  <Text className=" text-3xl font-bold text-stone-50 ali">
+                    Ingrese sus datos
+                  </Text>
+                </View>
 
-      <KeyboardAwareScrollView>
-        <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center">
+                <Input
+                  classname={"mt-24"}
+                  secure={false}
+                  placeholder={"Usuario"}
+                  password={false}
+                  change={handleEmailChange}
+                />
+                <Input
+                  classname={"mt-4"}
+                  secure={true}
+                  placeholder={"Contraseña"}
+                  password={true}
+                  change={handlePasswordChange}
+                />
+                <TouchableOpacity
+                  onPressIn={() => navigation.navigate("Tabs")}
+                  className="bg-[#435f9a] py-4 px-20 border-b-4 border-[#354b7a] rounded mb-20 items-center mt-10"
+                >
+                  <Text className="font-bold text-base text-stone-50">
+                    Iniciar sesion
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
-          <View className="h-16 w-30 ">
-            <Image className="object-scale-down " source={Triforce} />
+              <StatusBar style="auto" />
+            </View>
           </View>
-          <View className="mb-[20%]">
-            <Text className="mb-4 text-4xl font-bold ">Ingrese sus datos</Text>
-
-            <Input secure={false} placeholder={"Usuario"} password={false} change={handleEmailChange} />
-            <Input secure={true} placeholder={"Contraseña"} password={true} change={handlePasswordChange} />
-            <TouchableOpacity
-              onPressIn={() => navigation.navigate("Tabs")}
-              className="bg-[#435f9a] py-4 px-16 border-b-4 border-[#354b7a] rounded mb-20 items-center"
-            >
-              <Text className="font-bold text-stone-50">Iniciar sesion</Text>
-            </TouchableOpacity>
-            <StatusBar style="auto" />
-          </View>
-        </View>
-      </KeyboardAwareScrollView>
-    </ScrollView>
+        </KeyboardAwareScrollView>
+      </ScrollView>
+    </>
   );
 };
 
 export default Login;
+
+//border-[#E8E8E8] border-x-2 rounded-2xl shadow shadow-[#E8E8E8]

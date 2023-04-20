@@ -4,7 +4,7 @@ import { TextInput, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const TextInputExample = ({ secure, password, placeholder, change}) => {
+const TextInputExample = ({ secure, password, placeholder, change, classname}) => {
     
     const [focus, setFocus] = useState(false);
 
@@ -13,9 +13,9 @@ const TextInputExample = ({ secure, password, placeholder, change}) => {
 
   return (
     
-    <View className="font-bold p-x mb-4 w-80 bg-white rounded flex-row items-center border-[1px] border-gray-400  focus:shadow-md" >
+    <View className={` p-x mb-4 w-80 bg-white rounded-full flex-row items-center border border-gray-400  focus:shadow-md focus:border-[#354b7a] ${classname} `} >
     <TextInput
-        className="flex-1 px-3 py-1 text-xl text-gray"
+        className={`flex-1 px-3 py-1 text-xl  text-gray-600 `}
         onFocus={() => setFocus(true)}
         onBlur={() => setFocus(false)}
         onChangeText={change}
