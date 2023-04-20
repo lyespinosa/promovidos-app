@@ -15,13 +15,16 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scrollview";
 import axios from "axios";
+import { Storage } from "expo-storage";
 import AwesomeAlert from "react-native-awesome-alerts";
 
 const Login = () => {
   const navigation = useNavigation();
 
+  const tokens = "";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [token, setToken] = useState(null);
 
   const handleEmailChange = (email) => {
     setEmail(email);
@@ -33,7 +36,6 @@ const Login = () => {
   };
 
   const alert = () => {
-    console.log("Entro");
     return (
       <AwesomeAlert
         show={true}
@@ -50,18 +52,50 @@ const Login = () => {
     );
   };
 
+  const saveData = async (data) => {
+    try {
+        await Storage.setItem({
+        key: `user-data`,
+        value: JSON.stringify(data)
+      })
+      navigation.navigate("Tabs")
+    } catch (error) {
+      console.error('Error al guardar datos en AsyncStorage:', error);
+    }
+  };
+
+  const getUser = async (token) => {
+    try {
+      const response = await axios.get("http://192.168.1.131:8000/api/user", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+      console.log(response.data)
+      saveData(response.data)
+    } catch (e) {
+      console.log("Failed to get data");
+    }
+  };
+
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post("http://192.168.1.131:8000/api/login", {
         email: email,
         password: password,
       });
-      console.log(response.data);
+      const data = response.data;
+      if (data.status == 1) {
+        console.log("Has iniciado");
+        getUser(data.msg)
+      } else {
+        console.log("Error al inicar");
+      }
     } catch (error) {
       console.error(error);
     }
-
-    alert();
   };
 
   useLayoutEffect(() => {
@@ -105,7 +139,7 @@ const Login = () => {
                   change={handlePasswordChange}
                 />
                 <TouchableOpacity
-                  onPressIn={() => navigation.navigate("Tabs")}
+                  onPressIn={handleSubmit}
                   className="bg-[#435f9a] py-4 px-20 border-b-4 border-[#354b7a] rounded mb-20 items-center mt-10"
                 >
                   <Text className="font-bold text-base text-stone-50">
@@ -124,5 +158,3 @@ const Login = () => {
 };
 
 export default Login;
-
-//border-[#E8E8E8] border-x-2 rounded-2xl shadow shadow-[#E8E8E8]
