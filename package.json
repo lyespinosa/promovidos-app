@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.18.1",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/native-stack": "^6.9.12",
@@ -17,10 +18,12 @@
     "expo-image-picker": "~14.1.1",
     "expo-status-bar": "~1.4.4",
     "formik": "^2.2.9",
+    "expo-storage": "^48.0.1",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-native": "0.71.6",
     "react-native-alert-notification": "^0.3.4",
+    "react-native-async-storage": "^0.0.1",
     "react-native-awesome-alerts": "^2.0.0",
     "react-native-dotenv": "^3.4.8",
     "react-native-dropdown-picker": "^5.4.6",

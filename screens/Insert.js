@@ -3,6 +3,9 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import { BASE_URL } from '@env'
+
 
 import axios from "axios";
 import { Formik } from "formik";
@@ -18,6 +21,8 @@ import { getList } from "../api/comboboxs/getList";
 import Alert from "../components/Alert";
 import Switch from "../components/form/Switch";
 
+import { Storage } from "expo-storage";
+
 
 const Insert = () => {
 
@@ -32,6 +37,7 @@ const Insert = () => {
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
+  const [user, setUser] = useState(127)
   const [image, setImage] = useState()
   const [sexosList, setSexosList] = useState([])
   const [municipiosList, setMunicipiosList] = useState([])
@@ -53,7 +59,11 @@ const Insert = () => {
 
   }, [])
 
+  const getUserId = async () => {
 
+    const id = setUser(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
+    return id;
+  }
 
   const [sexo, setSexo] = useState("");
   const [municipio, setMunicipio] = useState("")
@@ -73,9 +83,12 @@ const Insert = () => {
     try {
 
       const response = await axios.post(
-        "http://192.168.1.127:8000/api/promotors/create",
+        `${BASE_URL}promotors/create`,
         values
       );
+      console.log(response.data)
+      console.log(user)
+     
       setShowAlert(true)
     } catch (error) {
       console.log(error)
@@ -148,9 +161,10 @@ const Insert = () => {
           direccion: '',
           exterior: '',
           cp: '',
+          promotor: user,
           correo: '',
           activo: 0,
-          usuario: 1,
+          usuario: 5,
         }}
         validationSchema={SignupSchema}
         onSubmit={values => sendPromovido(values)}

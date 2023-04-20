@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity,Image,Button } from 'react-native';
 import { mostrar } from "../assets";
+import MyModal from './MyModal';
+
 
 //Icons
 import { FontAwesome } from '@expo/vector-icons';
@@ -11,6 +13,8 @@ const Dropdown = ({ data }) => {
   const handlePress = () => {
     setIsOpen(!isOpen);
   };
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <View className="my-2">
@@ -41,9 +45,20 @@ const Dropdown = ({ data }) => {
               <Text className="text-base text-gray-600">
                 <Text className="font-bold">Seccion: </Text>{data.seccion}
               </Text>
-              <Text className="text-base text-gray-600">
+              
+                <TouchableOpacity
+                onPress={() => setIsModalOpen(!isModalOpen)}
+                className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8] "
+                >
+                <Text className="text-base text-gray-600">
                 <Text className="font-bold">Promovidos: </Text>----------
               </Text>
+                </TouchableOpacity>
+                <MyModal 
+                isModalOpen={isModalOpen} 
+                setIsModalOpen={setIsModalOpen} 
+                />
+
             </View>
           )}
         </View>
