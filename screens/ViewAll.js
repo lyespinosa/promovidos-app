@@ -30,7 +30,6 @@ const ViewAll = () => {
   let focusListener = null
   useEffect(() => {
     focusListener = navigation.addListener('focus', () => {
-        console.log('Updating because screen entered on focus .....');
         const data = async () => {
 
           getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));

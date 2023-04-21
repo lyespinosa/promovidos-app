@@ -61,13 +61,15 @@ const Insert = () => {
 
   const getUserId = async () => {
 
-    return getUserData(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
+    const id = setUser(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
+    return id;
   }
 
   const [sexo, setSexo] = useState("");
   const [municipio, setMunicipio] = useState("")
   const [localidad, setLocalidad] = useState("")
   const [estructura, setEstructura] = useState("")
+  const [imageName, setImageName] = useState('')
 
 
   const getLocalidadByMunicipio = (municipio) => {
@@ -94,9 +96,7 @@ const Insert = () => {
     }
   };
 
-  const getUserData = async (data) => {
-    return data.id;
-  }
+
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -105,34 +105,32 @@ const Insert = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
-
-
+    }); 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
 
   const SignupSchema = Yup.object().shape({
-    nombre: Yup.string().required('Required'),
-    paterno: Yup.string().required('Required'),
-    materno: Yup.string().required('Required'),
-    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
-    sexo: Yup.number().integer("solo id").required('Required'),
-    folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
-    seccion: Yup.number().required('Required'),
-    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
-    estructura: Yup.number().integer("solo id").required('Required'),
-    cargo: Yup.string().required('Required'),
-    ocupacion: Yup.string().required('Required'),
-    municipio: Yup.number().integer("solo id").required('Required'),
-    localidad: Yup.number().integer("solo id").required('Required'),
-    colonia: Yup.string().required('Required'),
-    direccion: Yup.string().required('Required'),
-    exterior: Yup.string().required('Required'),
-    cp: Yup.string().required('Required'),
-    correo: Yup.string().email('Ingresa un correo "@"').required('Required'),
+    nombre: Yup.string(),
+    paterno: Yup.string(),
+    materno: Yup.string(),
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números'),
+    sexo: Yup.number().integer("solo id"),
+    folio: Yup.string(),
+    ine: Yup.string(),
+    seccion: Yup.number(),
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos'),
+    estructura: Yup.number().integer("solo id"),
+    cargo: Yup.string(),
+    ocupacion: Yup.string(),
+    municipio: Yup.number().integer("solo id"),
+    localidad: Yup.number().integer("solo id"),
+    colonia: Yup.string(),
+    direccion: Yup.string(),
+    exterior: Yup.string(),
+    cp: Yup.string(),
+    correo: Yup.string().email('Ingresa un correo "@"'),
     activo: Yup.boolean()
   })
 
@@ -143,6 +141,7 @@ const Insert = () => {
 
       <Formik
         initialValues={{
+          imagen: imageName,
           nombre: '',
           paterno: '',
           materno: '',
@@ -162,7 +161,7 @@ const Insert = () => {
           direccion: '',
           exterior: '',
           cp: '',
-          promotor: getUserId,
+          promotor: user,
           correo: '',
           activo: 0,
           usuario: 5,
