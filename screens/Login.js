@@ -100,14 +100,14 @@ const Login = () => {
 
   return (
     <>
-      <ScrollView className="bg-white">
+      <ScrollView className="bg-yellow-50">
         <Image
           source={background} // Ruta de la imagen de fondo
           className="absolute top-0 bottom-0 left-0 right-0 w-full"
         />
         <KeyboardAwareScrollView>
           <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center mt-12">
-            <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
+            <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative border-[#E8E8E8] border-x-4 shadow-2xl shadow-[#E8E8E8]">
               <View className="absolute bottom-8 rotate-[28deg]">
                 <Image className="object-scale-down " source={Triforce} />
               </View>
@@ -134,9 +134,9 @@ const Login = () => {
                 />
                 <TouchableOpacity
                   onPressIn={handleSubmit}
-                  className="bg-[#435f9a] py-4 px-20 border-b-4 border-[#354b7a] rounded mb-20 items-center mt-10"
+                  className="bg-[#435f9a] py-3 px-14 border-x-4 border-[#354b7a] rounded-3xl mb-20 items-center mt-10"
                 >
-                  <Text className="text-base font-bold text-stone-50">
+                  <Text className="font-extrabold text-lg text-stone-50">
                     Iniciar sesion
                   </Text>
                 </TouchableOpacity>

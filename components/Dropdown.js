@@ -20,7 +20,7 @@ const Dropdown = ({ data }) => {
     <View className="my-2">
       <TouchableOpacity
         onPress={handlePress}
-        className="bg-white border border-gray-400 rounded shadow-md "
+        className="bg-white border-2 border-[#E8E8E8] rounded shadow-md "
       >
         <View className="px-4 py-2 pb-4 ">
           <Text className="text-base text-gray-600">
@@ -48,7 +48,7 @@ const Dropdown = ({ data }) => {
               
                 <TouchableOpacity
                 onPress={() => setIsModalOpen(!isModalOpen)}
-                className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8] "
+                className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 "
                 >
                 <Text className="text-base text-gray-600">
                 <Text className="font-bold">Promovidos: </Text>----------
