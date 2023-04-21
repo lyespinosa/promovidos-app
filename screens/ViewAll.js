@@ -31,9 +31,7 @@ const ViewAll = () => {
   useEffect(() => {
     focusListener = navigation.addListener('focus', () => {
         const data = async () => {
-
           getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
-          console.log(JSON.parse(await Storage.getItem({ key: `user-data` })))
         }
         data()
     });

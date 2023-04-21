@@ -66,7 +66,6 @@ const Login = () => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log(response.data)
       saveData(response.data)
     } catch (e) {
       console.log("Failed to get data");
@@ -82,7 +81,6 @@ const Login = () => {
       });
       const data = response.data;
       if (data.status == 1) {
-        console.log("Has iniciado");
         getUser(data.msg)
       } else {
         console.log("Error al inicar");
