@@ -21,7 +21,8 @@ const DefaultStyles = {
     blurBorderColor: s`border-gray-600`,
     errorBorderColor: s`border-red-400`,
     swithBorder:s`w-36`,
-    submitInput:s`${input_mt}`
+    submitInput:s`${input_mt}`,
+    disable:s`bg-blue-200`
 
 }
 

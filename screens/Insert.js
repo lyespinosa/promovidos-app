@@ -34,6 +34,7 @@ const Insert = () => {
     });
   }, []);
 
+  const [userId, setUserId] = useState()
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
@@ -56,14 +57,15 @@ const Insert = () => {
     getList("municipio").then(data => {
       setMunicipiosList(data)
     })
+    const data = async () => {
+      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
+    }
+    data()
+    
 
   }, [])
 
-  const getUserId = async () => {
-
-    const id = setUser(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
-    return id;
-  }
+  
 
   const [sexo, setSexo] = useState("");
   const [municipio, setMunicipio] = useState("")
@@ -112,26 +114,31 @@ const Insert = () => {
   };
 
   const SignupSchema = Yup.object().shape({
-    nombre: Yup.string(),
-    paterno: Yup.string(),
-    materno: Yup.string(),
-    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números'),
-    sexo: Yup.number().integer("solo id"),
-    folio: Yup.string(),
-    ine: Yup.string(),
-    seccion: Yup.number(),
-    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos'),
-    estructura: Yup.number().integer("solo id"),
-    cargo: Yup.string(),
-    ocupacion: Yup.string(),
-    municipio: Yup.number().integer("solo id"),
-    localidad: Yup.number().integer("solo id"),
-    colonia: Yup.string(),
-    direccion: Yup.string(),
-    exterior: Yup.string(),
-    cp: Yup.string(),
-    correo: Yup.string().email('Ingresa un correo "@"'),
-    activo: Yup.boolean()
+
+    nombre: Yup.string().required('Required'),
+    paterno: Yup.string().required('Required'),
+    materno: Yup.string().required('Required'),
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
+    sexo: Yup.number().integer("solo id").required('Required'),
+    folio: Yup.string().required('Required'),
+    ine: Yup.string().required('Required'),
+    seccion: Yup.number().required('Required'),
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
+    estructura: Yup.number().integer("solo id").required('Required'),
+    cargo: Yup.string().required('Required'),
+    ocupacion: Yup.string().required('Required'),
+    municipio: Yup.number().integer("solo id").required('Required'),
+    localidad: Yup.number().integer("solo id").required('Required'),
+    colonia: Yup.string().required('Required'),
+    direccion: Yup.string().required('Required'),
+    exterior: Yup.string().required('Required'),
+    cp: Yup.string().required('Required'),
+    promotor: Yup.number().integer("solo id").required('Required'),
+    correo: Yup.string().email('Ingresa un correo "@"').required('Required'),
+    activo: Yup.boolean(),
+    email: Yup.string().email('Ingresa un correo "@').required('required'),
+    password: Yup.string().min(6,'Al menos 6 digitos').required('required'),
+    confirmPassword: Yup.string().min(6,'Almenos 6 digitos').oneOf([Yup.ref('password')], 'Las contraseñas no coinciden').required('required')
   })
 
   const [showAlert, setShowAlert] = useState(false)
@@ -161,10 +168,12 @@ const Insert = () => {
           direccion: '',
           exterior: '',
           cp: '',
-          promotor: user,
+          promotor: null,
           correo: '',
           activo: 0,
           usuario: 5,
+          email: '',
+          password: ''
         }}
         validationSchema={SignupSchema}
         onSubmit={values => sendPromovido(values)}
@@ -172,6 +181,7 @@ const Insert = () => {
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
           <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
             <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={showAlert} onConfirmPressed={() => setShowAlert(false)} />
+            
             <View className=" rounded-md  w-[95%] bg-green-600">
               <Text className="p-2 text-white text-[20px] ">
                 Agregar promovidos
@@ -331,8 +341,10 @@ const Insert = () => {
                   items={estructurasList}
                   placeholder={"Estructura"}
                   onChange={item => {
+                    console.log(userId)
                     const value = item.value.toString();
                     handleChange("estructura")(value)
+                    handleChange("promotor")(userId)
                   }
                   }
                   onBlur={() => setFieldTouched('estructura')}
@@ -465,6 +477,32 @@ const Insert = () => {
                 )}
               </View>
 
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Contraseña"
+                  onChangeText={handleChange('password')}
+                  onBlur={() => setFieldTouched('password')}
+                  value={values.password}
+                  secureTextEntry={true}
+                />
+                {touched.password && errors.password && (
+                  <Text style={DefaultStyles.inputText} >{errors.password}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Confirmar contraseña"
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={() => setFieldTouched('confirmPassword')}
+                  value={values.confirmPassword}
+                  secureTextEntry={true}
+                />
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={DefaultStyles.inputText} >{errors.confirmPassword}</Text>
+                )}
+              </View>
+
               { /*<View className="flex-row items-center justify-center bg-">
                 <Text className="text-[18px]">
                   {isEnabled ? "Activo" : "Inactivo"}
@@ -487,7 +525,9 @@ const Insert = () => {
 
 
               <TouchableOpacity
-                style={DefaultStyles.submitInput}
+                activeOpacity={0.4}
+                disabled={!isValid}
+                style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable]}
                 onPress={handleSubmit} //hacer el POST ahí
                 className="py-4 m-auto bg-blue-500 rounded-md px-14"
               >
