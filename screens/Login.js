@@ -56,6 +56,7 @@ const Login = () => {
           Authorization: "Bearer " + token,
         },
       });
+
       console.log(response.data)
       setIsCorrect(false)
       saveData(response.data)
@@ -74,6 +75,7 @@ const Login = () => {
       });
       const data = response.data;
       if (data.status == 1) {
+
         setIsCorrect(true)
         console.log("Has iniciado");
         setIsLoading(false)

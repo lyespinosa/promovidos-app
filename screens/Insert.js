@@ -71,6 +71,7 @@ const Insert = () => {
   const [municipio, setMunicipio] = useState("")
   const [localidad, setLocalidad] = useState("")
   const [estructura, setEstructura] = useState("")
+  const [imageName, setImageName] = useState('')
 
 
   const getLocalidadByMunicipio = (municipio) => {
@@ -106,15 +107,14 @@ const Insert = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
-
-
+    }); 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
 
   const SignupSchema = Yup.object().shape({
+
     nombre: Yup.string().required('Required'),
     paterno: Yup.string().required('Required'),
     materno: Yup.string().required('Required'),
@@ -148,6 +148,7 @@ const Insert = () => {
 
       <Formik
         initialValues={{
+          imagen: imageName,
           nombre: '',
           paterno: '',
           materno: '',
