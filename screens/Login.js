@@ -11,9 +11,14 @@ import axios from "axios";
 import { Storage } from "expo-storage";
 import { BASE_URL } from '@env'
 import AwesomeAlert from "react-native-awesome-alerts";
+import Alert from "../components/Alert";
 
 const Login = () => {
   const navigation = useNavigation();
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [isWrong, setIsWrong] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
 
   const tokens = "";
   const [email, setEmail] = useState("");
@@ -29,26 +34,9 @@ const Login = () => {
     setPassword(password);
   };
 
-  const alert = () => {
-    return (
-      <AwesomeAlert
-        show={true}
-        showProgress={false}
-        title="AwesomeAlert"
-        message="I have a message for you!"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showConfirmButton={true}
-        confirmText="Yes, delete it"
-        confirmButtonColor="#DD6B55"
-        onConfirmPressed={() => navigation.navigate("Tabs")}
-      />
-    );
-  };
-
   const saveData = async (data) => {
     try {
-        await Storage.setItem({
+      await Storage.setItem({
         key: `user-data`,
         value: JSON.stringify(data)
       })
@@ -59,7 +47,9 @@ const Login = () => {
   };
 
   const getUser = async (token) => {
+    
     try {
+      
       const response = await axios.get(`${BASE_URL}user`, {
         headers: {
           "Content-Type": "application/json",
@@ -67,6 +57,7 @@ const Login = () => {
         },
       });
       console.log(response.data)
+      setIsCorrect(false)
       saveData(response.data)
     } catch (e) {
       console.log("Failed to get data");
@@ -75,6 +66,7 @@ const Login = () => {
 
 
   const handleSubmit = async () => {
+    setIsLoading(true)
     try {
       const response = await axios.post(`${BASE_URL}login`, {
         email: email,
@@ -82,14 +74,19 @@ const Login = () => {
       });
       const data = response.data;
       if (data.status == 1) {
+        setIsCorrect(true)
         console.log("Has iniciado");
+        setIsLoading(false)
         getUser(data.msg)
       } else {
+        setIsWrong(true)
         console.log("Error al inicar");
       }
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false)
+   
   };
 
   useLayoutEffect(() => {
@@ -100,7 +97,12 @@ const Login = () => {
 
   return (
     <>
-      <ScrollView className="bg-yellow-50">
+
+      <ScrollView className="bg-white">
+        <Alert button={false} show={isLoading} onConfirmPressed={() => setIsLoading(false)} showProgress={true} />
+        <Alert buttom={false} text={"Sesion iniciada"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
+        <Alert text={"Usuario incorrecto"} buttonText={"Aceptar"} show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
+
         <Image
           source={background} // Ruta de la imagen de fondo
           className="absolute top-0 bottom-0 left-0 right-0 w-full"
@@ -113,7 +115,7 @@ const Login = () => {
               </View>
               <View className="items-center w-full h-full">
                 <View className="bg mt-6 rounded-3xl px-10  bg-[#dbc25f] justify-center py-2 border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
-                  <Text className="text-3xl font-bold  text-stone-50 ali">
+                  <Text className="text-3xl font-bold text-stone-50 ali">
                     Ingrese sus datos
                   </Text>
                 </View>

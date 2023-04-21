@@ -19,6 +19,7 @@ const Dropdown = ({ data }) => {
   return (
     <View className="my-2">
       <TouchableOpacity
+        activeOpacity={1}
         onPress={handlePress}
         className="bg-white border-2 border-[#E8E8E8] rounded shadow-md "
       >
@@ -47,6 +48,7 @@ const Dropdown = ({ data }) => {
               </Text>
               
                 <TouchableOpacity
+                activeOpacity={1}
                 onPress={() => setIsModalOpen(!isModalOpen)}
                 className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 "
                 >
@@ -63,7 +65,7 @@ const Dropdown = ({ data }) => {
           )}
         </View>
         <View className="h-10 justify-center py-1 items-center bg-[#435f9a] border-b-4 border-[#354b7a] rounded">
-          <FontAwesome name="arrow-down" size={20} color="white" style={{transform: [{rotate: '180deg'}]}} />
+          <FontAwesome name="arrow-down" size={20} color="white" style={ isOpen && {transform: [{rotate: '180deg'}]}} />
         </View>
       </TouchableOpacity>
     </View>
