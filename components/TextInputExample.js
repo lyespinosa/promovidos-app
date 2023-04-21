@@ -13,7 +13,7 @@ const TextInputExample = ({ secure, password, placeholder, change, classname}) =
 
   return (
     
-    <View className={` p-x mb-4 w-80 bg-white rounded-full flex-row items-center border border-gray-400  focus:shadow-md focus:border-[#354b7a] ${classname} `} >
+    <View className={` p-x mb-4 w-80 bg-white rounded-full flex-row items-center border-2 border-gray-400  focus:shadow-md focus:border-[#354b7a] ${classname} `} >
     <TextInput
         className={`flex-1 px-3 py-1 text-xl  text-gray-600 `}
         onFocus={() => setFocus(true)}
