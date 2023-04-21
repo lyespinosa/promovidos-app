@@ -61,8 +61,7 @@ const Insert = () => {
 
   const getUserId = async () => {
 
-    const id = setUser(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
-    return id;
+    return getUserData(JSON.parse(await Storage.getItem({ key: `user-data` })).id);
   }
 
   const [sexo, setSexo] = useState("");
@@ -95,7 +94,9 @@ const Insert = () => {
     }
   };
 
-
+  const getUserData = async (data) => {
+    return data.id;
+  }
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -161,7 +162,7 @@ const Insert = () => {
           direccion: '',
           exterior: '',
           cp: '',
-          promotor: user,
+          promotor: getUserId,
           correo: '',
           activo: 0,
           usuario: 5,

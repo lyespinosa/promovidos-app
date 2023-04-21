@@ -3,7 +3,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import Navbar from "../components/Navbar";
 import { BASE_URL } from '@env'
-
+import { useNavigation } from '@react-navigation/native';
 import { Storage } from "expo-storage";
 
 const ViewAll = () => {
@@ -26,13 +26,21 @@ const ViewAll = () => {
       })
   };
 
+  const navigation = useNavigation();
+  let focusListener = null
   useEffect(() => {
-    const data = async () => {
+    focusListener = navigation.addListener('focus', () => {
+        console.log('Updating because screen entered on focus .....');
+        const data = async () => {
 
-      getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
-      console.log(JSON.parse(await Storage.getItem({ key: `user-data` })))
-    }
-    data()
+          getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
+          console.log(JSON.parse(await Storage.getItem({ key: `user-data` })))
+        }
+        data()
+    });
+    return function cleanUp() {
+        focusListener.remove();
+    };
   }, []);
 
   return (
