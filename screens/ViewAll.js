@@ -12,7 +12,7 @@ const ViewAll = () => {
 
   const getUser = async (user) => {
     console.log(user.id)
-    fetch(`${BASE_URL}promotors/listar/` + user.id, {
+    fetch(`http://192.168.100.55:8000/api/promotors/listar/` + user.id, {
       headers: {
         'Content-Type': 'application/json',
       }

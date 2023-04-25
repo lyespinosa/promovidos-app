@@ -34,11 +34,13 @@ const Insert = () => {
     });
   }, []);
 
-  const [userId, setUserId] = useState()
+  const [isCorrect, setIsCorrect] = useState(false)
+  const [isWrong, setIsWrong] = useState(false)
+
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const [user, setUser] = useState(127)
+  const [userId, setUserId] = useState()
   const [image, setImage] = useState()
   const [sexosList, setSexosList] = useState([])
   const [municipiosList, setMunicipiosList] = useState([])
@@ -63,6 +65,11 @@ const Insert = () => {
     data()
     
 
+    const getUserId = async () => {
+      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
+    }
+    getUserId()
+
   }, [])
 
   
@@ -86,13 +93,18 @@ const Insert = () => {
     try {
 
       const response = await axios.post(
-        `${BASE_URL}promotors/create`,
+        `http://192.168.100.55:8000/api/promotors/create`,
         values
       );
-      console.log(response.data)
-      console.log(user)
+        console.log(response.data)
+
+      if(response?.data?.status == 1){
+        setIsCorrect(true)
+      }
+      else{
+        setIsWrong(true)
+      }
      
-      setShowAlert(true)
     } catch (error) {
       console.log(error)
     }
@@ -114,31 +126,27 @@ const Insert = () => {
   };
 
   const SignupSchema = Yup.object().shape({
-
-    nombre: Yup.string().required('Required'),
-    paterno: Yup.string().required('Required'),
-    materno: Yup.string().required('Required'),
-    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
-    sexo: Yup.number().integer("solo id").required('Required'),
-    folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
-    seccion: Yup.number().required('Required'),
-    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
-    estructura: Yup.number().integer("solo id").required('Required'),
-    cargo: Yup.string().required('Required'),
-    ocupacion: Yup.string().required('Required'),
-    municipio: Yup.number().integer("solo id").required('Required'),
-    localidad: Yup.number().integer("solo id").required('Required'),
-    colonia: Yup.string().required('Required'),
-    direccion: Yup.string().required('Required'),
-    exterior: Yup.string().required('Required'),
-    cp: Yup.string().required('Required'),
-    promotor: Yup.number().integer("solo id").required('Required'),
-    correo: Yup.string().email('Ingresa un correo "@"').required('Required'),
-    activo: Yup.boolean(),
-    email: Yup.string().email('Ingresa un correo "@').required('required'),
-    password: Yup.string().min(6,'Al menos 6 digitos').required('required'),
-    confirmPassword: Yup.string().min(6,'Almenos 6 digitos').oneOf([Yup.ref('password')], 'Las contraseñas no coinciden').required('required')
+    nombre: Yup.string()/*.required('Required')*/,
+    paterno: Yup.string()/*.required('Required')*/,
+    materno: Yup.string()/*.required('Required')*/,
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números')/*.required('Required')*/,
+    sexo: Yup.number().integer("solo id")/*.required('Required')*/,
+    folio: Yup.string()/*.required('Required')*/,
+    ine: Yup.string()/*.required('Required')*/,
+    seccion: Yup.number()/*.required('Required')*/,
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos')/*.required('Required')*/,
+    estructura: Yup.number().integer("solo id")/*.required('Required')*/,
+    cargo: Yup.string()/*.required('Required')*/,
+    ocupacion: Yup.string()/*.required('Required')*/,
+    municipio: Yup.number().integer("solo id")/*.required('Required')*/,
+    localidad: Yup.number().integer("solo id")/*.required('Required')*/,
+    colonia: Yup.string()/*.required('Required')*/,
+    direccion: Yup.string()/*.required('Required')*/,
+    exterior: Yup.string()/*.required('Required')*/,
+    cp: Yup.string()/*.required('Required')*/,
+    promotor: Yup.string(),
+    correo: Yup.string().email('Ingresa un correo "@"')/*.required('Required')*/,
+    activo: Yup.boolean()
   })
 
   const [showAlert, setShowAlert] = useState(false)
@@ -146,7 +154,7 @@ const Insert = () => {
   return (
     <ScrollView>
 
-      <Formik
+      <FormikshowAlert
         initialValues={{
           imagen: imageName,
           nombre: '',
@@ -168,7 +176,7 @@ const Insert = () => {
           direccion: '',
           exterior: '',
           cp: '',
-          promotor: null,
+          promotor: '',
           correo: '',
           activo: 0,
           usuario: 5,
@@ -180,8 +188,8 @@ const Insert = () => {
       >
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
           <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
-            <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={showAlert} onConfirmPressed={() => setShowAlert(false)} />
-            
+            <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
+            <Alert text={"Error"} buttonText={"Aceptar"} show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
             <View className=" rounded-md  w-[95%] bg-green-600">
               <Text className="p-2 text-white text-[20px] ">
                 Agregar promovidos
@@ -538,7 +546,7 @@ const Insert = () => {
             </View>
           </View>
         )}
-      </Formik>
+      </FormikshowAlert>
     </ScrollView >
   );
 };
