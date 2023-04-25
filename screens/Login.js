@@ -60,7 +60,7 @@ const Login = () => {
 
   const getUser = async (token) => {
     try {
-      const response = await axios.get(`${BASE_URL}user`, {
+      const response = await axios.get(`http://192.168.100.55:8000/api/user`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -76,7 +76,7 @@ const Login = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(`${BASE_URL}login`, {
+      const response = await axios.post(`http://192.168.100.55:8000/api/login`, {
         email: email,
         password: password,
       });
@@ -113,7 +113,7 @@ const Login = () => {
               </View>
               <View className="items-center w-full h-full">
                 <View className="bg mt-6 rounded-3xl px-10  bg-[#dbc25f] justify-center py-2 border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
-                  <Text className="text-3xl font-bold  text-stone-50 ali">
+                  <Text className="text-3xl font-bold text-stone-50 ali">
                     Ingrese sus datos
                   </Text>
                 </View>
