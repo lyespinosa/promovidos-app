@@ -10,7 +10,7 @@ const Alert = ({text, buttonText = "Aceptar", show = false, showProgress=false, 
             title={text}
             closeOnTouchOutside={true}
             closeOnHardwareBackPress={true}
-            showConfirmButton={true}
+            showConfirmButton={button}
             confirmText={buttonText}
             confirmButtonColor="#4176ef"
             onCancelPressed={() => {

@@ -11,9 +11,14 @@ import axios from "axios";
 import { Storage } from "expo-storage";
 import { BASE_URL } from '@env'
 import AwesomeAlert from "react-native-awesome-alerts";
+import Alert from "../components/Alert";
 
 const Login = () => {
   const navigation = useNavigation();
+
+  const [isLoading, setIsLoading] = useState(false)
+  const [isWrong, setIsWrong] = useState(false)
+  const [isCorrect, setIsCorrect] = useState(false)
 
   const tokens = "";
   const [email, setEmail] = useState("");
@@ -29,26 +34,9 @@ const Login = () => {
     setPassword(password);
   };
 
-  const alert = () => {
-    return (
-      <AwesomeAlert
-        show={true}
-        showProgress={false}
-        title="AwesomeAlert"
-        message="I have a message for you!"
-        closeOnTouchOutside={true}
-        closeOnHardwareBackPress={false}
-        showConfirmButton={true}
-        confirmText="Yes, delete it"
-        confirmButtonColor="#DD6B55"
-        onConfirmPressed={() => navigation.navigate("Tabs")}
-      />
-    );
-  };
-
   const saveData = async (data) => {
     try {
-        await Storage.setItem({
+      await Storage.setItem({
         key: `user-data`,
         value: JSON.stringify(data)
       })
@@ -59,6 +47,7 @@ const Login = () => {
   };
 
   const getUser = async (token) => {
+    
     try {
       const response = await axios.get(`http://192.168.100.55:8000/api/user`, {
         headers: {
@@ -66,7 +55,9 @@ const Login = () => {
           Authorization: "Bearer " + token,
         },
       });
+
       console.log(response.data)
+      setIsCorrect(false)
       saveData(response.data)
     } catch (e) {
       console.log("Failed to get data");
@@ -75,6 +66,7 @@ const Login = () => {
 
 
   const handleSubmit = async () => {
+    setIsLoading(true)
     try {
       const response = await axios.post(`http://192.168.100.55:8000/api/login`, {
         email: email,
@@ -82,14 +74,20 @@ const Login = () => {
       });
       const data = response.data;
       if (data.status == 1) {
+
+        setIsCorrect(true)
         console.log("Has iniciado");
+        setIsLoading(false)
         getUser(data.msg)
       } else {
+        setIsWrong(true)
         console.log("Error al inicar");
       }
     } catch (error) {
       console.error(error);
     }
+    setIsLoading(false)
+   
   };
 
   useLayoutEffect(() => {
@@ -100,14 +98,19 @@ const Login = () => {
 
   return (
     <>
+
       <ScrollView className="bg-white">
+        <Alert button={false} show={isLoading} onConfirmPressed={() => setIsLoading(false)} showProgress={true} />
+        <Alert buttom={false} text={"Sesion iniciada"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
+        <Alert text={"Usuario incorrecto"} buttonText={"Aceptar"} show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
+
         <Image
           source={background} // Ruta de la imagen de fondo
           className="absolute top-0 bottom-0 left-0 right-0 w-full"
         />
         <KeyboardAwareScrollView>
           <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center mt-12">
-            <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative border-[#E8E8E8] border-x-4 shadow shadow-[#E8E8E8]">
+            <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative border-[#E8E8E8] border-x-4 shadow-2xl shadow-[#E8E8E8]">
               <View className="absolute bottom-8 rotate-[28deg]">
                 <Image className="object-scale-down " source={Triforce} />
               </View>
@@ -134,9 +137,9 @@ const Login = () => {
                 />
                 <TouchableOpacity
                   onPressIn={handleSubmit}
-                  className="bg-[#435f9a] py-4 px-20 border-b-4 border-[#354b7a] rounded mb-20 items-center mt-10"
+                  className="bg-[#435f9a] py-3 px-14 border-x-4 border-[#354b7a] rounded-3xl mb-20 items-center mt-10"
                 >
-                  <Text className="text-base font-bold text-stone-50">
+                  <Text className="font-extrabold text-lg text-stone-50">
                     Iniciar sesion
                   </Text>
                 </TouchableOpacity>

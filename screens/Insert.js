@@ -59,6 +59,11 @@ const Insert = () => {
     getList("municipio").then(data => {
       setMunicipiosList(data)
     })
+    const data = async () => {
+      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
+    }
+    data()
+    
 
     const getUserId = async () => {
       setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
@@ -73,6 +78,7 @@ const Insert = () => {
   const [municipio, setMunicipio] = useState("")
   const [localidad, setLocalidad] = useState("")
   const [estructura, setEstructura] = useState("")
+  const [imageName, setImageName] = useState('')
 
 
   const getLocalidadByMunicipio = (municipio) => {
@@ -113,9 +119,7 @@ const Insert = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    });
-
-
+    }); 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -150,8 +154,9 @@ const Insert = () => {
   return (
     <ScrollView>
 
-      <Formik
+      <FormikshowAlert
         initialValues={{
+          imagen: imageName,
           nombre: '',
           paterno: '',
           materno: '',
@@ -175,6 +180,8 @@ const Insert = () => {
           correo: '',
           activo: 0,
           usuario: 5,
+          email: '',
+          password: ''
         }}
         validationSchema={SignupSchema}
         onSubmit={values => sendPromovido(values)}
@@ -342,6 +349,7 @@ const Insert = () => {
                   items={estructurasList}
                   placeholder={"Estructura"}
                   onChange={item => {
+                    console.log(userId)
                     const value = item.value.toString();
                     handleChange("estructura")(value)
                     handleChange("promotor")(userId)
@@ -477,6 +485,32 @@ const Insert = () => {
                 )}
               </View>
 
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Contraseña"
+                  onChangeText={handleChange('password')}
+                  onBlur={() => setFieldTouched('password')}
+                  value={values.password}
+                  secureTextEntry={true}
+                />
+                {touched.password && errors.password && (
+                  <Text style={DefaultStyles.inputText} >{errors.password}</Text>
+                )}
+              </View>
+
+              <View style={DefaultStyles.viewInput}>
+                <Input
+                  placeholder="Confirmar contraseña"
+                  onChangeText={handleChange('confirmPassword')}
+                  onBlur={() => setFieldTouched('confirmPassword')}
+                  value={values.confirmPassword}
+                  secureTextEntry={true}
+                />
+                {touched.confirmPassword && errors.confirmPassword && (
+                  <Text style={DefaultStyles.inputText} >{errors.confirmPassword}</Text>
+                )}
+              </View>
+
               { /*<View className="flex-row items-center justify-center bg-">
                 <Text className="text-[18px]">
                   {isEnabled ? "Activo" : "Inactivo"}
@@ -499,7 +533,9 @@ const Insert = () => {
 
 
               <TouchableOpacity
-                style={DefaultStyles.submitInput}
+                activeOpacity={0.4}
+                disabled={!isValid}
+                style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable]}
                 onPress={handleSubmit} //hacer el POST ahí
                 className="py-4 m-auto bg-blue-500 rounded-md px-14"
               >
@@ -510,7 +546,7 @@ const Insert = () => {
             </View>
           </View>
         )}
-      </Formik>
+      </FormikshowAlert>
     </ScrollView >
   );
 };
