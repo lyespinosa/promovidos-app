@@ -3,7 +3,7 @@ import {BASE_URL} from '@env'
 
 export const getList = async (list) => {
     try {
-        const response = await axios.get(`http://192.168.100.55:8000/api/${list}`, {
+        const response = await axios.get(`${BASE_URL}${list}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
