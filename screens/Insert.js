@@ -3,7 +3,6 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
 import { SelectList } from "react-native-dropdown-select-list";
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
 import { BASE_URL } from '@env'
 
 
@@ -154,7 +153,7 @@ const Insert = () => {
   return (
     <ScrollView>
 
-      <FormikshowAlert
+      <Formik
         initialValues={{
           imagen: imageName,
           nombre: '',
@@ -546,7 +545,7 @@ const Insert = () => {
             </View>
           </View>
         )}
-      </FormikshowAlert>
+      </Formik>
     </ScrollView >
   );
 };
