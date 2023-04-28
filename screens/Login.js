@@ -49,7 +49,7 @@ const Login = () => {
   const getUser = async (token) => {
     
     try {
-      const response = await axios.get(`http://192.168.100.55:8000/api/user`, {
+      const response = await axios.get(`http://192.168.0.14:8000/api/user`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: "Bearer " + token,
@@ -68,7 +68,7 @@ const Login = () => {
   const handleSubmit = async () => {
     setIsLoading(true)
     try {
-      const response = await axios.post(`http://192.168.100.55:8000/api/login`, {
+      const response = await axios.post(`http://192.168.0.14:8000/api/login`, {
         email: email,
         password: password,
       });

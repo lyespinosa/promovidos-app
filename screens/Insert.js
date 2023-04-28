@@ -92,7 +92,7 @@ const Insert = () => {
     try {
 
       const response = await axios.post(
-        `http://192.168.100.55:8000/api/promotors/create`,
+        `http://192.168.0.14:8000/api/promotors/create`,
         values
       );
         console.log(response.data)
@@ -533,8 +533,7 @@ const Insert = () => {
 
               <TouchableOpacity
                 activeOpacity={0.4}
-                disabled={!isValid}
-                style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable]}
+                style={[DefaultStyles.submitInput]}
                 onPress={handleSubmit} //hacer el POST ahí
                 className="py-4 m-auto bg-blue-500 rounded-md px-14"
               >

@@ -4,7 +4,7 @@ import React from 'react'
 
 const Navbar = () => {
   return (
-    <View className='mb-4 mt-2 bg-white border-b border-[#E8E8E8] pb-4 items-center '>
+    <View className='mb-4 mt-2 bg-white items-center '>
         <View className='flex-row items-center p-2 border-[2px] border-gray-300 rounded-full w-80 '>
       <TextInput
         className='flex-1 ml-2 text-gray-600'
