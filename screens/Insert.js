@@ -91,6 +91,7 @@ const Insert = () => {
     try {
 
       const response = await axios.post(
+
         `${BASE_URL}promotors/create`,
         values
       );
