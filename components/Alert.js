@@ -2,20 +2,18 @@ import { View, Text } from 'react-native'
 import React from 'react'
 import AwesomeAlert from 'react-native-awesome-alerts';
 
-const Alert = ({text, buttonText = "Aceptar", show = false, showProgress=false, showButton=true, onConfirmPressed}) => {
+const Alert = ({text, buttonText = "Aceptar", titleColor = "#006fff", buttonColor = "#006fff", show = false, showProgress=false, showButton=true, onConfirmPressed, onCancelPressed}) => {
     return (
         <AwesomeAlert
             show={show}
             showProgress={showProgress}
             title={text}
+            titleStyle={{color: titleColor}}
             closeOnTouchOutside={true}
-            closeOnHardwareBackPress={true}
             showConfirmButton={showButton}
             confirmText={buttonText}
-            confirmButtonColor="#4176ef"
-            onCancelPressed={() => {
-                this.hideAlert();
-            }}
+            confirmButtonColor={buttonColor}
+            onCancelPressed={onCancelPressed}
             onConfirmPressed={onConfirmPressed}
         />
     )

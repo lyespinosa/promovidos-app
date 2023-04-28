@@ -3,12 +3,12 @@ import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { Storage } from 'expo-storage'
 
-const deleteData = async () =>{
-  try{
-await Storage.removeItem({ key: `user-data` })
-console.log('datos borrados')
+const deleteData = async () => {
+  try {
+    //await Storage.removeItem({ key: `user-data` })
+    console.log('datos borrados')
   }
-  catch{
+  catch {
     console.log('Error al borrar datos')
   }
 }
@@ -16,13 +16,13 @@ console.log('datos borrados')
 const SettingsAcount = () => {
   const navigation = useNavigation();
   return (
-    <View className="items-center flex-1 justify-center bg-white">
+    <View className="items-center justify-center flex-1 bg-white">
       <TouchableOpacity
         className="bg-red-700 py-4 px-16 border-b-4 border-[#6f9499] rounded"
         onPress={() => navigation.navigate("Login")}
         onPressIn={deleteData}
       >
-        <Text className="text-white font-bold">Cerrar sesión</Text>
+        <Text className="font-bold text-white">Cerrar sesión</Text>
       </TouchableOpacity>
     </View>
   )
