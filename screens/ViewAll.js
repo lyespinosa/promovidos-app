@@ -32,6 +32,7 @@ const ViewAll = () => {
     focusListener = navigation.addListener('focus', () => {
         const data = async () => {
           getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
+          console.log(BASE_URL)
         }
         data()
     });

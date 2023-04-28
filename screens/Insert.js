@@ -2,10 +2,7 @@ import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, } from "rea
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import { SelectList } from "react-native-dropdown-select-list";
-import { BASE_URL } from '@env'
-
-
+import { Storage } from "expo-storage";
 import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from 'yup';
@@ -16,12 +13,14 @@ import DefaultStyles from "../styles/DefaultStyles";
 //components
 import ComboBox from "../components/form/ComboBox";
 import Input from "../components/form/Input";
-import { getList } from "../api/comboboxs/getList";
 import Alert from "../components/Alert";
 import Switch from "../components/form/Switch";
 
-import { Storage } from "expo-storage";
+//api
+import { getList } from "../api/comboboxs/getList";
 
+//ENV
+import { BASE_URL } from '@env'
 
 const Insert = () => {
 
@@ -92,7 +91,7 @@ const Insert = () => {
     try {
 
       const response = await axios.post(
-        `http://192.168.100.55:8000/api/promotors/create`,
+        `${BASE_URL}promotors/create`,
         values
       );
         console.log(response.data)
@@ -148,8 +147,6 @@ const Insert = () => {
     activo: Yup.boolean()
   })
 
-  const [showAlert, setShowAlert] = useState(false)
-
   return (
     <ScrollView>
 
@@ -183,7 +180,10 @@ const Insert = () => {
           password: ''
         }}
         validationSchema={SignupSchema}
-        onSubmit={values => sendPromovido(values)}
+        onSubmit={ async (values, { resetForm }) => {
+          await sendPromovido(values)
+          resetForm()
+        }}
       >
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
           <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
@@ -533,8 +533,7 @@ const Insert = () => {
 
               <TouchableOpacity
                 activeOpacity={0.4}
-                disabled={!isValid}
-                style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable]}
+                style={[DefaultStyles.submitInput]}
                 onPress={handleSubmit} //hacer el POST ahí
                 className="py-4 m-auto bg-blue-500 rounded-md px-14"
               >

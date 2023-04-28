@@ -1,38 +1,40 @@
 import React from "react";
 import { useState } from 'react';
-import { TextInput, View} from 'react-native';
+import { TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const TextInputExample = ({ secure, password, placeholder, change, classname}) => {
-    
-    const [focus, setFocus] = useState(false);
+const TextInputExample = ({ secure, password, placeholder, change, classname, onFocus, onBlur, value }) => {
 
-    const [isSecure, setIsSecure] = useState(secure);
+  const [focus, setFocus] = useState(false);
+
+  const [isSecure, setIsSecure] = useState(secure);
 
 
   return (
-    
-    <View className={` p-x mb-4 w-80 bg-white rounded-full flex-row items-center border-2 border-gray-400  focus:shadow-md focus:border-[#354b7a] ${classname} `} >
-    <TextInput
-        className={`flex-1 px-3 py-1 text-xl  text-gray-600 `}
-        onFocus={() => setFocus(true)}
-        onBlur={() => setFocus(false)}
+
+    <View className={` w-full h-10 bg-white rounded-md flex-row items-center border-2 border-[#4B5563]  `} >
+      <TextInput
+        className={`flex-1 px-3 text-xl text-gray-600 `}
+        onFocus={onFocus}
+        onBlur={onBlur}
         onChangeText={change}
         secureTextEntry={isSecure}
         placeholder={placeholder}
+        value={value}
         password={password}
-    />
-    {secure &&
-        <Icon
-            style={{ paddingRight: 15 }}
+      />
+      {secure &&
+          <Icon
+          className="bg-[#4B5563] text-center py-2 w-[10%]"
+            onPress={() => setIsSecure(!isSecure)}
             name={isSecure ? "eye" : 'eye-slash'}
             size={20}
-            color='#bc9c64'
-            onPress={() => setIsSecure(!isSecure)}
-        />
-    }
-</View>
+            color='#ffffff'
+
+          />
+      }
+    </View>
   );
 };
 
