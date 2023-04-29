@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import {BASE_URL} from '@env'
 import React, { useState, useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
@@ -14,14 +13,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { s } from "react-native-wind";
 import Navbar from "./Navbar";
 import Dropdown from "./Dropdown";
+import { BASE_URL } from "@env";
+import { Storage } from "expo-storage";
+import { useNavigation } from "@react-navigation/native";
 
-const MyModal = ({ isModalOpen, setIsModalOpen, id }) => {
+
+const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
   const [promotores, setPromotores] = useState([]);
 
-  useEffect(() => {
-    fetch(`${BASE_URL}promotors/listar/${id}`, {
+
+  const getPromovido = async (userId, userToken) => {
+    fetch(`${BASE_URL}promotors/listar/${userId}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + userToken,
       },
     })
       .then((response) => response.json())
@@ -31,6 +36,14 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id }) => {
       .catch((err) => {
         console.log("error: " + err);
       });
+  }
+
+  const navigation = useNavigation();
+  let focusListener = null;
+  useEffect(() => {
+    focusListener = navigation.addListener('focus', () => {
+      getPromovido(id, token)
+    });
   }, []);
 
   return (
@@ -67,6 +80,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id }) => {
                     Estructura={promotor.estructura}
                     Cargo={promotor.celular}
                     Seccion={promotor.seccion}
+                  
                   />
                 );
               })}

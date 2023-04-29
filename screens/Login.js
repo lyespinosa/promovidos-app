@@ -44,6 +44,45 @@ const Login = () => {
     }
   };
 
+  const saveToken = async (data) => {
+    try{
+      await Storage.setItem({
+        key: `user-token`,
+        value: JSON.stringify(data.msg)
+      })
+    } catch (error) {
+      console.log('Error al guardar el token')
+    }
+  }
+
+  const savePromotor = async (data) => {
+    try{
+      await Storage.setItem({
+        key: `user-promotor`,
+        value: JSON.stringify(data)
+      })
+    } catch (error) {
+      console.log('Error al guardar el token')
+    }
+  }
+
+  const getPromotor = async (id, token) => {
+    try {
+      console.log(id);
+      const response = await axios.get(`${BASE_URL}promotors/get/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      });
+
+      console.log(response.data)
+      savePromotor(response.data)
+    } catch (e) {
+      console.log("Failed to get data");
+    }
+  };
+
   const getUser = async (token) => {
     try {
       const response = await axios.get(`${BASE_URL}user`, {
@@ -54,6 +93,7 @@ const Login = () => {
       });
 
       console.log(response.data)
+      getPromotor(response.data.id, token)
       saveData(response.data)
     } catch (e) {
       console.log("Failed to get data");
@@ -70,6 +110,7 @@ const Login = () => {
       if (data?.status == 1) {
         resetForm()
         Alert.alert('Sesion iniciada');
+        saveToken(data)
         //setIsCorrect(true)
         console.log("Has iniciado");
         getUser(data.msg);

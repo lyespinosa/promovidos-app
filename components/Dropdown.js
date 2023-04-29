@@ -6,7 +6,18 @@ import MyModal from "./MyModal";
 //Icons
 import { FontAwesome } from "@expo/vector-icons";
 
-const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, showButton=true, id}) => {
+const Dropdown = ({
+  Nombre,
+  Municipio,
+  Celular,
+  Estructura,
+  Cargo,
+  Seccion,
+  showButton = true,
+  showModal = true,
+  id,
+  token,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlePress = () => {
@@ -50,17 +61,19 @@ const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, show
                 <Text className="font-bold">Seccion: </Text>
                 {Seccion}
               </Text>
-
-              <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => setIsModalOpen(!isModalOpen)}
-                className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 "
-              >
-                <Text className="text-base text-gray-600">
-                  <Text className="font-bold">Promovidos: </Text>----------
-                </Text>
-              </TouchableOpacity>
+              {showModal == true && (
+                <TouchableOpacity
+                  activeOpacity={1}
+                  onPress={() => setIsModalOpen(!isModalOpen)}
+                  className="px-2 border w-44 rounded-3xl border-[#E8E8E8] border-x-4 "
+                >
+                  <Text className="text-base text-gray-600">
+                    <Text className="font-bold">Promovidos: </Text>----------
+                  </Text>
+                </TouchableOpacity>
+              )}
               <MyModal
+                token={token}
                 id={id}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
@@ -68,7 +81,7 @@ const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, show
             </View>
           )}
         </View>
-        {showButton==true ? 
+        {showButton == true ? (
           <View className="h-10 justify-center py-1 items-center bg-[#435f9a] border-b-4 border-[#354b7a] rounded">
             <FontAwesome
               name="arrow-down"
@@ -77,9 +90,9 @@ const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, show
               style={isOpen && { transform: [{ rotate: "180deg" }] }}
             />
           </View>
-          :
-        <></>
-        }
+        ) : (
+          <></>
+        )}
       </TouchableOpacity>
     </View>
   );
