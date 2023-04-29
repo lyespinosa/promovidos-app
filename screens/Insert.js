@@ -32,52 +32,54 @@ const Insert = () => {
     });
   }, []);
 
+  const [token, setToken] = useState()
+  const [userId, setUserId] = useState()
+
   const [isCorrect, setIsCorrect] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
 
-  const [userId, setUserId] = useState()
   const [image, setImage] = useState()
   const [sexosList, setSexosList] = useState([])
   const [municipiosList, setMunicipiosList] = useState([])
   const [estructurasList, setEstructurasList] = useState([])
   const [localidadesList, setLocalidadesList] = useState([])
-
-  useEffect(() => {
-    getList("sexo").then(data => {
-      setSexosList(data)
-    })
-
-    getList("estructura").then(data => {
-      setEstructurasList(data)
-    })
-
-    getList("municipio").then(data => {
-      setMunicipiosList(data)
-    })
-    const data = async () => {
-      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
-    }
-    data()
-    
-
-    const getUserId = async () => {
-      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
-    }
-    getUserId()
-
-  }, [])
-
-  
-
-  const [sexo, setSexo] = useState("");
   const [municipio, setMunicipio] = useState("")
-  const [localidad, setLocalidad] = useState("")
-  const [estructura, setEstructura] = useState("")
   const [imageName, setImageName] = useState('')
 
+  useEffect(() => {
+
+
+    const data = async () => {
+      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
+
+      const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
+      setToken(token);
+      console.log("TOKEN EN INSERT ==>" + token)
+
+      getList("sexo", token).then(data => {
+        setSexosList(data)
+      })
+  
+      getList("estructura", token).then(data => {
+        setEstructurasList(data)
+      })
+  
+      getList("municipio", token).then(data => {
+        setMunicipiosList(data)
+      })
+
+    }
+    data()
+
+   
+
+    
+
+
+  }, [])
 
   const getLocalidadByMunicipio = (municipio) => {
     setMunicipio(municipio);
@@ -92,18 +94,18 @@ const Insert = () => {
 
       const response = await axios.post(
 
-        `${BASE_URL}promotors/create`,
+        `${BASE_URL}promotors/create/promotor`,
         values
       );
-        console.log(response.data)
+      console.log(response.data)
 
-      if(response?.data?.status == 1){
+      if (response?.data?.status == 1) {
         setIsCorrect(true)
       }
-      else{
+      else {
         setIsWrong(true)
       }
-     
+
     } catch (error) {
       console.log(error)
     }
@@ -118,7 +120,7 @@ const Insert = () => {
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
-    }); 
+    });
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
@@ -176,12 +178,11 @@ const Insert = () => {
           promotor: '',
           correo: '',
           activo: 0,
-          usuario: 5,
           email: '',
           password: ''
         }}
         validationSchema={SignupSchema}
-        onSubmit={ async (values, { resetForm }) => {
+        onSubmit={async (values, { resetForm }) => {
           await sendPromovido(values)
           resetForm()
         }}
@@ -525,9 +526,9 @@ const Insert = () => {
                 </View>*/}
               <View style={DefaultStyles.viewInput}>
                 <Switch onPress={value => {
-                    const activo = value.toString();
-                    handleChange("activo")(activo)
-                  }} />
+                  const activo = value.toString();
+                  handleChange("activo")(activo)
+                }} />
               </View>
 
 
