@@ -21,29 +21,22 @@ import { useNavigation } from "@react-navigation/native";
 const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
   const [promotores, setPromotores] = useState([]);
 
-
-  const getPromovido = async (userId, userToken) => {
-    fetch(`${BASE_URL}promotors/listar/${userId}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Bearer " + userToken,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setPromotores(data);
-      })
-      .catch((err) => {
-        console.log("error: " + err);
-      });
-  }
-
-  const navigation = useNavigation();
-  let focusListener = null;
   useEffect(() => {
-    focusListener = navigation.addListener('focus', () => {
-      getPromovido(id, token)
-    });
+        console.log("entrando a modal")
+        console.log(token)
+        fetch(`${BASE_URL}promotors/listar/${id}`, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            setPromotores(data);
+          })
+          .catch((err) => {
+            console.log("error: " + err);
+          });
   }, []);
 
   return (
