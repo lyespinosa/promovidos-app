@@ -8,7 +8,7 @@ import { Storage } from "expo-storage";
 
 const ViewAll = () => {
   const [promotores, setPromotores] = useState([]);
-  const [userPromotor, setUserPromotor] = useState();
+  const [userTipo, setUserTipo] = useState();
   const [token, setToken] = useState(null);
 
   const getUser = async (user, token) => {
@@ -37,7 +37,9 @@ const ViewAll = () => {
         const promotor = JSON.parse(
           await Storage.getItem({ key: `user-promotor` })
         );
-        setUserPromotor(promotor);
+        console.log("PROMOTOR DATA ==> ")
+        console.log(promotor[0]?.fktipo)
+        setUserTipo(promotor[0]?.fktipo);
         setToken(token);
         getUser(user, token);
       };
@@ -54,7 +56,7 @@ const ViewAll = () => {
         <View className="border-b border-[#E8E8E8]">
           <Navbar></Navbar>
         </View>
-        { userPromotor?.fktipo == 3 ? (
+        { userTipo == 3 ? (
           <View className="bg-white flex-1 min-h-[100vh] justify-items-stretch px-6">
             {promotores.map((promotor) => {
               return (
