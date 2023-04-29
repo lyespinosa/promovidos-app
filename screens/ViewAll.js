@@ -10,17 +10,17 @@ const ViewAll = () => {
   const [promotores, setPromotores] = useState([]);
   const [token, setToken] = useState(null);
 
-  const getUser = async (user) => {
-    console.log(user.id);
+  const getUser = async (user, token) => {
+    
     fetch(`${BASE_URL}promotors/listar/${user.id}`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
       },
     })
       .then((response) => response.json())
       .then((data) => {
         setPromotores(data);
-        console.log(data)
       })
       .catch((err) => {
         console.log("error: " + err);
@@ -32,8 +32,11 @@ const ViewAll = () => {
   useEffect(() => {
     focusListener = navigation.addListener('focus', () => {
         const data = async () => {
-          getUser(JSON.parse(await Storage.getItem({ key: `user-data` })));
-          console.log(BASE_URL)
+          const user = JSON.parse(await Storage.getItem({ key: `user-data` }));
+          const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
+          setToken(token);
+          getUser(user, token);
+          
         }
         data()
     });
@@ -52,6 +55,7 @@ const ViewAll = () => {
           {promotores.map((promotor) => {
             return (
               <Dropdown
+                token={token}
                 id={promotor.fkuser}
                 showButton={true}
                 key={promotor.idpromotor}

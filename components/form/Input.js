@@ -2,7 +2,7 @@ import { View, Text, TextInput } from 'react-native'
 import React from 'react'
 import DefaultStyles from '../../styles/DefaultStyles'
 
-const Input = ({ onChangeText, placeholder, style = DefaultStyles.input, value, keyboardType, maxLength, onBlur, autoCapitalize, password, secureTextEntry }) => {
+const Input = ({ onChangeText, placeholder, style = DefaultStyles.input, value, keyboardType, maxLength, onBlur, autoCapitalize, secureTextEntry }) => {
     return (
         <TextInput
             autoCapitalize={autoCapitalize}

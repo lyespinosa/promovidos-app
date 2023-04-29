@@ -145,7 +145,7 @@ const Insert = () => {
     cp: Yup.string()/*.required('Required')*/,
     promotor: Yup.string(),
     correo: Yup.string().email('Ingresa un correo "@"')/*.required('Required')*/,
-    activo: Yup.boolean()
+    activo: Yup.boolean(),
   })
 
   return (

@@ -1,14 +1,15 @@
 import axios from "axios";
-import {BASE_URL} from '@env'
+import { BASE_URL } from '@env'
 
-export const getList = async (list, token) => {
+export const login = async (values) => {
     try {
-        const response = await axios.get(`${BASE_URL}${list}`, {
+        const response = await axios.post(`${BASE_URL}login`, {
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: "Bearer " + token,
             },
-        })
+            values
+        },
+            );
         return response.data
     } catch (error) {
         return null
