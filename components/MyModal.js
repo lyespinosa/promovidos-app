@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import {BASE_URL} from '@env'
 import React, { useState, useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
 import { BlurView } from "expo-blur";
@@ -18,7 +19,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id }) => {
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
-    fetch(`http://192.168.0.14:8000/api/promotors/listar/${id}`, {
+    fetch(`${BASE_URL}promotors/listar/${id}`, {
       headers: {
         "Content-Type": "application/json",
       },
