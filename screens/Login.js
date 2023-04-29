@@ -44,6 +44,17 @@ const Login = () => {
     }
   };
 
+  const saveToken = async (data) => {
+    try{
+      await Storage.setItem({
+        key: `user-token`,
+        value: JSON.stringify(data.msg)
+      })
+    } catch (error) {
+      console.log('Error al guardar el token')
+    }
+  }
+
   const getUser = async (token) => {
     try {
       const response = await axios.get(`${BASE_URL}user`, {
@@ -70,6 +81,7 @@ const Login = () => {
       if (data?.status == 1) {
         resetForm()
         Alert.alert('Sesion iniciada');
+        saveToken(data)
         //setIsCorrect(true)
         console.log("Has iniciado");
         getUser(data.msg);

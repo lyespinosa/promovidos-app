@@ -6,7 +6,7 @@ import MyModal from "./MyModal";
 //Icons
 import { FontAwesome } from "@expo/vector-icons";
 
-const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, showButton=true, id}) => {
+const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, showButton=true, id, token}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handlePress = () => {
@@ -61,6 +61,7 @@ const Dropdown = ({ Nombre, Municipio, Celular, Estructura, Cargo, Seccion, show
                 </Text>
               </TouchableOpacity>
               <MyModal
+                token={token}
                 id={id}
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
