@@ -37,8 +37,6 @@ const ViewAll = () => {
         const promotor = JSON.parse(
           await Storage.getItem({ key: `user-promotor` })
         );
-        console.log("PROMOTOR DATA ==> ")
-        console.log(promotor[0]?.fktipo)
         setUserTipo(promotor[0]?.fktipo);
         setToken(token);
         getUser(user, token);

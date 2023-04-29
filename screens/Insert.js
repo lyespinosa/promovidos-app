@@ -34,9 +34,13 @@ const Insert = () => {
 
   const [token, setToken] = useState()
   const [userId, setUserId] = useState()
+  const [userTipo, setUserTipo] = useState()
+
 
   const [isCorrect, setIsCorrect] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
+  const [isError, setIsError] = useState(false)
+  const [msgWrong, setMsgWrong] = useState('')
 
   const [isEnabled, setIsEnabled] = useState(false);
   const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
@@ -51,22 +55,26 @@ const Insert = () => {
 
   useEffect(() => {
 
-
     const data = async () => {
-      setUserId(JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString());
-
+      const id = JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString();
       const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
+      const promotor = JSON.parse(await Storage.getItem({ key: `user-promotor` }));
+
+      setUserId(id)
       setToken(token);
+      setUserTipo(promotor[0]?.fktipo);
+
       console.log("TOKEN EN INSERT ==>" + token)
+      console.log("ID DEL USUARIO ")
 
       getList("sexo", token).then(data => {
         setSexosList(data)
       })
-  
+
       getList("estructura", token).then(data => {
         setEstructurasList(data)
       })
-  
+
       getList("municipio", token).then(data => {
         setMunicipiosList(data)
       })
@@ -74,28 +82,31 @@ const Insert = () => {
     }
     data()
 
-   
-
-    
-
 
   }, [])
 
   const getLocalidadByMunicipio = (municipio) => {
     setMunicipio(municipio);
 
-    getList("localidad/" + municipio).then(data => {
+    getList("localidad/" + municipio, token).then(data => {
       setLocalidadesList(data)
     })
   };
 
   const sendPromovido = async (values) => {
     try {
+      var tipo = '';
+      if (userTipo == 3) { tipo = "promotor" }
+      else if (userTipo == 4) { tipo = "promovido" }
 
-      const response = await axios.post(
-
-        `${BASE_URL}promotors/create/promotor`,
+      const response = await axios.post(`${BASE_URL}promotors/create/${tipo}`,
         values
+        , {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: "Bearer " + token,
+          }
+        }
       );
       console.log(response.data)
 
@@ -104,11 +115,15 @@ const Insert = () => {
       }
       else {
         setIsWrong(true)
+        setMsgWrong(response?.data?.msg)
       }
 
     } catch (error) {
+      setIsError(true)
       console.log(error)
     }
+
+
   };
 
 
@@ -146,8 +161,16 @@ const Insert = () => {
     exterior: Yup.string()/*.required('Required')*/,
     cp: Yup.string()/*.required('Required')*/,
     promotor: Yup.string(),
-    correo: Yup.string().email('Ingresa un correo "@"')/*.required('Required')*/,
+    email: Yup.string().email('Ingresa un correo "@"')/*.required('Required')*/,
     activo: Yup.boolean(),
+    password: Yup.string().when('userTipo', (userTipo, SignupSchema) => {
+      return userTipo == 3 ? SignupSchema.min(6, "Al menos 6 caracteres").required('Required') : SignupSchema
+    })
+     ,
+    confirmPassword: Yup.string().when('userTipo', (userTipo, SignupSchema) => {
+      return userTipo == 3 ? SignupSchema.min(6, "Al menos 6 caracteres").oneOf([Yup.ref('password')], 'Las contraseñas no coinciden').required('required') : SignupSchema
+    })
+
   })
 
   return (
@@ -176,7 +199,6 @@ const Insert = () => {
           exterior: '',
           cp: '',
           promotor: '',
-          correo: '',
           activo: 0,
           email: '',
           password: ''
@@ -184,17 +206,26 @@ const Insert = () => {
         validationSchema={SignupSchema}
         onSubmit={async (values, { resetForm }) => {
           await sendPromovido(values)
-          resetForm()
         }}
       >
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
           <View className="min-h-full bg-white relative items-center pt-4 pb-[200px]">
             <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
-            <Alert text={"Error"} buttonText={"Aceptar"} show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
+            <Alert text={msgWrong ? msgWrong : "Datos incorrectos"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
+            <Alert text={"Error de conexion"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isError} onConfirmPressed={() => setIsError(false)} />
             <View className=" rounded-md  w-[95%] bg-green-600">
-              <Text className="p-2 text-white text-[20px] ">
-                Agregar promovidos
-              </Text>
+
+              {
+                userTipo == 3
+                  ? (
+                    <Text className="p-2 text-white text-[20px] ">Agregar nuevo promotor </Text>
+                  )
+                  :
+                  (
+                    <Text className="p-2 text-white text-[20px] ">Agregar nuevo promovido </Text>
+                  )
+              }
+
             </View>
 
             <View className=" mt-4 flex-row justify-between w-[90%] ">
@@ -477,53 +508,49 @@ const Insert = () => {
               <View style={DefaultStyles.viewInput}>
                 <Input
                   placeholder="Correo electrónico"
-                  onChangeText={handleChange('correo')}
-                  onBlur={() => setFieldTouched('correo')}
-                  value={values.correo}
+                  onChangeText={handleChange('email')}
+                  onBlur={() => setFieldTouched('email')}
+                  value={values.email}
                 />
-                {touched.correo && errors.correo && (
+                {touched.email && errors.email && (
                   <Text style={DefaultStyles.inputText} >{errors.correo}</Text>
                 )}
               </View>
 
-              <View style={DefaultStyles.viewInput}>
-                <Input
-                  placeholder="Contraseña"
-                  onChangeText={handleChange('password')}
-                  onBlur={() => setFieldTouched('password')}
-                  value={values.password}
-                  secureTextEntry={true}
-                />
-                {touched.password && errors.password && (
-                  <Text style={DefaultStyles.inputText} >{errors.password}</Text>
-                )}
-              </View>
+              {
+                userTipo == 3 && (
+                  <>
 
-              <View style={DefaultStyles.viewInput}>
-                <Input
-                  placeholder="Confirmar contraseña"
-                  onChangeText={handleChange('confirmPassword')}
-                  onBlur={() => setFieldTouched('confirmPassword')}
-                  value={values.confirmPassword}
-                  secureTextEntry={true}
-                />
-                {touched.confirmPassword && errors.confirmPassword && (
-                  <Text style={DefaultStyles.inputText} >{errors.confirmPassword}</Text>
-                )}
-              </View>
+                    <View style={DefaultStyles.viewInput}>
+                      <Input
+                        placeholder="Contraseña"
+                        onChangeText={handleChange('password')}
+                        onBlur={() => setFieldTouched('password')}
+                        value={values.password}
+                        secureTextEntry={true}
+                      />
+                      {touched.password && errors.password && (
+                        <Text style={DefaultStyles.inputText} >{errors.password}</Text>
+                      )}
+                    </View>
 
-              { /*<View className="flex-row items-center justify-center bg-">
-                <Text className="text-[18px]">
-                  {isEnabled ? "Activo" : "Inactivo"}
-                </Text>
-                <Switch
-                  trackColor={{ false: "#bbbbbb", true: "#3cbe73" }}
-                  thumbColor={isEnabled ? "#ffffff" : "#999999"}
-                  ios_backgroundColor="#3e3e3e"
-                  onValueChange={toggleSwitch}
-                  value={isEnabled}
-                />
-                </View>*/}
+                    <View style={DefaultStyles.viewInput}>
+                      <Input
+                        placeholder="Confirmar contraseña"
+                        onChangeText={handleChange('confirmPassword')}
+                        onBlur={() => setFieldTouched('confirmPassword')}
+                        value={values.confirmPassword}
+                        secureTextEntry={true}
+                      />
+                      {touched.confirmPassword && errors.confirmPassword && (
+                        <Text style={DefaultStyles.inputText} >{errors.confirmPassword}</Text>
+                      )}
+                    </View>
+                  </>
+                )
+
+              }
+
               <View style={DefaultStyles.viewInput}>
                 <Switch onPress={value => {
                   const activo = value.toString();

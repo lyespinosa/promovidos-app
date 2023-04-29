@@ -5,7 +5,9 @@ import { Storage } from 'expo-storage'
 
 const deleteData = async () => {
   try {
-    //await Storage.removeItem({ key: `user-data` })
+    await Storage.removeItem({ key: `user-data` })
+    await Storage.removeItem({ key: `user-token` })
+    await Storage.removeItem({ key: `user-promotor` })
     console.log('datos borrados')
   }
   catch {
