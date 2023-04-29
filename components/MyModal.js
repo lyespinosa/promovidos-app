@@ -73,6 +73,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
                     Estructura={promotor.estructura}
                     Cargo={promotor.celular}
                     Seccion={promotor.seccion}
+                  
                   />
                 );
               })}
