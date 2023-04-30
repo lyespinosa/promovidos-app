@@ -56,9 +56,10 @@ const ViewAll = () => {
         </View>
         { userTipo == 3 ? (
           <View className="bg-white flex-1 min-h-[100vh] justify-items-stretch px-6">
+            {console.log({userTipo})}
             {promotores.map((promotor) => {
               return (
-                <Dropdown
+                <Dropdown 
                   token={token}
                   id={promotor.fkuser}
                   showButton={true}

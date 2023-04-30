@@ -16,9 +16,10 @@ import Dropdown from "./Dropdown";
 import { BASE_URL } from "@env";
 import { Storage } from "expo-storage";
 import { useNavigation } from "@react-navigation/native";
+import DropPromovidos from "./DropPromovidos";
 
 
-const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
+const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,cantidadPromotores}) => {
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
           .then((response) => response.json())
           .then((data) => {
             setPromotores(data);
+            setCantidadPromotores(data.length);
           })
           .catch((err) => {
             console.log("error: " + err);
@@ -56,7 +58,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
                 className="flex-row border-b border-[#E8E8E8] bg-red-500 w-full p-2"
               >
                 <Text className="flex-1 text-center pl-6 text-white font-extrabold text-[20px]">
-                  Promovido
+                  Promovidos
                 </Text>
                 <FontAwesome name="close" size={24} color="white" />
               </TouchableOpacity>
@@ -64,8 +66,8 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
 
               {promotores.map((promotor) => {
                 return (
-                  <Dropdown
-                  showButton={false}
+                  <DropPromovidos
+
                     key={promotor.idpromotor}
                     Nombre={promotor.nombre}
                     Municipio={promotor.municipio}
