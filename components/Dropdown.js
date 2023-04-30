@@ -32,6 +32,8 @@ const Dropdown = ({
   
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [cantidadPromotores, setCantidadPromotores] = useState(0);
+  
 
   return (
     <View className="my-2">
@@ -68,18 +70,33 @@ const Dropdown = ({
                 <Text className="font-bold">Seccion: </Text>
                 {Seccion}
               </Text>
+              <View className="flex-row">
+                  <Text className="text-base text-gray-600">
+                <Text className="font-bold">Promovidos: </Text>
+                {cantidadPromotores}
+              </Text>
+              <View className="flex-1 items-end">
               {showModal == true && (
                 <TouchableOpacity
                   activeOpacity={1}
                   onPress={() => setIsModalOpen(!isModalOpen)}
+                  
                   className="px-2 border w-44 rounded-3xl border-[#E8E8E8] bg-[#f8f8f8] "
                 >
+                {/*<Text className="font-bold border-b border-[#435f9a] text-base text-[#435f9a]"> Ver mas </Text>*/}
                   <Text className="text-base text-gray-600">
-                    <Text className="font-bold">Promovidos: </Text>Mostrar
+                    <Text className="font-bold">Promovidos: </Text>Ver mas
                   </Text>
+
                 </TouchableOpacity>
-              )}
+              )}   
+              </View>
+              </View>
+
+
               <MyModal
+              cantidadPromotores={cantidadPromotores}
+              setCantidadPromotores={setCantidadPromotores}
                 token={token}
                 id={id}
                 isModalOpen={isModalOpen}

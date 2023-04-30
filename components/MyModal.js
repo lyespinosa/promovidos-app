@@ -16,15 +16,15 @@ import Dropdown from "./Dropdown";
 import { BASE_URL } from "@env";
 import { Storage } from "expo-storage";
 import { useNavigation } from "@react-navigation/native";
+import DropPromovidos from "./DropPromovidos";
 
 
-const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
+const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,cantidadPromotores}) => {
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
     console.log("entrando a modal")
     console.log(token)
-    console.log(id)
     fetch(`${BASE_URL}promotors/listar/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -61,7 +61,6 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
                 </Text>
                 <FontAwesome name="close" size={24} color="white" />
               </TouchableOpacity>
-
               <View className="min-h-[65vh]">
                 {
                   promotores.length > 0 ? (
@@ -93,6 +92,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token }) => {
                     </View>
                 }
               </View>
+
             </ScrollView>
           </View>
         </BlurView>
