@@ -27,7 +27,9 @@ const DefaultStyles = {
     errorBorderColor: s`border-red-400`,
     swithBorder:s`w-36`,
     submitInput:s`${input_mt}`,
-    disable:s`bg-blue-200`
+    disable:s`bg-blue-200`,
+    infoAccount: s`capitalize text-base mt-2 font-semibold`,
+    infoAccountText: s`capitalize text-base mt-2 font-normal`
 
 }
 
