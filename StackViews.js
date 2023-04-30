@@ -14,6 +14,7 @@ import ViewAll from './screens/ViewAll';
 import SettingsAcount from './screens/SettingsAcount';
 import { useNavigation } from '@react-navigation/native';
 import SafeViewAndroid from './components/SafeViewAndroid';
+import DefaultStyles from './styles/DefaultStyles';
 
 
 const StackViews = () => {
@@ -34,7 +35,7 @@ const StackViews = () => {
 
                 initialRouteName="View"
                 screenOptions={{
-                    tabBarActiveTintColor: '#435f9a',
+                    tabBarActiveTintColor: `${DefaultStyles.blueColor}`,
                 }}
             >
                 <Tab.Screen
