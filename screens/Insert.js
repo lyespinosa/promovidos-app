@@ -67,8 +67,6 @@ const Insert = () => {
       setToken(token);
       setUserTipo(promotor[0]?.fktipo);
 
-      console.log("TOKEN EN INSERT ==>" + token)
-      console.log("ID DEL USUARIO ")
 
       getList("sexo", token).then(data => {
         setSexosList(data)
@@ -107,7 +105,6 @@ const Insert = () => {
           }
         }
       );
-      console.log(response.data)
 
       if (response?.data?.status == 1) {
         setIsCorrect(true)
@@ -119,7 +116,6 @@ const Insert = () => {
 
     } catch (error) {
       setIsError(true)
-      console.log(error)
     }
 
 
@@ -387,7 +383,6 @@ const Insert = () => {
                   items={estructurasList}
                   placeholder={"Estructura"}
                   onChange={item => {
-                    console.log(userId)
                     const value = item.value.toString();
                     handleChange("estructura")(value)
                     handleChange("promotor")(userId)

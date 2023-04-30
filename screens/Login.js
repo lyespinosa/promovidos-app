@@ -40,7 +40,6 @@ const Login = () => {
       })
       navigation.navigate("Tabs")
     } catch (error) {
-      console.error('Error al guardar datos en AsyncStorage:', error);
     }
   };
 
@@ -51,7 +50,6 @@ const Login = () => {
         value: JSON.stringify(data.msg)
       })
     } catch (error) {
-      console.log('Error al guardar el token')
     }
   }
 
@@ -62,13 +60,11 @@ const Login = () => {
         value: JSON.stringify(data)
       })
     } catch (error) {
-      console.log('Error al guardar el token')
     }
   }
 
   const getPromotor = async (id, token) => {
     try {
-      console.log(id);
       const response = await axios.get(`${BASE_URL}promotors/get/${id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -76,10 +72,8 @@ const Login = () => {
         },
       });
 
-      console.log(response.data)
       savePromotor(response.data)
     } catch (e) {
-      console.log("Failed to get data");
     }
   };
 
@@ -92,11 +86,9 @@ const Login = () => {
         },
       });
 
-      console.log(response.data)
       getPromotor(response.data.id, token)
       saveData(response.data)
     } catch (e) {
-      console.log("Failed to get data");
     }
   };
 
@@ -112,18 +104,15 @@ const Login = () => {
         Alert.alert('Sesion iniciada');
         saveToken(data)
         //setIsCorrect(true)
-        console.log("Has iniciado");
         getUser(data.msg);
       } else {
         Alert.alert('Usuario incorrecto')
-        console.log("Error al inicar");
         //setIsWrong(true)
       }
 
     } catch (error) {
       setIsLoading(false)
       Alert.alert('Error al iniciar sesion')
-      console.error("EL ERROR ES ==> " + error);
     }
 
   };
