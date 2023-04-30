@@ -23,22 +23,21 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
-        console.log("entrando a modal")
-        console.log(token)
-        fetch(`${BASE_URL}promotors/listar/${id}`, {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            setPromotores(data);
-            setCantidadPromotores(data.length);
-          })
-          .catch((err) => {
-            console.log("error: " + err);
-          });
+    console.log("entrando a modal")
+    console.log(token)
+    fetch(`${BASE_URL}promotors/listar/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setPromotores(data);
+      })
+      .catch((err) => {
+        console.log("error: " + err);
+      });
   }, []);
 
   return (
@@ -51,7 +50,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
       <View className="flex-1 justify-center bg-gray-300/[0.4] blur-2xl">
         <BlurView intensity={5}>
           <View className="items-center h-[80vh] my-[20vh]  bg-white mx-5 border-2 border-[#E8E8E8] rounded-3xl overflow-hidden shadow-md shadow-[#E8E8E8]">
-            <ScrollView  showsVerticalScrollIndicator={false} className="w-full">
+            <ScrollView showsVerticalScrollIndicator={false} className="w-full">
               <TouchableOpacity
                 activeOpacity={1}
                 onPress={() => setIsModalOpen(!setIsModalOpen)}
@@ -62,23 +61,38 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
                 </Text>
                 <FontAwesome name="close" size={24} color="white" />
               </TouchableOpacity>
-              <Navbar></Navbar>
+              <View className="min-h-[65vh]">
+                {
+                  promotores.length > 0 ? (
+                    <>
+                      <Navbar></Navbar>
+                      <View className="w-[95%] m-auto" >
+                        {promotores.map((promotor) => {
+                          return (
+                            <Dropdown
+                              showButton={false}
+                              showModal={false}
+                              key={promotor.idpromotor}
+                              Nombre={promotor.nombre}
+                              Municipio={promotor.municipio}
+                              Celular={promotor.celular}
+                              Estructura={promotor.estructura}
+                              Cargo={promotor.celular}
+                              Seccion={promotor.seccion}
 
-              {promotores.map((promotor) => {
-                return (
-                  <DropPromovidos
+                            />
+                          );
+                        })}
+                      </View>
+                    </>
+                  )
+                    :
+                    <View className="items-center justify-center flex-1">
+                      <Text className="text-2xl font-semibold text-[#cecece]">Sin promovidos</Text>
+                    </View>
+                }
+              </View>
 
-                    key={promotor.idpromotor}
-                    Nombre={promotor.nombre}
-                    Municipio={promotor.municipio}
-                    Celular={promotor.celular}
-                    Estructura={promotor.estructura}
-                    Cargo={promotor.celular}
-                    Seccion={promotor.seccion}
-                  
-                  />
-                );
-              })}
             </ScrollView>
           </View>
         </BlurView>
