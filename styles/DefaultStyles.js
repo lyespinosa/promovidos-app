@@ -9,6 +9,7 @@ const place_holder_color = "bg-black"
 const viewInput = "";
 
 const DefaultStyles = {
+    blueColor: '#1e40af',
     input: s`${input}`,
     firstViewInput: s`${viewInput} `,
     viewInput: s`${input_mt} ${viewInput}`,
@@ -18,7 +19,9 @@ const DefaultStyles = {
     select: s`${input} ${input_mt}`,
     placeHolderColor: s`text-gray-400`,
     inputText: s`absolute text-xs -bottom-2/6 left-3 text-red-400`,
+    inputTextButton: s`absolute text-xs -bottom-2/6 left-3 text-red-500 text-base`,
     inputTextLogin: s`absolute text-xs -bottom-3/5 text-red-500 bg-whote rounded-sm py-1 px-2 w-full `,
+    inputTextColor: s`text-red-800`,
     focusBorderColor: s`border-blue-500`,
     blurBorderColor: s`border-gray-600`,
     errorBorderColor: s`border-red-400`,

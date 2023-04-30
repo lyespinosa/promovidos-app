@@ -7,6 +7,9 @@ import axios from "axios";
 import { Formik } from "formik";
 import * as Yup from 'yup';
 
+//icons
+import { Ionicons } from '@expo/vector-icons';
+
 //styles
 import DefaultStyles from "../styles/DefaultStyles";
 
@@ -95,11 +98,7 @@ const Insert = () => {
 
   const sendPromovido = async (values) => {
     try {
-      var tipo = '';
-      if (userTipo == 3) { tipo = "promotor" }
-      else if (userTipo == 4) { tipo = "promovido" }
-
-      const response = await axios.post(`${BASE_URL}promotors/create/${tipo}`,
+      const response = await axios.post(`${BASE_URL}promotors/create`,
         values
         , {
           headers: {
@@ -141,36 +140,54 @@ const Insert = () => {
     }
   };
 
-  const SignupSchema = Yup.object().shape({
-    nombre: Yup.string()/*.required('Required')*/,
-    paterno: Yup.string()/*.required('Required')*/,
-    materno: Yup.string()/*.required('Required')*/,
-    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números')/*.required('Required')*/,
-    sexo: Yup.number().integer("solo id")/*.required('Required')*/,
-    folio: Yup.string()/*.required('Required')*/,
-    ine: Yup.string()/*.required('Required')*/,
-    seccion: Yup.number()/*.required('Required')*/,
-    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos')/*.required('Required')*/,
-    estructura: Yup.number().integer("solo id")/*.required('Required')*/,
-    cargo: Yup.string()/*.required('Required')*/,
-    ocupacion: Yup.string()/*.required('Required')*/,
-    municipio: Yup.number().integer("solo id")/*.required('Required')*/,
-    localidad: Yup.number().integer("solo id")/*.required('Required')*/,
-    colonia: Yup.string()/*.required('Required')*/,
-    direccion: Yup.string()/*.required('Required')*/,
-    exterior: Yup.string()/*.required('Required')*/,
-    cp: Yup.string()/*.required('Required')*/,
+  const schemaPromotor = Yup.object().shape({
+    nombre: Yup.string().required('Required'),
+    paterno: Yup.string().required('Required'),
+    materno: Yup.string().required('Required'),
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
+    sexo: Yup.number().integer("solo id").required('Required'),
+    folio: Yup.string().required('Required'),
+    ine: Yup.string().required('Required'),
+    seccion: Yup.number().required('Required'),
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
+    estructura: Yup.number().integer("solo id").required('Required'),
+    cargo: Yup.string().required('Required'),
+    ocupacion: Yup.string().required('Required'),
+    municipio: Yup.number().integer("solo id").required('Required'),
+    localidad: Yup.number().integer("solo id").required('Required'),
+    colonia: Yup.string().required('Required'),
+    direccion: Yup.string().required('Required'),
+    exterior: Yup.string().required('Required'),
+    cp: Yup.string().required('Required'),
     promotor: Yup.string(),
-    email: Yup.string().email('Ingresa un correo "@"')/*.required('Required')*/,
+    email: Yup.string().email('Ingresa un correo "@"').required('Required'),
     activo: Yup.boolean(),
-    password: Yup.string().when('userTipo', (userTipo, SignupSchema) => {
-      return userTipo == 3 ? SignupSchema.min(6, "Al menos 6 caracteres").required('Required') : SignupSchema
-    })
-     ,
-    confirmPassword: Yup.string().when('userTipo', (userTipo, SignupSchema) => {
-      return userTipo == 3 ? SignupSchema.min(6, "Al menos 6 caracteres").oneOf([Yup.ref('password')], 'Las contraseñas no coinciden').required('required') : SignupSchema
-    })
+    password: Yup.string().min(6, "Al menos 6 caracteres").required('Required'),
+    confirmPassword: Yup.string().min(6, "Al menos 6 caracteres").oneOf([Yup.ref('password')], 'Las contraseñas no coinciden').required('required')
+  })
 
+  const SchemaPromovido = Yup.object().shape({
+    nombre: Yup.string().required('Required'),
+    paterno: Yup.string().required('Required'),
+    materno: Yup.string().required('Required'),
+    celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
+    sexo: Yup.number().integer("solo id").required('Required'),
+    folio: Yup.string().required('Required'),
+    ine: Yup.string().required('Required'),
+    seccion: Yup.number().required('Required'),
+    curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
+    estructura: Yup.number().integer("solo id").required('Required'),
+    cargo: Yup.string().required('Required'),
+    ocupacion: Yup.string().required('Required'),
+    municipio: Yup.number().integer("solo id").required('Required'),
+    localidad: Yup.number().integer("solo id").required('Required'),
+    colonia: Yup.string().required('Required'),
+    direccion: Yup.string().required('Required'),
+    exterior: Yup.string().required('Required'),
+    cp: Yup.string().required('Required'),
+    promotor: Yup.string(),
+    email: Yup.string().email('Ingresa un correo "@"').required('Required'),
+    activo: Yup.boolean(),
   })
 
   return (
@@ -203,7 +220,7 @@ const Insert = () => {
           email: '',
           password: ''
         }}
-        validationSchema={SignupSchema}
+        validationSchema={userTipo == 3 ? schemaPromotor : SchemaPromovido}
         onSubmit={async (values, { resetForm }) => {
           await sendPromovido(values)
         }}
@@ -213,19 +230,8 @@ const Insert = () => {
             <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
             <Alert text={msgWrong ? msgWrong : "Datos incorrectos"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
             <Alert text={"Error de conexion"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isError} onConfirmPressed={() => setIsError(false)} />
-            <View className=" rounded-md  w-[95%] bg-green-600">
-
-              {
-                userTipo == 3
-                  ? (
-                    <Text className="p-2 text-white text-[20px] ">Agregar nuevo promotor </Text>
-                  )
-                  :
-                  (
-                    <Text className="p-2 text-white text-[20px] ">Agregar nuevo promovido </Text>
-                  )
-              }
-
+            <View className=" rounded-md  w-[95%] bg-green-600 items-center">
+              <Text className="p-2 text-white text-[20px] ">{userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"} </Text>
             </View>
 
             <View className=" mt-4 flex-row justify-between w-[90%] ">
@@ -513,7 +519,7 @@ const Insert = () => {
                   value={values.email}
                 />
                 {touched.email && errors.email && (
-                  <Text style={DefaultStyles.inputText} >{errors.correo}</Text>
+                  <Text style={DefaultStyles.inputText} >{errors.email}</Text>
                 )}
               </View>
 
@@ -559,17 +565,24 @@ const Insert = () => {
               </View>
 
 
+              <View style={DefaultStyles.viewInput}>
+                <TouchableOpacity
+                  activeOpacity={0.4}
+                  disabled={!isValid}
+                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable,]}
+                  onPress={handleSubmit} //hacer el POST ahí
+                  className="py-4 m-auto bg-blue-500 rounded-md px-14"
+                >
+                  <Text className="font-semibold text-[24px] text-white">
+                    Agregar
+                  </Text>
+                </TouchableOpacity>
+                {!isValid &&
+                  <Text style={DefaultStyles.inputTextButton} > <Ionicons name="alert-circle-outline" size={18} color={DefaultStyles.inputTextColor} /> Campos faltantes </Text>
+                }
+              </View>
 
-              <TouchableOpacity
-                activeOpacity={0.4}
-                style={[DefaultStyles.submitInput]}
-                onPress={handleSubmit} //hacer el POST ahí
-                className="py-4 m-auto bg-blue-500 rounded-md px-14"
-              >
-                <Text className="font-semibold text-[24px] text-white">
-                  Agregar
-                </Text>
-              </TouchableOpacity>
+
             </View>
           </View>
         )}
