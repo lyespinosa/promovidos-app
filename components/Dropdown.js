@@ -71,10 +71,12 @@ const Dropdown = ({
                 {Seccion}
               </Text>
               <View className="flex-row">
+              {showModal == true && (
                   <Text className="text-base text-gray-600">
                 <Text className="font-bold">Promovidos: </Text>
                 {cantidadPromotores}
               </Text>
+              )}   
               <View className="flex-1 items-end">
               {showModal == true && (
                 <TouchableOpacity
