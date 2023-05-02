@@ -94,7 +94,7 @@ const Insert = () => {
     })
   };
 
-  const sendPromovido = async (values) => {
+  const sendPromovido = async (values, resetForm) => {
     try {
       const response = await axios.post(`${BASE_URL}promotors/create`,
         values
@@ -107,6 +107,7 @@ const Insert = () => {
       );
 
       if (response?.data?.status == 1) {
+        resetForm()
         setIsCorrect(true)
       }
       else {
@@ -143,7 +144,7 @@ const Insert = () => {
     celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
     sexo: Yup.number().integer("solo id").required('Required'),
     folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
+    ine: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     seccion: Yup.number().required('Required'),
     curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     estructura: Yup.number().integer("solo id").required('Required'),
@@ -169,7 +170,7 @@ const Insert = () => {
     celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
     sexo: Yup.number().integer("solo id").required('Required'),
     folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
+    ine: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     seccion: Yup.number().required('Required'),
     curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     estructura: Yup.number().integer("solo id").required('Required'),
@@ -218,7 +219,7 @@ const Insert = () => {
         }}
         validationSchema={userTipo == 3 ? schemaPromotor : SchemaPromovido}
         onSubmit={async (values, { resetForm }) => {
-          await sendPromovido(values)
+          await sendPromovido(values, resetForm)
         }}
       >
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
@@ -342,6 +343,7 @@ const Insert = () => {
               <View style={DefaultStyles.viewInput}>
                 <Input
                   placeholder="INE o Clave de elector"
+                  maxLength={18}
                   onChangeText={handleChange('ine')}
                   onBlur={() => setFieldTouched('ine')}
                   value={values.ine}
