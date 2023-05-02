@@ -4,7 +4,7 @@ import { TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 
-const TextInputExample = ({ secure, password, placeholder, change, classname, onFocus, onBlur, value }) => {
+const TextInputExample = ({ secure, password, placeholder, change, classname, onFocus, onBlur, value, autoCapitalize }) => {
 
   const [focus, setFocus] = useState(false);
 
@@ -23,6 +23,7 @@ const TextInputExample = ({ secure, password, placeholder, change, classname, on
         placeholder={placeholder}
         value={value}
         password={password}
+        autoCapitalize={autoCapitalize}
       />
       {secure &&
           <Icon

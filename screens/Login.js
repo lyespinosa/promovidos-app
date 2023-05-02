@@ -165,6 +165,7 @@ const Login = () => {
                           change={handleChange('email')}
                           onBlur={() => setFieldTouched('email')}
                           value={values.email}
+                          autoCapitalize={"none"}
                         />
                         {touched.email && errors.email && (
                           <Text style={DefaultStyles.inputTextLogin} >{errors.email}</Text>
