@@ -23,8 +23,6 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
   const [promotores, setPromotores] = useState([]);
 
   useEffect(() => {
-    console.log("entrando a modal")
-    console.log(token)
     fetch(`${BASE_URL}promotors/listar/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +34,6 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
         setPromotores(data);
       })
       .catch((err) => {
-        console.log("error: " + err);
       });
   }, []);
 

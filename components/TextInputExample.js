@@ -13,7 +13,7 @@ const TextInputExample = ({ secure, password, placeholder, change, classname, on
 
   return (
 
-    <View className={` w-full h-10 bg-white rounded-md flex-row items-center border-2 border-[#4B5563]  `} >
+    <View className={` w-full h-10 bg-white rounded-md flex-row items-center border-2 border-[#67b99a]  `} >
       <TextInput
         className={`flex-1 px-3 text-xl text-gray-600 `}
         onFocus={onFocus}
@@ -26,7 +26,7 @@ const TextInputExample = ({ secure, password, placeholder, change, classname, on
       />
       {secure &&
           <Icon
-          className="bg-[#4B5563] text-center py-2 w-[10%]"
+          className="bg-[#67b99a] text-center py-2 w-[10%]"
             onPress={() => setIsSecure(!isSecure)}
             name={isSecure ? "eye" : 'eye-slash'}
             size={20}

@@ -26,8 +26,6 @@ const Dropdown = ({
   };
 
   useEffect(() => {
-    console.log("ID DEL PROMOTOR")
-   console.log(id)
   }, [])
   
 
