@@ -11,16 +11,11 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": [
       "**/*"
-    ],
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
     ],
     "ios": {
       "supportsTablet": true
@@ -34,14 +29,23 @@
       "permissions": [
         "android.permission.RECORD_AUDIO"
       ],
-      "package": "com.lyespinosa.promovidosapp"
+      "package": "com.javier275.promovidosapp"
+
     },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "7f88f291-0932-48c0-ae37-d595e289c520"
+        "projectId": "18f15503-aed3-4b6a-b61d-3e681407c333"
       }
     }
   }

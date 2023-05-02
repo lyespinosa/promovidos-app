@@ -245,7 +245,8 @@ const Insert = () => {
                 </View>
 
                 <TouchableOpacity
-                  className="bg-blue-500 p-2 rounded-md border-[2px] border-gray-200"
+                  className="p-2 rounded-md border-[2px] border-gray-200 text-center" 
+                  style={{backgroundColor: DefaultStyles.blueColor}}
                   value=""
                   onPress={pickImage}
                 >

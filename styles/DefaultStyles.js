@@ -9,7 +9,7 @@ const place_holder_color = "bg-black"
 const viewInput = "";
 
 const DefaultStyles = {
-    blueColor: '#1e40af',
+    blueColor: '#064e3b',
     input: s`${input}`,
     firstViewInput: s`${viewInput} `,
     viewInput: s`${input_mt} ${viewInput}`,
