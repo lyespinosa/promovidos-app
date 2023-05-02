@@ -6,7 +6,7 @@ const Input = ({ onChangeText, placeholder, style = DefaultStyles.input, value, 
     return (
         <TextInput
             autoCapitalize={autoCapitalize}
-            className="border border-gray-600"
+            className="border border-gray-600 focus:border-green-600"
             style={style}
             placeholder={placeholder}
             onChangeText={onChangeText}

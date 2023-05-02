@@ -10,8 +10,8 @@ const Switch = ({onPress,}) => {
             style={[DefaultStyles.swithBorder]}
             initial={0}
             onPress={onPress}
-            textColor={"#5596dd"} //'#7a44cf'
-            buttonColor={"#5596dd"}
+            textColor={DefaultStyles.greenColor} //'#7a44cf'
+            buttonColor={DefaultStyles.greenColor}
             borderColor={"#747474"}
             hasPadding
             options={[

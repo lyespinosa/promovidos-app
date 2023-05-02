@@ -43,15 +43,15 @@ const ViewAll = () => {
       };
       data();
     });
-    return function cleanUp() {
+    /*return function cleanUp() {
       focusListener.remove();
-    };
+    };*/
   }, []);
 
   return (
     <ScrollView className="bg-white">
       <View className="bg-white min-h-[100vh] ">
-        <View className=" rounded-md  w-[95%] items-center m-auto mt-4" style={{backgroundColor: DefaultStyles.blueColor}}>
+        <View className=" rounded-md  w-[95%] items-center m-auto mt-4" style={{backgroundColor: DefaultStyles.greenColor}}>
           <Text className="p-2 text-white text-[20px] ">{userTipo == 3 ? "Todos los promotores" : "Todos los promovidos"} </Text>
         </View>
         {
