@@ -10,10 +10,8 @@ const deleteData = async () => {
     await Storage.removeItem({ key: `user-data` })
     await Storage.removeItem({ key: `user-token` })
     await Storage.removeItem({ key: `user-promotor` })
-    console.log('datos borrados')
   }
   catch {
-    console.log('Error al borrar datos')
   }
 }
 
@@ -23,7 +21,6 @@ const SettingsAcount = () => {
   useEffect(() => {
     const data = async () => {
       const promotor = JSON.parse(await Storage.getItem({ key: `user-promotor` }));
-      console.log(promotor)
       setUserPromotor(promotor[0]);
 
     };

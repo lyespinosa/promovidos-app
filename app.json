@@ -30,6 +30,7 @@
         "android.permission.RECORD_AUDIO"
       ],
       "package": "com.javier275.promovidosapp"
+
     },
     "plugins": [
       [

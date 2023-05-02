@@ -40,35 +40,31 @@ const Login = () => {
       })
       navigation.navigate("Tabs")
     } catch (error) {
-      console.error('Error al guardar datos en AsyncStorage:', error);
     }
   };
 
   const saveToken = async (data) => {
-    try{
+    try {
       await Storage.setItem({
         key: `user-token`,
         value: JSON.stringify(data.msg)
       })
     } catch (error) {
-      console.log('Error al guardar el token')
     }
   }
 
   const savePromotor = async (data) => {
-    try{
+    try {
       await Storage.setItem({
         key: `user-promotor`,
         value: JSON.stringify(data)
       })
     } catch (error) {
-      console.log('Error al guardar el token')
     }
   }
 
   const getPromotor = async (id, token) => {
     try {
-      console.log(id);
       const response = await axios.get(`${BASE_URL}promotors/get/${id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -76,10 +72,8 @@ const Login = () => {
         },
       });
 
-      console.log(response.data)
       savePromotor(response.data)
     } catch (e) {
-      console.log("Failed to get data");
     }
   };
 
@@ -92,11 +86,9 @@ const Login = () => {
         },
       });
 
-      console.log(response.data)
       getPromotor(response.data.id, token)
       saveData(response.data)
     } catch (e) {
-      console.log("Failed to get data");
     }
   };
 
@@ -112,18 +104,15 @@ const Login = () => {
         Alert.alert('Sesion iniciada');
         saveToken(data)
         //setIsCorrect(true)
-        console.log("Has iniciado");
         getUser(data.msg);
       } else {
         Alert.alert('Usuario incorrecto')
-        console.log("Error al inicar");
         //setIsWrong(true)
       }
 
     } catch (error) {
       setIsLoading(false)
       Alert.alert('Error al iniciar sesion')
-      console.error("EL ERROR ES ==> " + error);
     }
 
   };
@@ -140,14 +129,14 @@ const Login = () => {
   })
 
   return (
-    <ScrollView className="bg-white">
+    <ScrollView className="bg-black">
       <Formik
         initialValues={{
           email: '',
           password: ''
         }}
         validationSchema={SignupSchema}
-        onSubmit={ async (values, { resetForm }) => {
+        onSubmit={async (values, { resetForm }) => {
           await getLogin(values, resetForm)
         }}
       >
@@ -159,18 +148,16 @@ const Login = () => {
             />
             <KeyboardAwareScrollView>
               <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center mt-12">
-                <View className="items-center bg-white w-96  h-[600px] rounded-3xl overflow-hidden relative ">
-                  <View className="absolute bottom-8 rotate-[28deg]">
-                    <Image className="object-scale-down " source={Triforce} />
-                  </View>
-                  <View className="items-center w-full h-full px-[5%]">
-                    <View className="mt-6 rounded-md px-10 bg-[#dbc25f] justify-center py-2 w-full">
-                      <Text className="text-3xl font-bold text-stone-50 ali">
-                        Ingrese sus datos
+                <View className="items-center bg-[#121212cc] w-96  py-8 rounded-3xl overflow-hidden relative ">
+
+                  <View className="items-center w-full  px-[5%]">
+                    <View className="justify-center w-full px-10 py-2 rounded-md">
+                      <Text className="text-3xl font-bold text-center text-stone-50">
+                        Iniciar Sesion
                       </Text>
                     </View>
 
-                    <View className="w-full mt-12">
+                    <View className="w-full ">
 
                       <View style={DefaultStyles.viewInputLogin}>
                         <Input
@@ -198,8 +185,10 @@ const Login = () => {
                       </View>
                     </View>
                     <TouchableOpacity
+                      disabled={isLoading}
                       onPressIn={handleSubmit}
-                      className="bg-[#435f9a] py-3 px-14 items-center border-[#354b7a] rounded-md mb-20 w-full  mt-10"
+                      style={[DefaultStyles.submitInput, isLoading && DefaultStyles.disable,]}
+                      className="bg-[#047857] py-3 px-14 items-center rounded-md  w-full  mt-10"
                     >
                       <Text className="text-lg font-extrabold text-stone-50">
                         Iniciar sesion
@@ -207,7 +196,7 @@ const Login = () => {
                     </TouchableOpacity>
                   </View>
 
-                  <StatusBar style="auto" />
+                  <StatusBar style="light" />
                 </View>
               </View>
             </KeyboardAwareScrollView>

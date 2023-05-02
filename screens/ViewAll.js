@@ -22,12 +22,8 @@ const ViewAll = () => {
       .then((response) => response.json())
       .then((data) => {
         setPromotores(data);
-        console.log("EJEMPLO DE LOS PROMOTORES GUARDADOS")
-        console.log(data[0])
-        console.log("----")
       })
       .catch((err) => {
-        console.log("error: " + err);
       });
   };
 
