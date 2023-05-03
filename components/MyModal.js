@@ -32,6 +32,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
       .then((response) => response.json())
       .then((data) => {
         setPromotores(data);
+        setCantidadPromotores(data.length);
       })
       .catch((err) => {
       });
@@ -51,7 +52,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
               <TouchableOpacity
                 activeOpacity={1}
                 onPress={() => setIsModalOpen(!setIsModalOpen)}
-                className="flex-row border-b border-[#E8E8E8] bg-red-500 w-full p-2"
+                className="flex-row border-b border-[#E8E8E8] bg-[#67b99a] w-full p-2"
               >
                 <Text className="flex-1 text-center pl-6 text-white font-extrabold text-[20px]">
                   Promovidos

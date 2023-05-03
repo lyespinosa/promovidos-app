@@ -27,11 +27,11 @@ const Dropdown = ({
 
   useEffect(() => {
   }, [])
-  
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [cantidadPromotores, setCantidadPromotores] = useState(0);
-  
+
 
   return (
     <View className="my-2">
@@ -68,33 +68,29 @@ const Dropdown = ({
                 <Text className="font-bold">Seccion: </Text>
                 {Seccion}
               </Text>
-              <View className="flex-row">
-                  <Text className="text-base text-gray-600">
-                <Text className="font-bold">Promovidos: </Text>
-                {cantidadPromotores}
-              </Text>
-              <View className="flex-1 items-end">
-              {showModal == true && (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  onPress={() => setIsModalOpen(!isModalOpen)}
-                  
-                  className="px-2 border w-44 rounded-3xl border-[#E8E8E8] bg-[#f8f8f8] "
-                >
-                {/*<Text className="font-bold border-b border-[#435f9a] text-base text-[#435f9a]"> Ver mas </Text>*/}
-                  <Text className="text-base text-gray-600">
-                    <Text className="font-bold">Promovidos: </Text>Ver mas
-                  </Text>
+              <View className="flex-row pt-2">
+                {showModal == true && (
+                  <TouchableOpacity
+                    className="px-2 border w-auto rounded-3xl border-[#E8E8E8] bg-[#f8f8f8] "
+                    activeOpacity={1}
+                    onPress={() => setIsModalOpen(!isModalOpen)}
 
-                </TouchableOpacity>
-              )}   
-              </View>
+                  >
+                    <Text className="text-base text-gray-600">
+                      <Text className="font-bold">Promovidos: </Text>
+                      {cantidadPromotores}
+                    </Text>
+                  </TouchableOpacity>
+                )}
+                <View className="items-end flex-1">
+                  
+                </View>
               </View>
 
 
               <MyModal
-              cantidadPromotores={cantidadPromotores}
-              setCantidadPromotores={setCantidadPromotores}
+                cantidadPromotores={cantidadPromotores}
+                setCantidadPromotores={setCantidadPromotores}
                 token={token}
                 id={id}
                 isModalOpen={isModalOpen}
@@ -104,7 +100,7 @@ const Dropdown = ({
           )}
         </View>
         {showButton == true ? (
-          <View className="items-center justify-center h-10 py-1 " style={{backgroundColor: DefaultStyles.blueColor}}>
+          <View className="items-center justify-center h-10 py-1 " style={{ backgroundColor: DefaultStyles.greenColor }}>
             <FontAwesome
               name="arrow-down"
               size={20}

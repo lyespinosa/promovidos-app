@@ -40,6 +40,7 @@ const Insert = () => {
   const [userTipo, setUserTipo] = useState()
 
 
+  const [isLoading, setIsLoading] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
   const [isError, setIsError] = useState(false)
@@ -53,8 +54,13 @@ const Insert = () => {
   const [municipiosList, setMunicipiosList] = useState([])
   const [estructurasList, setEstructurasList] = useState([])
   const [localidadesList, setLocalidadesList] = useState([])
-  const [municipio, setMunicipio] = useState("")
   const [imageName, setImageName] = useState('')
+
+  const [sexo, setSexo] = useState()
+  const [estructura, setEstructura] = useState()
+  const [municipio, setMunicipio] = useState()
+  const [localidad, setLocalidad] = useState()
+
 
   useEffect(() => {
 
@@ -94,7 +100,8 @@ const Insert = () => {
     })
   };
 
-  const sendPromovido = async (values) => {
+  const sendPromovido = async (values, resetForm) => {
+    setIsLoading(true)
     try {
       const response = await axios.post(`${BASE_URL}promotors/create`,
         values
@@ -105,8 +112,13 @@ const Insert = () => {
           }
         }
       );
-
+      setIsLoading(false)
       if (response?.data?.status == 1) {
+        setSexo()
+        setEstructura()
+        setMunicipio()
+        setLocalidad()
+        resetForm()
         setIsCorrect(true)
       }
       else {
@@ -143,7 +155,7 @@ const Insert = () => {
     celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
     sexo: Yup.number().integer("solo id").required('Required'),
     folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
+    ine: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     seccion: Yup.number().required('Required'),
     curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     estructura: Yup.number().integer("solo id").required('Required'),
@@ -169,7 +181,7 @@ const Insert = () => {
     celular: Yup.string().min(10, 'Deben ser 10 dígitos').max(10, 'Deben ser 10 dígitos').matches(/^[0-9]+$/, 'Solo números').required('Required'),
     sexo: Yup.number().integer("solo id").required('Required'),
     folio: Yup.string().required('Required'),
-    ine: Yup.string().required('Required'),
+    ine: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     seccion: Yup.number().required('Required'),
     curp: Yup.string().min(18, 'Deben ser 18 dígitos').max(18, 'Deben ser 18 dígitos').required('Required'),
     estructura: Yup.number().integer("solo id").required('Required'),
@@ -218,7 +230,8 @@ const Insert = () => {
         }}
         validationSchema={userTipo == 3 ? schemaPromotor : SchemaPromovido}
         onSubmit={async (values, { resetForm }) => {
-          await sendPromovido(values)
+          await sendPromovido(values, resetForm)
+
         }}
       >
         {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
@@ -226,12 +239,12 @@ const Insert = () => {
             <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
             <Alert text={msgWrong ? msgWrong : "Datos incorrectos"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
             <Alert text={"Error de conexion"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isError} onConfirmPressed={() => setIsError(false)} />
-            <View className=" rounded-md  w-[95%] bg-green-600 items-center">
+            <View className=" rounded-md  w-[95%] items-center" style={{ backgroundColor: DefaultStyles.greenColor }}>
               <Text className="p-2 text-white text-[20px] ">{userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"} </Text>
             </View>
 
             <View className=" mt-4 flex-row justify-between w-[90%] ">
-              <View className=" h-[240px] justify-between mr-3 ">
+              <View className=" h-100% justify-around mr-3 ">
                 <View className="w-[160px] h-[200px] bg-slate-500 rounded-md overflow-hidden shadow-sm shadow-black">
                   {image ? (
                     <Image
@@ -244,11 +257,13 @@ const Insert = () => {
                 </View>
 
                 <TouchableOpacity
-                  className="bg-blue-500 p-2 rounded-md border-[2px] border-gray-200"
+                  disabled={true}
+                  className="p-2 rounded-md border-[2px] border-gray-200 text-center"
+                  style={{ backgroundColor: DefaultStyles.greenColor }}
                   value=""
                   onPress={pickImage}
                 >
-                  <Text className="text-white">Select a image </Text>
+                  <Text className="text-white"></Text>
                 </TouchableOpacity>
               </View>
 
@@ -315,11 +330,13 @@ const Insert = () => {
                   items={sexosList}
                   placeholder={"Sexo"}
                   onChange={item => {
+                    setSexo(item.value)
                     const value = item.value.toString();
                     handleChange("sexo")(value)
                   }
                   }
                   onBlur={() => setFieldTouched('sexo')}
+                  value={sexo}
 
                 />
                 {touched.sexo && errors.sexo && (
@@ -342,6 +359,7 @@ const Insert = () => {
               <View style={DefaultStyles.viewInput}>
                 <Input
                   placeholder="INE o Clave de elector"
+                  maxLength={18}
                   onChangeText={handleChange('ine')}
                   onBlur={() => setFieldTouched('ine')}
                   value={values.ine}
@@ -383,12 +401,14 @@ const Insert = () => {
                   items={estructurasList}
                   placeholder={"Estructura"}
                   onChange={item => {
+                    setEstructura(item.value)
                     const value = item.value.toString();
                     handleChange("estructura")(value)
                     handleChange("promotor")(userId)
                   }
                   }
                   onBlur={() => setFieldTouched('estructura')}
+                  value={estructura}
                 />
                 {touched.estructura && errors.estructura && (
                   <Text style={DefaultStyles.inputText} >{errors.estructura}</Text>
@@ -424,12 +444,14 @@ const Insert = () => {
                   items={municipiosList}
                   placeholder={"Municipio"}
                   onChange={item => {
+                    setMunicipio(item.value)
                     getLocalidadByMunicipio(item.value)
                     const value = item.value.toString();
                     handleChange("municipio")(value)
                   }
                   }
                   onBlur={() => setFieldTouched('municipio')}
+                  value={municipio}
                 />
                 {touched.municipio && errors.municipio && (
                   <Text style={DefaultStyles.inputText} >{errors.municipio}</Text>
@@ -441,11 +463,13 @@ const Insert = () => {
                   items={localidadesList}
                   placeholder={"Localidad"}
                   onChange={item => {
+                    setLocalidad(item.value)
                     const value = item.value.toString();
                     handleChange("localidad")(value)
                   }
                   }
                   onBlur={() => setFieldTouched('localidad')}
+                  value={localidad}
                 />
                 {touched.localidad && errors.localidad && (
                   <Text style={DefaultStyles.inputText} >{errors.localidad}</Text>
@@ -512,6 +536,7 @@ const Insert = () => {
                   onChangeText={handleChange('email')}
                   onBlur={() => setFieldTouched('email')}
                   value={values.email}
+                  autoCapitalize={"none"}
                 />
                 {touched.email && errors.email && (
                   <Text style={DefaultStyles.inputText} >{errors.email}</Text>
@@ -563,10 +588,10 @@ const Insert = () => {
               <View style={DefaultStyles.viewInput}>
                 <TouchableOpacity
                   activeOpacity={0.4}
-                  disabled={!isValid}
-                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable,]}
+                  disabled={!isValid || isLoading}
+                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isLoading && DefaultStyles.disable]}
                   onPress={handleSubmit} //hacer el POST ahí
-                  className="py-4 m-auto bg-blue-500 rounded-md px-14"
+                  className="py-4 m-auto rounded-md px-14 bg-[#047857]"
                 >
                   <Text className="font-semibold text-[24px] text-white">
                     Agregar
