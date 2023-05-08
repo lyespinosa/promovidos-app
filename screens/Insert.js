@@ -588,11 +588,7 @@ const Insert = () => {
                 <TouchableOpacity
                   activeOpacity={0.4}
                   disabled={!isValid || isLoading}
-<<<<<<< HEAD
-                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable,isLoading && DefaultStyles.disable]}
-=======
                   style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isLoading && DefaultStyles.disable]}
->>>>>>> 1ddd80f
                   onPress={handleSubmit} //hacer el POST ahí
                   className="py-4 m-auto rounded-md px-14 bg-[#047857]"
                 >
