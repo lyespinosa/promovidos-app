@@ -4,12 +4,14 @@ import { s } from 'react-native-wind'
 
 const input_color = "bg-[#f9ffff]"; //El color de background para todos los inputs
 const input_mt = "mt-6"
+const input_combo = "px-2 py-1 pl-4 rounded-lg text-[20px] min-h-3 min-w-full bg-white"
 const input = "px-2 py-2 pl-4 rounded-lg text-[20px] min-h-3 min-w-full bg-white"
 const place_holder_color = "bg-black"
 const viewInput = "";
 
 const DefaultStyles = {
     greenColor: '#059669',
+    inputCombo: s`${input_combo}`,
     input: s`${input}`,
     firstViewInput: s`${viewInput} `,
     viewInput: s`${input_mt} ${viewInput}`,

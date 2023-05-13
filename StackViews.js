@@ -15,6 +15,7 @@ import SettingsAcount from './screens/SettingsAcount';
 import { useNavigation } from '@react-navigation/native';
 import SafeViewAndroid from './components/SafeViewAndroid';
 import DefaultStyles from './styles/DefaultStyles';
+import { StatusBar } from 'expo-status-bar';
 
 
 const StackViews = () => {
@@ -31,6 +32,7 @@ const StackViews = () => {
 
     return (
         <SafeAreaView style={SafeViewAndroid.AndroidSafeArea}>
+            <StatusBar style="auto" />
             <Tab.Navigator
 
                 initialRouteName="View"

@@ -11,7 +11,7 @@ const Navbar = () => {
         placeholder="Buscar..."
       />
       <View className='p-2 bg-gray-200 rounded-full'>
-        <Image source={buscar} name="search" size={20} color="gray"/>
+        <Image source={buscar} name="search" size={20} color="gray" />
       </View>
     </View> 
     </View>

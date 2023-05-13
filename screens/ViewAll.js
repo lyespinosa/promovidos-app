@@ -8,6 +8,9 @@ import { Storage } from "expo-storage";
 import DefaultStyles from "../styles/DefaultStyles";
 
 const ViewAll = () => {
+  const navigation = useNavigation();
+
+
   const [promotores, setPromotores] = useState([]);
   const [userTipo, setUserTipo] = useState();
   const [token, setToken] = useState(null);
@@ -27,31 +30,36 @@ const ViewAll = () => {
       });
   };
 
-  const navigation = useNavigation();
   let focusListener = null;
   useEffect(() => {
     focusListener = navigation.addListener("focus", () => {
       const data = async () => {
         const user = JSON.parse(await Storage.getItem({ key: `user-data` }));
         const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
-        const promotor = JSON.parse(
-          await Storage.getItem({ key: `user-promotor` })
-        );
+        const promotor = JSON.parse(await Storage.getItem({ key: `user-promotor` }));
+
+        /*console.log("####################")
+        console.log(user)
+        console.log(token)
+        console.log(promotor)
+        console.log("####################")
+*/
+
         setUserTipo(promotor[0]?.fktipo);
         setToken(token);
         getUser(user, token);
       };
       data();
     });
-    /*return function cleanUp() {
+    return function cleanUp() {
       focusListener.remove();
-    };*/
+    };
   }, []);
 
   return (
     <ScrollView className="bg-white">
       <View className="bg-white min-h-[100vh] ">
-        <View className=" rounded-md  w-[95%] items-center m-auto mt-4" style={{backgroundColor: DefaultStyles.greenColor}}>
+        <View className=" rounded-md  w-[95%] items-center m-auto mt-4" style={{ backgroundColor: DefaultStyles.greenColor }}>
           <Text className="p-2 text-white text-[20px] ">{userTipo == 3 ? "Todos los promotores" : "Todos los promovidos"} </Text>
         </View>
         {

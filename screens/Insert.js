@@ -65,6 +65,8 @@ const Insert = () => {
   useEffect(() => {
 
     const data = async () => {
+      setIsLoading(true);
+
       const id = JSON.parse(await Storage.getItem({ key: `user-data` })).id.toString();
       const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
       const promotor = JSON.parse(await Storage.getItem({ key: `user-promotor` }));
@@ -73,6 +75,7 @@ const Insert = () => {
       setToken(token);
       setUserTipo(promotor[0]?.fktipo);
 
+      setIsLoading(false)
 
       getList("sexo", token).then(data => {
         setSexosList(data)
@@ -85,7 +88,6 @@ const Insert = () => {
       getList("municipio", token).then(data => {
         setMunicipiosList(data)
       })
-
     }
     data()
 
@@ -238,8 +240,17 @@ const Insert = () => {
             <Alert text={"Registro creado correctamente"} buttonText={"Aceptar"} show={isCorrect} onConfirmPressed={() => setIsCorrect(false)} />
             <Alert text={msgWrong ? msgWrong : "Datos incorrectos"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
             <Alert text={"Error de conexion"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isError} onConfirmPressed={() => setIsError(false)} />
+
             <View className=" rounded-md  w-[95%] items-center" style={{ backgroundColor: DefaultStyles.greenColor }}>
-              <Text className="p-2 text-white text-[20px] ">{userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"} </Text>
+              <Text className="p-2 text-white text-[20px] ">{
+                !isLoading
+                  ? (
+                    userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"
+                  )
+                  : (
+                    ""
+                  )
+              } </Text>
             </View>
 
             <View className=" mt-4 flex-row justify-between w-[90%] ">

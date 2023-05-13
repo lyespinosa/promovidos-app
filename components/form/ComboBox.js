@@ -9,7 +9,7 @@ function ComboBox({ placeholder, items, onChange, value, showSearch = true, onBl
     return (
         <Dropdown
             className="border border-gray-600 focus:border-green-600"
-            style={[DefaultStyles.input]}
+            style={[DefaultStyles.inputCombo]}
             data={items} //los items que se mostrarán
             search={showSearch}
             maxHeight={200}
