@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, Button } from "react-native";
 import { mostrar } from "../assets";
-import MyModal from "./MyModal";
 
 const DropPromovidos = ({
   Nombre,

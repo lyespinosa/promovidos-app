@@ -8,11 +8,9 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { FontAwesome } from "@expo/vector-icons";
-import { BlurView } from "expo-blur";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { s } from "react-native-wind";
 import Navbar from "./Navbar";
-import Dropdown from "./Dropdown";
 import { BASE_URL } from "@env";
 import { Storage } from "expo-storage";
 import { useNavigation } from "@react-navigation/native";
@@ -46,7 +44,6 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
       className
     >
       <View className="flex-1 justify-center bg-gray-300/[0.4] blur-2xl">
-        <BlurView intensity={5}>
           <View className="items-center h-[80vh] my-[20vh]  bg-white mx-5 border-2 border-[#E8E8E8] rounded-3xl overflow-hidden shadow-md shadow-[#E8E8E8]">
             <ScrollView showsVerticalScrollIndicator={false} className="w-full">
               <TouchableOpacity
@@ -67,7 +64,7 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
                       <View className="w-[95%] m-auto" >
                         {promotores.map((promotor) => {
                           return (
-                            <Dropdown
+                            <DropPromovidos
                               showButton={false}
                               showModal={false}
                               key={promotor.idpromotor}
@@ -93,7 +90,6 @@ const MyModal = ({ isModalOpen, setIsModalOpen, id, token,setCantidadPromotores,
 
             </ScrollView>
           </View>
-        </BlurView>
       </View>
     </Modal>
   );
