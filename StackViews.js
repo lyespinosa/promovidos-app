@@ -37,6 +37,7 @@ const StackViews = () => {
 
                 initialRouteName="View"
                 screenOptions={{
+                    headerShown: false,
                     tabBarActiveTintColor: `${DefaultStyles.blueColor}`,
                 }}
             >
@@ -48,7 +49,6 @@ const StackViews = () => {
                         tabBarIcon: ({ color, size }) => (
                             <Octicons name="person-add" size={24} color={color} />
                         ),
-                        headerShown: false,
                     }}
                 />
                 <Tab.Screen
@@ -59,8 +59,15 @@ const StackViews = () => {
                         tabBarIcon: ({ color, size }) => (
                             <FontAwesome5 name="address-book" size={24} color={color} />
                         ),
-                        headerShown: false,
+                        unmountOnBlur: true
                     }}
+                    listeners={({ navigation, route }) => ({
+                        focus: () => {
+                          // Cada vez que se navega a "Screen1",
+                          // actualiza el estado para forzar un refresco
+                          navigation.setParams({ refresh: true });
+                        },
+                      })}
                 />
                 <Tab.Screen
                     name="Ajustes"
@@ -70,7 +77,6 @@ const StackViews = () => {
                         tabBarIcon: ({ color, size }) => (
                             <Ionicons name="settings-outline" size={24} color={color} />
                         ),
-                        headerShown: false,
                     }}
                 />
             </Tab.Navigator>

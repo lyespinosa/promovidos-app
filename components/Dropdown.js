@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Image, Button } from "react-native";
+import { View, Text, TouchableOpacity, Image, Button, ActivityIndicator } from "react-native";
 import { mostrar } from "../assets";
 import MyModal from "./MyModal";
 
@@ -76,14 +76,14 @@ const Dropdown = ({
                     onPress={() => setIsModalOpen(!isModalOpen)}
 
                   >
-                    <Text className="text-base text-gray-600">
-                      <Text className="font-bold">Promovidos: </Text>
-                      {cantidadPromotores}
-                    </Text>
+                    <View className=" flex-row items-center h-6 w-28 text-gray-600">
+                      <Text className="font-bold">Promovidos:  </Text>
+                      { cantidadPromotores ? <Text>{cantidadPromotores}</Text> : <ActivityIndicator size="small" color="#0000ff" /> }
+                    </View>
                   </TouchableOpacity>
                 )}
                 <View className="items-end flex-1">
-                  
+
                 </View>
               </View>
 
