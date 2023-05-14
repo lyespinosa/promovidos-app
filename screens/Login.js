@@ -28,11 +28,11 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerShown: false,
+      });
+    }, []);
 
   const [isLoading, setIsLoading] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
@@ -119,7 +119,7 @@ const Login = () => {
         savePromotor(await handlePromotor(dataUser.id, data.msg))
         setIsLoading(false)
         resetForm()
-        navigation.navigate('Tabs')
+        navigation.navigate('ViewAll')
       }
       else if (data?.status == 0) {
         Alert.alert('Usuario incorrecto')
@@ -205,8 +205,8 @@ const Login = () => {
                     </View>
                     <TouchableOpacity
                       disabled={isLoading}
-                      onPressIn={handleSubmit}
                       style={[DefaultStyles.submitInput, isLoading && DefaultStyles.disable,]}
+                      onPressIn={handleSubmit}
                       className="bg-[#047857] h-14 py-3 px-14 items-center rounded-md  w-full  mt-10 justify-center"
                     >
                       <Text className="text-lg font-extrabold text-stone-50">

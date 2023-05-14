@@ -30,7 +30,7 @@ const Dropdown = ({
 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [cantidadPromotores, setCantidadPromotores] = useState(0);
+  const [cantidadPromotores, setCantidadPromotores] = useState();
 
 
   return (
@@ -78,7 +78,7 @@ const Dropdown = ({
                   >
                     <View className=" flex-row items-center h-6 w-28 text-gray-600">
                       <Text className="font-bold">Promovidos:  </Text>
-                      { cantidadPromotores ? <Text>{cantidadPromotores}</Text> : <ActivityIndicator size="small" color="#0000ff" /> }
+                      {  <Text>{cantidadPromotores}</Text> }
                     </View>
                   </TouchableOpacity>
                 )}

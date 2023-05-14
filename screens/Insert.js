@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, ActivityIndicator, } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -29,6 +29,11 @@ const Insert = () => {
 
   const navigation = useNavigation();
 
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const [token, setToken] = useState()
   const [userId, setUserId] = useState()
@@ -195,7 +200,27 @@ const Insert = () => {
     activo: Yup.boolean(),
   })
 
-  return (
+  return (<>
+    <View className="bg-white w-full h-auto py-2 items-center fixed">
+      <View className="  rounded-md  w-[95%] items-center" style={{ backgroundColor: DefaultStyles.greenColor }}>
+        <TouchableOpacity
+          onPress={() => { navigation.navigate('ViewAll') }}
+          className="absolute left-0 justify-center items-center h-full w-10"
+        >
+          <Ionicons name="ios-arrow-back-sharp" size={24} color="white" />
+        </TouchableOpacity>
+        <Text className="p-2 text-white text-[20px] ">
+          {
+            !isLoading
+              ? (
+                userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"
+              )
+              : (
+                ""
+              )
+          } </Text>
+      </View>
+    </View>
     <ScrollView>
 
       <Formik
@@ -236,17 +261,6 @@ const Insert = () => {
             <Alert text={msgWrong ? msgWrong : "Datos incorrectos"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isWrong} onConfirmPressed={() => setIsWrong(false)} />
             <Alert text={"Error de conexion"} buttonText={"Aceptar"} buttonColor="#d61d00" textColor="#d61d00" show={isError} onConfirmPressed={() => setIsError(false)} />
 
-            <View className=" rounded-md  w-[95%] items-center" style={{ backgroundColor: DefaultStyles.greenColor }}>
-              <Text className="p-2 text-white text-[20px] ">{
-                !isLoading
-                  ? (
-                    userTipo == 3 ? "Agregar nuevo promotor" : "Agregar nuevo promovido"
-                  )
-                  : (
-                    ""
-                  )
-              } </Text>
-            </View>
 
             <View className=" mt-4 flex-row justify-between w-[90%] ">
               <View className=" h-100% justify-around mr-3 ">
@@ -592,14 +606,13 @@ const Insert = () => {
 
               <View style={DefaultStyles.viewInput}>
                 <TouchableOpacity
-                  activeOpacity={0.4}
                   disabled={!isValid || isLoading}
-                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isLoading && DefaultStyles.disable]}
-                  onPress={handleSubmit} //hacer el POST ahí
-                  className="py-4 m-auto rounded-md px-14 bg-[#047857]"
+                  onPressIn={handleSubmit} //hacer el POST ahí
+                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isLoading && {backgroundColor: '#cde4dc'}]}
+                  className="py-4 m-auto rounded-md px-14 w-[90vw] bg-[#047857] items-center"
                 >
                   <Text className="font-semibold text-[24px] text-white">
-                    Agregar
+                  {isLoading ? <ActivityIndicator size="large" color="#56FF97" /> : 'Agregar'}
                   </Text>
                 </TouchableOpacity>
                 {!isValid &&
@@ -613,6 +626,7 @@ const Insert = () => {
         )}
       </Formik>
     </ScrollView >
+  </>
   );
 };
 
