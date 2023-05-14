@@ -1,10 +1,14 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { Storage } from 'expo-storage'
 import { female, male } from '../assets';
 import DefaultStyles from '../styles/DefaultStyles';
 import Svg, { Circle, Rect, SvgXml } from 'react-native-svg';
+
+//icons
+import { Ionicons } from '@expo/vector-icons';
+
 const deleteData = async () => {
   try {
     await Storage.removeItem({ key: `user-data` })
@@ -16,6 +20,13 @@ const deleteData = async () => {
 }
 
 const SettingsAcount = () => {
+  const navigation = useNavigation();
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const [isLoading, setIsLoading] = useState(true)
 
@@ -35,9 +46,8 @@ const SettingsAcount = () => {
 
   }, []);
 
-  const navigation = useNavigation();
   return (
-    <View className="items-center justify-between flex-1 py-12 bg-white ">
+    <View className="items-center justify-between flex-1 py-6 bg-white ">
 
 
 
@@ -73,7 +83,13 @@ const SettingsAcount = () => {
 
           <View className="w-[94%]">
             <View className="flex-row items-center justify-between p-2 bg-gray-300 rounded-md">
-              <Text className="text-[20px] font-semibold">Tu cuenta</Text>
+              <TouchableOpacity
+                onPress={() => { navigation.goBack() }}
+                className="absolute left-0 justify-center items-center h-full w-10"
+              >
+                <Ionicons name="ios-arrow-back-sharp" size={24} color="black" />
+              </TouchableOpacity>
+              <Text className="text-[20px] font-semibold ml-10">Tu cuenta</Text>
               <View className="flex-row items-center">
                 <Text className="px-2 font-semibold capitalize text-[16px]">{`${userPromotor?.nombre} ${userPromotor?.paterno}`}</Text>
                 <Image className="w-12 h-12" source={userPromotor?.fksexo == 2 ? male : female} />

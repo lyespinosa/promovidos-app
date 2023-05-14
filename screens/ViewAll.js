@@ -30,7 +30,6 @@ const ViewAll = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   const getUser = async (id, token) => {
-    console.log("linea 33")
     fetch(`${BASE_URL}promotors/listar/${id}`, {
       headers: {
         "Content-Type": "application/json",
@@ -47,26 +46,31 @@ const ViewAll = () => {
       });
   };
 
+  let focusListener = null;
   useEffect(() => {
     setIsLoading(true)
+    focusListener = navigation.addListener("focus", () => {
       const data = async () => {
-        console.log("linea 53")
         const user = JSON.parse(await Storage.getItem({ key: `user-data` }));
         const token = JSON.parse(await Storage.getItem({ key: `user-token` }));
         const promotor = JSON.parse(await Storage.getItem({ key: `user-promotor` }));
 
-        console.log("####################")
+        /*console.log("####################")
         console.log(user)
         console.log(token)
         console.log(promotor)
-        console.log("####################")
+        console.log("####################")*/
 
-        console.log("linea 64")
         setUserTipo(promotor[0]?.fktipo);
         setToken(token);
         getUser(promotor[0]?.idpromotor, token);
       };
       data();
+
+    });
+    return function cleanUp() {
+      focusListener.remove();
+    };
   }, []);
 
   return (
@@ -80,19 +84,17 @@ const ViewAll = () => {
         <Navbar></Navbar>
         <View className="flex-row justify-end items-center pb-2 px-3">
           <TouchableOpacity
-            onPress={()=>{navigation.navigate('Insert')}}
+            onPress={() => { navigation.navigate('Insert') }}
             className=" w-16 h-12 shadow-sm shadow-black bg-gray-100 justify-center items-center rounded-md mx-2">
             <Ionicons name="save-sharp" size={28} color={DefaultStyles.greenColor} />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={()=>{navigation.navigate('Settings')}}
+            onPress={() => { navigation.navigate('Settings') }}
             className=" w-16 h-12 shadow-sm shadow-black bg-gray-100 justify-center items-center rounded-md mx-2">
             <Ionicons name="settings-sharp" size={28} color="#00416A" />
           </TouchableOpacity>
         </View>
       </View>
-
-
 
       <ScrollView className="bg-white">
         <View className="justify-center min-h-[80vh] pb-80">
