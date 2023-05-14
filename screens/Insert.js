@@ -29,11 +29,6 @@ const Insert = () => {
 
   const navigation = useNavigation();
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerShown: false,
-    });
-  }, []);
 
   const [token, setToken] = useState()
   const [userId, setUserId] = useState()
