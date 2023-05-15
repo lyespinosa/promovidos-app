@@ -22,7 +22,13 @@ export default function App() {
           initialRouteName="Login" >
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Tabs" component={StackViews} />
-          <Stack.Screen name="Insert" component={Insert} />
+          <Stack.Screen
+            name="Insert"
+            component={Insert}
+            options={{
+              unmountOnBlur: false
+            }}
+          />
           <Stack.Screen
             name="ViewAll"
             component={ViewAll} options={{ unmountOnBlur: true }}

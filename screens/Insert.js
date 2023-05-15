@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, ActivityIndicator, } from "react-native";
+import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, ActivityIndicator, BackHandler, } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
@@ -92,6 +92,16 @@ const Insert = () => {
     }
     data()
 
+    const backAction = () => {
+      return true;
+    };
+  
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+  
+    return () => backHandler.remove();
 
   }, [])
 
@@ -205,7 +215,7 @@ const Insert = () => {
     <View className="bg-white w-full h-auto py-2 items-center fixed">
       <View className="  rounded-md  w-[95%] items-center" style={{ backgroundColor: DefaultStyles.greenColor }}>
         <TouchableOpacity
-          onPress={() => { navigation.navigate('ViewAll') }}
+          onPress={() => { navigation.goBack() }}
           className="absolute left-0 justify-center items-center h-full w-10"
         >
           <Ionicons name="ios-arrow-back-sharp" size={24} color="white" />
@@ -222,7 +232,7 @@ const Insert = () => {
           } </Text>
       </View>
     </View>
-    <ScrollView>
+    <ScrollView keyboardShouldPersistTaps="handled"  >
 
       <Formik
         initialValues={{

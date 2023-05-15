@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, ActivityIndicator, TouchableOpacity, BackHandler } from "react-native";
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import Dropdown from "../components/Dropdown";
 import Navbar from "../components/Navbar";
@@ -71,6 +71,21 @@ const ViewAll = () => {
     return function cleanUp() {
       focusListener.remove();
     };
+  }, []);
+
+
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp(); 
+      return true;
+    };
+  
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+  
+    return () => backHandler.remove();
   }, []);
 
   return (
