@@ -40,6 +40,7 @@ const Insert = () => {
   const [userTipo, setUserTipo] = useState()
 
 
+  const [isSubmit, setIsSubmit] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isCorrect, setIsCorrect] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
@@ -103,7 +104,7 @@ const Insert = () => {
   };
 
   const sendPromovido = async (values, resetForm) => {
-    setIsLoading(true)
+    setIsSubmit(true)
     try {
       const response = await axios.post(`${BASE_URL}promotors/create`,
         values
@@ -114,7 +115,7 @@ const Insert = () => {
           }
         }
       );
-      setIsLoading(false)
+      setIsSubmit(false)
       if (response?.data?.status == 1) {
         setSexo()
         setEstructura()
@@ -221,6 +222,7 @@ const Insert = () => {
           } </Text>
       </View>
     </View>
+    <ScrollView>
 
       <Formik
         initialValues={{
@@ -605,13 +607,13 @@ const Insert = () => {
 
               <View style={DefaultStyles.viewInput}>
                 <TouchableOpacity
-                  disabled={!isValid || isLoading}
+                  disabled={!isValid || isSubmit}
                   onPressIn={handleSubmit} //hacer el POST ahí
-                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isLoading && {backgroundColor: '#cde4dc'}]}
+                  style={[DefaultStyles.submitInput, !isValid && DefaultStyles.disable, isSubmit && {backgroundColor: '#cde4dc'}]}
                   className="py-4 m-auto rounded-md px-14 w-[90vw] bg-[#047857] items-center"
                 >
                   <Text className="font-semibold text-[24px] text-white">
-                  {isLoading ? <ActivityIndicator size="large" color="#56FF97" /> : 'Agregar'}
+                  {isSubmit ? <ActivityIndicator size="large" color="#56FF97" /> : 'Agregar'}
                   </Text>
                 </TouchableOpacity>
                 {!isValid &&
@@ -624,6 +626,7 @@ const Insert = () => {
           </View>
         )}
       </Formik>
+    </ScrollView >
   </>
   );
 };
