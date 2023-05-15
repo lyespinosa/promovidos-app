@@ -28,11 +28,11 @@ const Login = () => {
 
   const navigation = useNavigation();
 
-    useLayoutEffect(() => {
-      navigation.setOptions({
-        headerShown: false,
-      });
-    }, []);
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    });
+  }, []);
 
   const [isLoading, setIsLoading] = useState(false)
   const [isWrong, setIsWrong] = useState(false)
@@ -76,8 +76,8 @@ const Login = () => {
           Authorization: "Bearer " + token,
         },
       });
-      console.log("PROMOTOR")
-      console.log(response.data)
+      //console.log("PROMOTOR")
+      //console.log(response.data)
       return response.data;
     }
     catch (e) {
@@ -145,85 +145,81 @@ const Login = () => {
   })
 
   return (
-    <ScrollView className="bg-black">
-      <Formik
-        initialValues={{
-          email: '',
-          password: ''
-        }}
-        validationSchema={SignupSchema}
-        onSubmit={(values, { resetForm }) => {
-          handleLogin(values, resetForm)
-        }}
-      >
-        {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
-          <View>
-            <Image
-              source={background} // Ruta de la imagen de fondo
-              className="absolute top-0 bottom-0 left-0 right-0 w-full"
-            />
-            <KeyboardAwareScrollView>
-              <View className="min-h-[100vh] flex-1 relative items-center py-8 justify-center mt-12">
-                <View className="items-center bg-[#121212cc] w-96  py-8 rounded-3xl overflow-hidden relative ">
+    <Formik
+      initialValues={{
+        email: '',
+        password: ''
+      }}
+      validationSchema={SignupSchema}
+      onSubmit={(values, { resetForm }) => {
+        handleLogin(values, resetForm)
+      }}
+    >
+      {({ values, errors, touched, handleChange, setFieldTouched, isValid, handleSubmit }) => (
+        <View className="bg-black flex-1 items-center justify-center">
+          <Image
+            source={background} // Ruta de la imagen de fondo
+            className="absolute top-0 bottom-0 left-0 right-0 w-full"
+          />
 
-                  <View className="items-center w-full  px-[5%]">
-                    <View className="justify-center w-full px-10 py-2 rounded-md">
-                      <Text className="text-3xl font-bold text-center text-stone-50">
-                        Iniciar Sesion
-                      </Text>
-                    </View>
+          <View className="items-center bg-[#121212cc] w-96  py-8 rounded-3xl overflow-hidden relative ">
 
-                    <View className="w-full ">
+            <View className="items-center w-full  px-[5%]">
+              <View className="justify-center w-full px-10 py-2 rounded-md">
+                <Text className="text-3xl font-bold text-center text-stone-50">
+                  Iniciar Sesion
+                </Text>
+              </View>
 
-                      <View style={DefaultStyles.viewInputLogin}>
-                        <Input
-                          disabled={!isLoading}
-                          placeholder="Correo electrónico"
-                          change={handleChange('email')}
-                          onBlur={() => setFieldTouched('email')}
-                          value={values.email}
-                          autoCapitalize={"none"}
-                        />
-                        {touched.email && errors.email && (
-                          <Text style={DefaultStyles.inputTextLogin} >{errors.email}</Text>
-                        )}
-                      </View>
+              <View className="w-full ">
 
-                      <View style={DefaultStyles.viewInputLogin}>
-                        <Input
-                          disabled={!isLoading}
-                          placeholder="Contraseña"
-                          change={handleChange('password')}
-                          onBlur={() => setFieldTouched('password')}
-                          value={values.password}
-                          secure={true}
-                        />
-                        {touched.password && errors.password && (
-                          <Text style={DefaultStyles.inputTextLogin} >{errors.password}</Text>
-                        )}
-                      </View>
-                    </View>
-                    <TouchableOpacity
-                      disabled={isLoading}
-                      style={[DefaultStyles.submitInput, isLoading && DefaultStyles.disable,]}
-                      onPressIn={handleSubmit}
-                      className="bg-[#047857] h-14 py-3 px-14 items-center rounded-md  w-full  mt-10 justify-center"
-                    >
-                      <Text className="text-lg font-extrabold text-stone-50">
-                        {isLoading ? <ActivityIndicator size="large" color="#56FF97" /> : 'Iniciar sesion'}
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={DefaultStyles.viewInputLogin}>
+                  <Input
+                    disabled={!isLoading}
+                    placeholder="Correo electrónico"
+                    change={handleChange('email')}
+                    onBlur={() => setFieldTouched('email')}
+                    value={values.email}
+                    autoCapitalize={"none"}
+                  />
+                  {touched.email && errors.email && (
+                    <Text style={DefaultStyles.inputTextLogin} >{errors.email}</Text>
+                  )}
+                </View>
 
-                  <StatusBar style="light" backgroundColor="#000000" />
+                <View style={DefaultStyles.viewInputLogin}>
+                  <Input
+                    disabled={!isLoading}
+                    placeholder="Contraseña"
+                    change={handleChange('password')}
+                    onBlur={() => setFieldTouched('password')}
+                    value={values.password}
+                    secure={true}
+                  />
+                  {touched.password && errors.password && (
+                    <Text style={DefaultStyles.inputTextLogin} >{errors.password}</Text>
+                  )}
                 </View>
               </View>
-            </KeyboardAwareScrollView>
+              <TouchableOpacity
+                disabled={isLoading}
+                style={[DefaultStyles.submitInput, isLoading && DefaultStyles.disable,]}
+                onPressIn={handleSubmit}
+                className="bg-[#047857] h-14 py-3 px-14 items-center rounded-md  w-full  mt-10 justify-center"
+              >
+                <Text className="text-lg font-extrabold text-stone-50">
+                  {isLoading ? <ActivityIndicator size="large" color="#56FF97" /> : 'Iniciar sesion'}
+                </Text>
+              </TouchableOpacity>
+            </View>
+
+            <StatusBar style="light" backgroundColor="#000000" />
           </View>
-        )
-        }
-      </Formik >
-    </ScrollView >
+
+        </View >
+      )
+      }
+    </Formik >
   );
 };
 
