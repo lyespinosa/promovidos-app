@@ -25,6 +25,11 @@ const ViewAll = () => {
   const [refresh, setRefresh] = useState(false);
 
   const [promotores, setPromotores] = useState([]);
+  const [tablaUsuarios, setTablaUsuarios] = useState([]);
+  const [busqueda, setBusqueda] = useState('');
+
+
+
   const [userTipo, setUserTipo] = useState();
   const [token, setToken] = useState(null);
   const [isLoading, setIsLoading] = useState(false)
@@ -40,11 +45,30 @@ const ViewAll = () => {
       .then((data) => {
         console.log(data)
         setPromotores(data);
+        setTablaUsuarios(data);
         setIsLoading(false)
       })
       .catch((err) => {
       });
   };
+  
+  const handleTextChange=(text)=>{
+    setBusqueda(text);
+    filtrar(text);
+  }
+
+  const filtrar = (terminoBusqueda) => {
+    const resultadosBusqueda = tablaUsuarios.filter((elemento) =>
+      (elemento.nombre?.toLowerCase() || "").includes(terminoBusqueda.toLowerCase()) ||
+      (elemento.celular?.toLowerCase() || "").includes(terminoBusqueda.toLowerCase())
+    );
+    console.log("Busqueda:", resultadosBusqueda);
+    setPromotores(resultadosBusqueda);
+  };
+
+  useEffect(()=>{
+ getUser();
+  },[])
 
   let focusListener = null;
   useEffect(() => {
@@ -81,7 +105,10 @@ const ViewAll = () => {
       </View>
 
       <View className="border-b border-[#E8E8E8]">
-        <Navbar></Navbar>
+        <Navbar
+        value={busqueda}
+        handleTextChange={handleTextChange}
+        />
         <View className="flex-row justify-end items-center pb-2 px-3">
           <TouchableOpacity
             onPress={() => { navigation.navigate('Insert') }}
