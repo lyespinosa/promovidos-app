@@ -38,7 +38,7 @@ const ViewAll = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        //console.log(data)
         setPromotores(data);
         setIsLoading(false)
       })
@@ -113,7 +113,7 @@ const ViewAll = () => {
                           return (
                             <Dropdown
                               token={token}
-                              id={promotor.fkuser}
+                              id={promotor.idpromotor}
                               showButton={true}
                               key={promotor.idpromotor}
                               Nombre={promotor.nombre}

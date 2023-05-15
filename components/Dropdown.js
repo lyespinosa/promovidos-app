@@ -78,7 +78,7 @@ const Dropdown = ({
                   >
                     <View className=" flex-row items-center h-6 w-28 text-gray-600">
                       <Text className="font-bold">Promovidos:  </Text>
-                      {  <Text>{cantidadPromotores}</Text> }
+                      { cantidadPromotores != null ? <Text>{cantidadPromotores}</Text> : <ActivityIndicator size="small" color={DefaultStyles.greenColor} /> }
                     </View>
                   </TouchableOpacity>
                 )}

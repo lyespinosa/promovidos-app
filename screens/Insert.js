@@ -221,7 +221,6 @@ const Insert = () => {
           } </Text>
       </View>
     </View>
-    <ScrollView>
 
       <Formik
         initialValues={{
@@ -625,7 +624,6 @@ const Insert = () => {
           </View>
         )}
       </Formik>
-    </ScrollView >
   </>
   );
 };
